@@ -1,0 +1,55 @@
+{
+  "schema": "ethera.content.interactions.v1",
+  "notes": "Conditions inside one group are AND. Alternative groups are OR. Negative-state blockers apply after a group matches. Requirements, targets and skill-phase selection are data; world results are applied in EtheraSimulation for Milestone 1's two interactions. Do not add result fields here expecting them to execute.",
+  "interactions": [
+    {
+      "id": "interaction.shape_weapon",
+      "name": "Shape Weapon",
+      "category": "combat",
+      "subcategory": "weapon_craft",
+      "skill_phase_id": "skill_phase.shape_trace",
+      "approach": {
+        "distance": 1.45,
+        "face_target": true
+      },
+      "requirement_groups": [
+        {
+          "id": "group.default",
+          "actor": [
+            { "type": "has_trait", "trait_id": "trait.weapon_shaping" },
+            { "type": "healthy_region", "region_id": "body.arms" }
+          ],
+          "target": [
+            { "type": "has_trait", "trait_id": "trait.rock" },
+            { "type": "has_trait", "trait_id": "trait.shapeable" },
+            { "type": "manifested", "manifested": true }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "interaction.echo_imprint",
+      "name": "Echo Imprint",
+      "category": "social",
+      "subcategory": "knowledge",
+      "skill_phase_id": "skill_phase.shard_fit",
+      "approach": {
+        "distance": 1.7,
+        "face_target": true
+      },
+      "requirement_groups": [
+        {
+          "id": "group.default",
+          "actor": [
+            { "type": "has_trait", "trait_id": "trait.grimnir" },
+            { "type": "has_trait", "trait_id": "trait.echo_imprint" }
+          ],
+          "target": [
+            { "type": "has_trait", "trait_id": "trait.echo" },
+            { "type": "actor_has_shard_unknown_to_target" }
+          ]
+        }
+      ]
+    }
+  ]
+}

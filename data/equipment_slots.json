@@ -1,0 +1,13 @@
+{
+  "schema": "ethera.content.equipment_slots.v1",
+  "slots": [
+    {
+      "id": "slot.small_weapon",
+      "name": "Small Weapon",
+      "attachment": "back",
+      "milestone_1": true,
+      "compatible_traits": ["trait.weapon"],
+      "description": "First equipment slot. Equipped clubs attach to the character's back. Pickup is the equip action."
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "schema": "ethera.world.milestone1.v1",
+  "id": "world.milestone1.khar_morr",
+  "place_id": "place.village_center",
+  "inhabited_entity_id": "entity.khar_morr",
+  "tuning": {
+    "walk_speed": 2.4,
+    "walk_acceleration": 7.0,
+    "walk_deceleration": 9.0,
+    "stop_distance": 0.18,
+    "interaction_arrive_distance": 0.22,
+    "pickup_reach": 1.1,
+    "pickup_approach_distance": 0.8,
+    "focus_hold_speed_scale": 0.45,
+    "shaping_drop_offset": { "x": 0.55, "y": 0.0, "z": 0.0 }
+  },
+  "places": [
+    {
+      "id": "place.village_center",
+      "kind": "place",
+      "name": "Village Center"
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity.khar_morr",
+      "kind": "character",
+      "name": "Khar-Morr the First Carved",
+      "people": "grimnir",
+      "sex": "female",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.grimnir",
+        "trait.weapon_shaping",
+        "trait.echo_imprint",
+        "trait.shard_holder"
+      ],
+      "body_regions": {
+        "body.head": "healthy",
+        "body.torso": "healthy",
+        "body.arms": "healthy",
+        "body.legs": "healthy"
+      },
+      "states": [],
+      "known_shard_ids": [],
+      "needed_shard_ids": [],
+      "known_interaction_ids": [
+        "interaction.shape_weapon",
+        "interaction.echo_imprint"
+      ],
+      "equipment": {
+        "slot.small_weapon": null
+      },
+      "position": { "x": 3.4, "y": 0.0, "z": 3.1 },
+      "yaw": 3.4,
+      "manifested": true,
+      "inhabitable": true,
+      "presentation": {
+        "asset_id": "asset.khar_morr",
+        "attach_points": {
+          "back": { "x": 0.0, "y": 1.15, "z": -0.22 }
+        }
+      }
+    },
+    {
+      "id": "entity.memory_fountain",
+      "kind": "memory_fountain",
+      "name": "Memory Fountain",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.memory_fountain",
+        "trait.echo",
+        "trait.shard_holder"
+      ],
+      "known_shard_ids": [],
+      "needed_shard_ids": [],
+      "states": [],
+      "position": { "x": 0.0, "y": 0.0, "z": 0.0 },
+      "yaw": 0.0,
+      "manifested": true,
+      "interaction_approach": { "x": 1.65, "y": 0.0, "z": 0.15 },
+      "presentation": {
+        "asset_id": "asset.memory_fountain"
+      }
+    },
+    {
+      "id": "entity.shapeable_rock",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": ["trait.rock", "trait.shapeable"],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": { "x": -3.3, "y": 0.0, "z": 2.2 },
+      "yaw": 0.4,
+      "interaction_approach": { "x": -3.3, "y": 0.0, "z": 3.55 },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock"
+      }
+    },
+    {
+      "id": "entity.club.umber",
+      "kind": "item",
+      "name": "Stone Club",
+      "template_id": "template.stone_club",
+      "place_id": "place.village_center",
+      "traits": ["trait.weapon", "trait.stone_weapon"],
+      "condition": "okay",
+      "equipment_slot_id": "slot.small_weapon",
+      "attachment": "back",
+      "base_color": "umber",
+      "holder_id": null,
+      "equipped_slot_id": null,
+      "position": { "x": 2.6, "y": 0.0, "z": -2.4 },
+      "yaw": 0.8,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.stone_club"
+      }
+    }
+  ]
+}

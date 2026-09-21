@@ -1,0 +1,76 @@
+{
+  "schema": "ethera.content.traits.v1",
+  "notes": "Ids are stable authored identities. Matching is exact and binary. Milestone 1 only uses the entries marked milestone_1.",
+  "traits": [
+    {
+      "id": "trait.grimnir",
+      "name": "Grimnir",
+      "kind": "identity",
+      "milestone_1": true,
+      "description": "People of living stone. Required by Echo Imprint."
+    },
+    {
+      "id": "trait.weapon_shaping",
+      "name": "Weapon Shaping",
+      "kind": "capability",
+      "milestone_1": true,
+      "description": "Actor capability required by Shape Weapon."
+    },
+    {
+      "id": "trait.echo_imprint",
+      "name": "Echo Imprint Trait",
+      "kind": "capability",
+      "milestone_1": true,
+      "description": "Actor capability required by Echo Imprint. Working capability name from the concept terminology."
+    },
+    {
+      "id": "trait.rock",
+      "name": "Rock",
+      "kind": "material_identity",
+      "milestone_1": true,
+      "description": "Material identity on a shaping source object."
+    },
+    {
+      "id": "trait.shapeable",
+      "name": "Shapeable",
+      "kind": "target_capability",
+      "milestone_1": true,
+      "description": "Marks world material suitable for Shape Weapon."
+    },
+    {
+      "id": "trait.memory_fountain",
+      "name": "Memory Fountain",
+      "kind": "identity",
+      "milestone_1": true,
+      "description": "Identity of the cultural knowledge hub."
+    },
+    {
+      "id": "trait.echo",
+      "name": "Echo",
+      "kind": "target_capability",
+      "milestone_1": true,
+      "description": "Target capability required by Echo Imprint and Echo Attunement."
+    },
+    {
+      "id": "trait.weapon",
+      "name": "Weapon",
+      "kind": "item",
+      "milestone_1": true,
+      "description": "Functional weapon identity on a stone club."
+    },
+    {
+      "id": "trait.stone_weapon",
+      "name": "Stone Weapon",
+      "kind": "item",
+      "milestone_1": true,
+      "description": "Material identity of a shaped stone club."
+    },
+    {
+      "id": "trait.shard_holder",
+      "name": "Shard-holder",
+      "kind": "capability",
+      "milestone_1": true,
+      "description": "Entity maintains unique references to known Shard IDs."
+    }
+  ]
+}

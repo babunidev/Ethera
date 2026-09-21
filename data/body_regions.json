@@ -1,0 +1,11 @@
+{
+  "schema": "ethera.content.body_regions.v1",
+  "notes": "Milestone 1 uses combined Arms and Legs regions. Later combat can introduce more specific parts without changing these ids.",
+  "conditions": ["healthy", "injured"],
+  "regions": [
+    { "id": "body.head", "name": "Head", "milestone_1": true },
+    { "id": "body.torso", "name": "Torso", "milestone_1": true },
+    { "id": "body.arms", "name": "Arms", "milestone_1": true },
+    { "id": "body.legs", "name": "Legs", "milestone_1": true }
+  ]
+}

@@ -1,0 +1,13 @@
+# Godot generated imports and editor state
+.godot/
+# Exported builds
+builds/
+*.tmp
+# Blender automatic backups; keep original .blend sources
+*.blend1
+*.blend2
+# Local editor settings
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,14 @@
+{
+  "schema": "ethera.content.index.v1",
+  "files": {
+    "traits": "res://data/traits.json",
+    "equipment_slots": "res://data/equipment_slots.json",
+    "body_regions": "res://data/body_regions.json",
+    "skill_phases": "res://data/skill_phases.json",
+    "interactions": "res://data/interactions.json",
+    "item_templates": "res://data/item_templates.json",
+    "states": "res://data/states.json",
+    "milestone1_world": "res://data/milestone1/world.json",
+    "presentation_assets": "res://data/presentation/assets.json"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "ethera.content.skill_phases.v1",
+  "notes": "Durations, radii, and tolerances are implementation tuning, not additional design rules. Skill space is normalized 0-1, origin top-left, for presentation overlays.",
+  "phases": [
+    {
+      "id": "skill_phase.shape_trace",
+      "name": "Shape Trace",
+      "category": "combat",
+      "subcategory": "weapon_craft",
+      "challenge": "trace_checkpoints_then_confirm",
+      "duration_ms": 8000,
+      "complete_with": "left_click",
+      "checkpoint_radius": 0.055,
+      "checkpoints": [
+        { "id": "cp.head", "x": 0.50, "y": 0.18 },
+        { "id": "cp.neck", "x": 0.50, "y": 0.32 },
+        { "id": "cp.upper", "x": 0.50, "y": 0.46 },
+        { "id": "cp.mid", "x": 0.50, "y": 0.60 },
+        { "id": "cp.grip", "x": 0.50, "y": 0.74 },
+        { "id": "cp.pommel", "x": 0.50, "y": 0.86 }
+      ],
+      "description": "Touch every club-shaped checkpoint in any order, then left-click to complete within the time limit. Missed checkpoints can be revisited. Leaving the outline has no penalty."
+    },
+    {
+      "id": "skill_phase.shard_fit",
+      "name": "Shard Fit",
+      "category": "social",
+      "subcategory": "knowledge",
+      "challenge": "align_rotating_symbol",
+      "duration_ms": 7000,
+      "complete_with": "aligned_left_click",
+      "wrong_click_continues": true,
+      "recess": { "x": 0.50, "y": 0.50, "radius": 0.08 },
+      "rotation": {
+        "start_degrees": 0.0,
+        "oscillation_degrees": 40.0,
+        "period_ms": 1800,
+        "align_at_degrees": 0.0,
+        "tolerance_degrees": 12.0
+      },
+      "description": "Move the angular cursor symbol over the matching recess and left-click when automatic rotation aligns. Wrong clicks continue with remaining time. Expiration fails quietly."
+    }
+  ]
+}

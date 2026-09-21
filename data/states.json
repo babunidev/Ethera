@@ -1,0 +1,5 @@
+{
+  "schema": "ethera.content.states.v1",
+  "notes": "Negative-state blocker lists are authored per state. Milestone 1 starts with an empty active-state set. This file establishes the filter shape for later content.",
+  "states": []
+}

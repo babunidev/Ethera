@@ -1,0 +1,37 @@
+{
+  "schema": "ethera.presentation.assets.v1",
+  "notes": "If a path exists, GameRoot instances it. Missing files keep the placeholder mesh. Do not invent extra gameplay objects here.",
+  "colors": {
+    "slate": [0.45, 0.55, 0.68],
+    "umber": [0.55, 0.32, 0.18]
+  },
+  "environment_asset_id": "asset.village_center",
+  "assets": [
+    {
+      "id": "asset.khar_morr",
+      "path": "res://assets/models/khar_morr.glb",
+      "kind": "character",
+      "attach_nodes": { "back": "back" }
+    },
+    {
+      "id": "asset.memory_fountain",
+      "path": "res://assets/models/memory_fountain.glb",
+      "kind": "memory_fountain"
+    },
+    {
+      "id": "asset.village_center",
+      "path": "res://assets/models/village_center.glb",
+      "kind": "environment"
+    },
+    {
+      "id": "asset.shapeable_rock",
+      "path": "res://assets/models/shapeable_rock.glb",
+      "kind": "world_object"
+    },
+    {
+      "id": "asset.stone_club",
+      "path": "res://assets/models/stone_club.glb",
+      "kind": "item"
+    }
+  ]
+}

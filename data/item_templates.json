@@ -1,0 +1,16 @@
+{
+  "schema": "ethera.content.item_templates.v1",
+  "templates": [
+    {
+      "id": "template.stone_club",
+      "kind": "item",
+      "name": "Stone Club",
+      "traits": ["trait.weapon", "trait.stone_weapon"],
+      "condition": "okay",
+      "equipment_slot_id": "slot.small_weapon",
+      "attachment": "back",
+      "presentation": { "asset_id": "asset.stone_club" },
+      "description": "Primitive club formed from suitable rock. Two Milestone 1 instances differ only by base color."
+    }
+  ]
+}
