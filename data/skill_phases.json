@@ -30,13 +30,13 @@
       "duration_ms": 7000,
       "complete_with": "aligned_left_click",
       "wrong_click_continues": true,
-      "recess": { "x": 0.50, "y": 0.50, "radius": 0.08 },
+      "recess": { "x": 0.50, "y": 0.50, "radius": 0.13 },
       "rotation": {
         "start_degrees": 0.0,
-        "oscillation_degrees": 40.0,
-        "period_ms": 1800,
+        "oscillation_degrees": 28.0,
+        "period_ms": 2400,
         "align_at_degrees": 0.0,
-        "tolerance_degrees": 12.0
+        "tolerance_degrees": 24.0
       },
       "description": "Move the angular cursor symbol over the matching recess and left-click when automatic rotation aligns. Wrong clicks continue with remaining time. Expiration fails quietly."
     }

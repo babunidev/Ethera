@@ -1,5 +1,16 @@
 {
   "schema": "ethera.content.states.v1",
-  "notes": "Negative-state blocker lists are authored per state. Milestone 1 starts with an empty active-state set. This file establishes the filter shape for later content.",
-  "states": []
+  "notes": "Temporary states affect current actions and properties. Negative-state blocker lists are authored per state. Duration and speed scale are implementation tuning.",
+  "states": [
+    {
+      "id": "state.swiftness",
+      "name": "Swiftness",
+      "kind": "buff",
+      "description": "An offering's blessing. Movement is faster while it lasts.",
+      "walk_speed_scale": 1.4,
+      "duration_ms": 180000,
+      "blocked_interaction_ids": [],
+      "blocked_trait_ids": []
+    }
+  ]
 }

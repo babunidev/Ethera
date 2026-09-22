@@ -1,0 +1,13 @@
+{
+  "schema": "ethera.world.hex_library.v1",
+  "notes": "Authored hex tiles. Edges are clockwise from east on a pointy-top hex. Rotation is a 60 degree step and a cyclic shift of those edges.",
+  "orientation": "pointy",
+  "flat_to_flat": 256.0,
+  "tiles": [
+    {
+      "id": "hex.grassland.a",
+      "scene": "res://scenes/terrain/hex_grassland_a.tscn",
+      "edges": ["grassland", "grassland", "grassland", "grassland", "grassland", "grassland"]
+    }
+  ]
+}

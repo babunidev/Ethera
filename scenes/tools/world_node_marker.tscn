@@ -1,0 +1,54 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/presentation/world_node_marker.gd" id="1_marker"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_marker"]
+shading_mode = 0
+albedo_color = Color(0.96, 0.62, 0.16, 1)
+roughness = 1.0
+metallic = 0.0
+disable_receive_shadows = true
+
+[sub_resource type="TorusMesh" id="TorusMesh_ring"]
+inner_radius = 0.42
+outer_radius = 0.58
+rings = 8
+ring_segments = 16
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pin"]
+top_radius = 0.03
+bottom_radius = 0.03
+height = 1.15
+radial_segments = 6
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+radius = 0.09
+height = 0.18
+radial_segments = 8
+rings = 4
+
+[node name="WorldNodeMarker" type="Node3D"]
+script = ExtResource("1_marker")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Ring" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+material_override = SubResource("StandardMaterial3D_marker")
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("TorusMesh_ring")
+
+[node name="Pin" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+material_override = SubResource("StandardMaterial3D_marker")
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("CylinderMesh_pin")
+
+[node name="Head" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+material_override = SubResource("StandardMaterial3D_marker")
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("SphereMesh_head")

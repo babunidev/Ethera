@@ -1,0 +1,12 @@
+{
+  "schema": "ethera.world.hex_layout.v1",
+  "notes": "Placed hexes in axial coordinates. Simulation entities use world xz and do not belong to a hex id. Streaming loads the camera hex plus neighbors that exist here.",
+  "hexes": [
+    {
+      "q": 0,
+      "r": 0,
+      "tile_id": "hex.grassland.a",
+      "rotation_steps": 0
+    }
+  ]
+}

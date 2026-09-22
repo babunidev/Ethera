@@ -34,11 +34,15 @@ func hover_for(actor_id: String, target_id: String) -> Dictionary:
 	var target: Dictionary = world.get_entity(target_id)
 	if actor.is_empty() or target.is_empty():
 		return {"kind": EtheraIds.HOVER_NONE}
+	if _is_closed_container(target):
+		return {"kind": EtheraIds.HOVER_OPEN, "target_id": target_id}
 	if _is_loose_compatible_item(actor, target):
 		var slot_id: String = str(target.get("equipment_slot_id", EtheraIds.SLOT_SMALL_WEAPON))
 		if world.equipped_item_id(actor, slot_id) == "":
 			return {"kind": EtheraIds.HOVER_PICKUP, "slot_id": slot_id, "target_id": target_id}
 		return {"kind": EtheraIds.HOVER_SWAP, "slot_id": slot_id, "target_id": target_id}
+	if _is_discoverable_landmark(actor, target):
+		return {"kind": EtheraIds.HOVER_DISCOVER, "target_id": target_id}
 	var actions: Array[Dictionary] = available_interactions(actor_id, target_id)
 	if not actions.is_empty():
 		return {"kind": EtheraIds.HOVER_INTERACT, "target_id": target_id, "actions": actions}
@@ -46,10 +50,19 @@ func hover_for(actor_id: String, target_id: String) -> Dictionary:
 
 
 func first_eligible_shard(actor: Dictionary, target: Dictionary) -> String:
+	var found: Array[String] = eligible_shards(actor, target, 1)
+	return found[0] if not found.is_empty() else ""
+
+
+func eligible_shards(actor: Dictionary, target: Dictionary, limit: int = 1) -> Array[String]:
+	var found: Array[String] = []
 	for shard_id in world.known_shards(actor):
-		if not world.knows_shard(target, shard_id):
-			return shard_id
-	return ""
+		if world.knows_shard(target, shard_id):
+			continue
+		found.append(str(shard_id))
+		if found.size() >= max(limit, 0):
+			break
+	return found
 
 
 func _compute(actor: Dictionary, target: Dictionary) -> Array[Dictionary]:
@@ -104,6 +117,15 @@ func _matches_condition(actor: Dictionary, target: Dictionary, subject: Dictiona
 			return world.is_manifested(subject) == bool(condition.get("manifested", true))
 		"actor_has_shard_unknown_to_target":
 			return first_eligible_shard(actor, target) != ""
+		"has_equipped":
+			var slot_id: String = str(condition.get("slot_id", ""))
+			var item_id: String = world.equipped_item_id(subject, slot_id)
+			if item_id == "":
+				return false
+			var trait_id: String = str(condition.get("trait_id", ""))
+			return trait_id == "" or world.has_trait(world.get_entity(item_id), trait_id)
+		"knows_discovery_of_target":
+			return not _place_undiscovered_by(actor, target)
 		_:
 			return false
 
@@ -130,12 +152,53 @@ func _requires_trait(definition: Dictionary, trait_id: String) -> bool:
 	return false
 
 
+func _is_discoverable_landmark(actor: Dictionary, target: Dictionary) -> bool:
+	if float(target.get("discovery_radius", 0.0)) <= 0.0 or not world.is_manifested(target):
+		return false
+	return _place_undiscovered_by(actor, target)
+
+
+func _is_undiscovered_place(actor: Dictionary, target: Dictionary) -> bool:
+	var radius: float = float(target.get("discovery_radius", 0.0))
+	if radius <= 0.0 or not world.is_manifested(target) or not world.is_manifested(actor):
+		return false
+	var dx: float = world.position_of(target).x - world.position_of(actor).x
+	var dz: float = world.position_of(target).z - world.position_of(actor).z
+	if Vector2(dx, dz).length() > radius:
+		return false
+	return _place_undiscovered_by(actor, target)
+
+
+func _place_undiscovered_by(actor: Dictionary, target: Dictionary) -> bool:
+	if actor.is_empty():
+		return true
+	for shard_id in world.known_shards(actor):
+		var shard: Dictionary = world.shards.get(str(shard_id), {})
+		if str(shard.get("action_id", "")) != EtheraIds.ACTION_DISCOVERY:
+			continue
+		if (shard.get("target_ids", []) as Array).has(str(target.get("id", ""))):
+			return false
+	return true
+
+
+func _is_closed_container(target: Dictionary) -> bool:
+	if not EtheraIds.is_container_kind(target.get("kind", "")):
+		return false
+	if not world.is_manifested(target):
+		return false
+	if bool(target.get("opened", false)):
+		return false
+	return world.has_trait(target, EtheraIds.TRAIT_CONTAINER)
+
+
 func _is_loose_compatible_item(actor: Dictionary, target: Dictionary) -> bool:
 	if str(target.get("kind", "")) != "item":
 		return false
 	if not world.is_manifested(target):
 		return false
 	if not EtheraIds.is_empty_slot(target.get("holder_id", null)):
+		return false
+	if not EtheraIds.is_empty_slot(target.get("container_id", null)):
 		return false
 	var slot_id: String = str(target.get("equipment_slot_id", ""))
 	if slot_id == "" or not actor.get("equipment", {}).has(slot_id):

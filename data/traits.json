@@ -71,6 +71,27 @@
       "kind": "capability",
       "milestone_1": true,
       "description": "Entity maintains unique references to known Shard IDs."
+    },
+    {
+      "id": "trait.herb",
+      "name": "Herb",
+      "kind": "item",
+      "milestone_1": true,
+      "description": "A carried plant. Fits the herb slot."
+    },
+    {
+      "id": "trait.container",
+      "name": "Container",
+      "kind": "target_capability",
+      "milestone_1": true,
+      "description": "An unlocked world container anyone can open."
+    },
+    {
+      "id": "trait.offering_place",
+      "name": "Offering Place",
+      "kind": "target_capability",
+      "milestone_1": false,
+      "description": "A place that can receive a Make Offering action."
     }
   ]
 }

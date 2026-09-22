@@ -20,18 +20,21 @@ Start with these documents under that concept folder:
 - `99_Development/Milestone_1_Khar_Morr.md`
 - `08_Presentation/Milestone_1_Environment.md`
 - `99_Development/Prototype_Readiness_Review.md`
+- `09_Technical/RealmNode_Game-Native_Concept.md` and `99_Development/RealmNode_and_Technical_Foundation.md` — required before changing authoritative simulation structure
 
 The concept and reference images remain in their original folder. They have not been modified or duplicated into the game.
 
 ## What is established
 
-- Authored Milestone 1 content in `data/` (traits, interactions, skill phases, starting world)
+- Authored Milestone 1 content in `data/` (traits, interactions with results, skill phases, starting world)
 - A presentation-independent simulation: entities, matching, walking, pickup/swap, Shape Weapon, Echo Imprint, Shards, character panel data, development log
-- A command/query boundary for Godot presentation and later RealmNode work
-- Headless tests for the Milestone 1 loop
+- A closed command/query boundary: nothing in `scripts/presentation/` reads runtime state directly
+- A fixed 20 Hz authoritative clock with quantized authoritative values, so world time and outcomes do not depend on frame rate or platform floating point
+- Snapshots, state hashes, a command journal and timestamped skill samples, so a round can be restored or replayed
+- Headless tests for the Milestone 1 loop, determinism, authored results, snapshots and the knowledge boundary
 - Placeholder scene bindings and asset-name contracts in `docs/`
 
-Read `docs/ARCHITECTURE.md` and `docs/PRESENTATION_AND_ASSETS.md` before replacing placeholders.
+Read `docs/ARCHITECTURE.md` and `docs/PRESENTATION_AND_ASSETS.md` before replacing placeholders. Engine and presentation work is recorded in `docs/ENGINE_CHANGELOG.md` (Cursor agent). Concept changelog stays in the concept repository.
 
 ## Structure
 
@@ -48,9 +51,11 @@ Read `docs/ARCHITECTURE.md` and `docs/PRESENTATION_AND_ASSETS.md` before replaci
 
 ## Technical starting choices
 
-Godot 4.7.2, GDScript, Windows desktop, mouse and keyboard. Compatibility rendering keeps the initial project lightweight; renderer selection can be revisited after testing the final materials and lighting on this computer. No external packages or services are required.
+Godot 4.7.2, GDScript, Windows desktop, mouse and keyboard. The project uses the Forward+ renderer so large hex terrain, cascaded directional shadows, and projected decals work. No external packages or services are required.
 
 The local authoritative simulation owns characters, objects, Traits, equipment, knowledge and conditions. UI and scene nodes display that state. Interaction results pass through `EtheraSimulation.apply`. Networking, save/load and RealmNode remain later work.
+
+**The authoritative runtime will be Rust**, in its own crate beside RealmNode, so a validator can run game rules without launching Godot. The GDScript under `scripts/simulation/` is a temporary stand-in for it. New game rules belong in authored data or behind the command/query boundary, not entangled with Godot. See `docs/ARCHITECTURE.md`.
 
 Keep `.blend` sources in `art/` and export `.glb` assets into `assets/models/`. Git tracks source files; `.godot/` and `builds/` are excluded.
 

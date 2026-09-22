@@ -5,13 +5,21 @@
   "inhabited_entity_id": "entity.khar_morr",
   "tuning": {
     "walk_speed": 2.4,
+    "run_speed": 5.2,
     "walk_acceleration": 7.0,
     "walk_deceleration": 9.0,
+    "run_acceleration": 3.2,
+    "run_deceleration": 5.0,
     "stop_distance": 0.18,
     "interaction_arrive_distance": 0.22,
     "pickup_reach": 1.1,
     "pickup_approach_distance": 0.8,
+    "object_stand_off": 0.35,
     "focus_hold_speed_scale": 0.45,
+    "body_radius": 0.38,
+    "walk_clearance": 0.11,
+    "path_cell": 0.32,
+    "walkable_slope_degrees": 50,
     "shaping_drop_offset": { "x": 0.55, "y": 0.0, "z": 0.0 }
   },
   "places": [
@@ -19,6 +27,11 @@
       "id": "place.village_center",
       "kind": "place",
       "name": "Village Center"
+    },
+    {
+      "id": "place.ancient_stone_circle",
+      "kind": "place",
+      "name": "Ancient Stone Circle"
     }
   ],
   "entities": [
@@ -46,19 +59,37 @@
       "needed_shard_ids": [],
       "known_interaction_ids": [
         "interaction.shape_weapon",
-        "interaction.echo_imprint"
+        "interaction.echo_imprint",
+        "interaction.make_offering"
       ],
       "equipment": {
-        "slot.small_weapon": null
+        "slot.small_weapon": null,
+        "slot.herb": null
       },
-      "position": { "x": 3.4, "y": 0.0, "z": 3.1 },
+      "position": { "x": 5.2, "y": 0.0, "z": 4.6 },
       "yaw": 3.4,
       "manifested": true,
       "inhabitable": true,
       "presentation": {
         "asset_id": "asset.khar_morr",
         "attach_points": {
-          "back": { "x": 0.0, "y": 1.15, "z": -0.22 }
+          "back": {
+            "x": 0.16,
+            "y": 1.12,
+            "z": -0.28,
+            "sheath": {
+              "x": 0.0,
+              "y": 0.06,
+              "z": -0.015,
+              "diagonal_degrees": 70
+            }
+          },
+          "hip": {
+            "x": 0.16,
+            "y": 0.94,
+            "z": 0.04,
+            "lean_degrees": 42
+          }
         }
       }
     },
@@ -78,7 +109,7 @@
       "position": { "x": 0.0, "y": 0.0, "z": 0.0 },
       "yaw": 0.0,
       "manifested": true,
-      "interaction_approach": { "x": 1.65, "y": 0.0, "z": 0.15 },
+      "occupancy": { "radius": 2.5 },
       "presentation": {
         "asset_id": "asset.memory_fountain"
       }
@@ -93,9 +124,9 @@
       "manifested": true,
       "yields_template_id": "template.stone_club",
       "yields_base_color": "slate",
-      "position": { "x": -3.3, "y": 0.0, "z": 2.2 },
+      "position": { "x": -5.0, "y": 0.0, "z": 3.4 },
       "yaw": 0.4,
-      "interaction_approach": { "x": -3.3, "y": 0.0, "z": 3.55 },
+      "occupancy": { "radius": 0.55 },
       "presentation": {
         "asset_id": "asset.shapeable_rock"
       }
@@ -113,11 +144,65 @@
       "base_color": "umber",
       "holder_id": null,
       "equipped_slot_id": null,
-      "position": { "x": 2.6, "y": 0.0, "z": -2.4 },
+      "position": { "x": 4.6, "y": 0.0, "z": -3.6 },
       "yaw": 0.8,
       "manifested": true,
       "presentation": {
         "asset_id": "asset.stone_club"
+      }
+    },
+    {
+      "id": "entity.container",
+      "kind": "container",
+      "name": "Stone Container",
+      "place_id": "place.village_center",
+      "traits": ["trait.container"],
+      "opened": false,
+      "contained_item_ids": ["entity.club.green"],
+      "states": [],
+      "position": { "x": -4.2, "y": 0.0, "z": -4.4 },
+      "yaw": 0.2,
+      "manifested": true,
+      "occupancy": { "radius": 0.45 },
+      "presentation": {
+        "asset_id": "asset.stone_container"
+      }
+    },
+    {
+      "id": "entity.club.green",
+      "kind": "item",
+      "name": "Stone Club",
+      "template_id": "template.stone_club",
+      "place_id": "place.village_center",
+      "traits": ["trait.weapon", "trait.stone_weapon"],
+      "condition": "okay",
+      "equipment_slot_id": "slot.small_weapon",
+      "attachment": "back",
+      "base_color": "green",
+      "holder_id": null,
+      "container_id": "entity.container",
+      "equipped_slot_id": null,
+      "position": { "x": -4.2, "y": 0.0, "z": -4.4 },
+      "yaw": 0.2,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.stone_club_b"
+      }
+    },
+    {
+      "id": "entity.stone_circle",
+      "kind": "landmark",
+      "name": "Ancient Stone Circle",
+      "place_id": "place.ancient_stone_circle",
+      "traits": ["trait.offering_place"],
+      "states": [],
+      "manifested": true,
+      "discovery_radius": 10.0,
+      "position": { "x": 18.0, "y": 0.0, "z": 0.0 },
+      "yaw": 0.4,
+      "occupancy": { "radius": 3.2 },
+      "presentation": {
+        "asset_id": "asset.stone_circle"
       }
     }
   ]

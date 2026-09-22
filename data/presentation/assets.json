@@ -3,8 +3,10 @@
   "notes": "If a path exists, GameRoot instances it. Missing files keep the placeholder mesh. Do not invent extra gameplay objects here.",
   "colors": {
     "slate": [0.45, 0.55, 0.68],
-    "umber": [0.55, 0.32, 0.18]
+    "umber": [0.55, 0.32, 0.18],
+    "green": [0.28, 0.48, 0.32]
   },
+  "glow_energy": 0.62,
   "environment_asset_id": "asset.village_center",
   "assets": [
     {
@@ -32,6 +34,26 @@
       "id": "asset.stone_club",
       "path": "res://assets/models/stone_club.glb",
       "kind": "item"
+    },
+    {
+      "id": "asset.stone_club_b",
+      "path": "res://assets/models/stone_club_b.glb",
+      "kind": "item"
+    },
+    {
+      "id": "asset.stone_container",
+      "path": "res://assets/models/stone_container.glb",
+      "kind": "container"
+    },
+    {
+      "id": "asset.grass",
+      "path": "",
+      "kind": "item"
+    },
+    {
+      "id": "asset.stone_circle",
+      "path": "",
+      "kind": "landmark"
     }
   ]
 }

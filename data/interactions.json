@@ -1,6 +1,6 @@
 {
   "schema": "ethera.content.interactions.v1",
-  "notes": "Conditions inside one group are AND. Alternative groups are OR. Negative-state blockers apply after a group matches. Requirements, targets and skill-phase selection are data; world results are applied in EtheraSimulation for Milestone 1's two interactions. Do not add result fields here expecting them to execute.",
+  "notes": "Conditions inside one group are AND. Alternative groups are OR. Negative-state blockers apply after a group matches. Requirements, targets, skill-phase selection, results and the event record are all data. EtheraResults interprets 'selection', 'results' and 'record'; an unrecognized type or a missing results list fails the round closed. 'entity' fields name a role: actor or target.",
   "interactions": [
     {
       "id": "interaction.shape_weapon",
@@ -25,7 +25,22 @@
             { "type": "manifested", "manifested": true }
           ]
         }
-      ]
+      ],
+      "results": [
+        { "type": "remove_manifestation", "entity": "target" },
+        {
+          "type": "equip_spawned_item",
+          "entity": "actor",
+          "slot_id": "slot.small_weapon",
+          "template_from": { "entity": "target", "field": "yields_template_id" },
+          "base_color_from": { "entity": "target", "field": "yields_base_color" },
+          "displace_previous": "beside_actor"
+        }
+      ],
+      "record": {
+        "reaction_ids": ["reaction.none"],
+        "known_by": ["actor"]
+      }
     },
     {
       "id": "interaction.echo_imprint",
@@ -34,7 +49,7 @@
       "subcategory": "knowledge",
       "skill_phase_id": "skill_phase.shard_fit",
       "approach": {
-        "distance": 1.7,
+        "distance": 3.2,
         "face_target": true
       },
       "requirement_groups": [
@@ -49,7 +64,51 @@
             { "type": "actor_has_shard_unknown_to_target" }
           ]
         }
-      ]
+      ],
+      "selection": {
+        "type": "first_eligible_shard",
+        "from": "actor",
+        "against": "target"
+      },
+      "results": [
+        { "type": "share_eligible_shards", "entity": "target", "limit": 3 }
+      ],
+      "record": {
+        "reaction_ids": ["reaction.none"],
+        "known_by": ["actor", "target"]
+      }
+    },
+    {
+      "id": "interaction.make_offering",
+      "name": "Make Offering",
+      "category": "social",
+      "subcategory": "rite",
+      "skill_phase_id": "skill_phase.shard_fit",
+      "approach": {
+        "distance": 4.0,
+        "face_target": true
+      },
+      "requirement_groups": [
+        {
+          "id": "group.default",
+          "actor": [
+            { "type": "has_equipped", "slot_id": "slot.herb", "trait_id": "trait.herb" }
+          ],
+          "target": [
+            { "type": "has_trait", "trait_id": "trait.offering_place" },
+            { "type": "manifested", "manifested": true },
+            { "type": "knows_discovery_of_target" }
+          ]
+        }
+      ],
+      "results": [
+        { "type": "consume_equipped_item", "entity": "actor", "slot_id": "slot.herb" },
+        { "type": "add_state", "entity": "actor", "state_id": "state.swiftness" }
+      ],
+      "record": {
+        "reaction_ids": ["reaction.none"],
+        "known_by": ["actor"]
+      }
     }
   ]
 }

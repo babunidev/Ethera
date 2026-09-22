@@ -8,6 +8,14 @@
       "milestone_1": true,
       "compatible_traits": ["trait.weapon"],
       "description": "First equipment slot. Equipped clubs attach to the character's back. Pickup is the equip action."
+    },
+    {
+      "id": "slot.herb",
+      "name": "Herb",
+      "attachment": "hip",
+      "milestone_1": true,
+      "compatible_traits": ["trait.herb"],
+      "description": "Carried plants attach at the upper hip. Pickup is the equip action."
     }
   ]
 }

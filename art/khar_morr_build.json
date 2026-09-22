@@ -1,0 +1,8 @@
+{
+  "bones": 65,
+  "height_m": 1.7,
+  "front": "Mixamo +Z; simulation yaw atan2(x,z)",
+  "animations": ["Walk", "Idle", "Idle2", "Idle3"],
+  "source": "CHARACTER MODEL CONCEPTS/FEMALE/Khar-Morr the First Carved/KharMorr3DV3.glb",
+  "processor": "art/process_khar_morr_glb.py"
+}

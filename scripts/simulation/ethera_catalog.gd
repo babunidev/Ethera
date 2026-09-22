@@ -9,6 +9,7 @@ var interactions: Dictionary = {}
 var item_templates: Dictionary = {}
 var states: Dictionary = {}
 var milestone1_world: Dictionary = {}
+var milestone1_landscape: Dictionary = {}
 
 var presentation_assets_path: String = ""
 
@@ -40,6 +41,9 @@ func load_from_res() -> Error:
 		push_error("EtheraCatalog: milestone1 world is missing or has no entities")
 		return ERR_FILE_CORRUPT
 	milestone1_world = world
+	var landscape: Variant = _read_json(str(files.get("milestone1_landscape", "")))
+	if typeof(landscape) == TYPE_DICTIONARY:
+		milestone1_landscape = landscape
 	return OK
 
 

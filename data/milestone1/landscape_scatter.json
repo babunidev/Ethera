@@ -1,0 +1,2238 @@
+{
+  "schema": "ethera.world.landscape_scatter.v1",
+  "notes": "Seeded clutter on the starting 256 m hex. Grass is kind grass and has no occupancy. Fountain and stone-circle pads stay empty.",
+  "seed": 20260922,
+  "flat_to_flat": 256.0,
+  "entities": [
+    {
+      "id": "entity.grass.1",
+      "kind": "grass",
+      "name": "Long Grass",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.1"
+      ],
+      "states": [],
+      "position": {
+        "x": -12.0,
+        "y": 0.0,
+        "z": 8.0
+      },
+      "yaw": 5.681,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 28
+      }
+    },
+    {
+      "id": "entity.grass.bundle.1",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.1",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -12.0,
+        "y": 0.0,
+        "z": 8.0
+      },
+      "yaw": 5.681,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.2",
+      "kind": "grass",
+      "name": "Soft Tuft",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.2"
+      ],
+      "states": [],
+      "position": {
+        "x": -11.0,
+        "y": 0.0,
+        "z": -10.0
+      },
+      "yaw": 4.569,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 19
+      }
+    },
+    {
+      "id": "entity.grass.bundle.2",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.2",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -11.0,
+        "y": 0.0,
+        "z": -10.0
+      },
+      "yaw": 4.569,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.3",
+      "kind": "grass",
+      "name": "Split Blade",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.3"
+      ],
+      "states": [],
+      "position": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 12.0
+      },
+      "yaw": 5.748,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 18
+      }
+    },
+    {
+      "id": "entity.grass.bundle.3",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.3",
+      "equipped_slot_id": null,
+      "position": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 12.0
+      },
+      "yaw": 5.748,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.4",
+      "kind": "grass",
+      "name": "Flat Leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.4"
+      ],
+      "states": [],
+      "position": {
+        "x": 12.0,
+        "y": 0.0,
+        "z": -9.0
+      },
+      "yaw": 3.214,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 3,
+        "blade_count": 26
+      }
+    },
+    {
+      "id": "entity.grass.bundle.4",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.4",
+      "equipped_slot_id": null,
+      "position": {
+        "x": 12.0,
+        "y": 0.0,
+        "z": -9.0
+      },
+      "yaw": 3.214,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 3,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.5",
+      "kind": "grass",
+      "name": "Needle Grass",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.5"
+      ],
+      "states": [],
+      "position": {
+        "x": 35.364,
+        "y": 0.0,
+        "z": 5.494
+      },
+      "yaw": 0.41,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 4,
+        "blade_count": 29
+      }
+    },
+    {
+      "id": "entity.grass.bundle.5",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.5",
+      "equipped_slot_id": null,
+      "position": {
+        "x": 35.364,
+        "y": 0.0,
+        "z": 5.494
+      },
+      "yaw": 0.41,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 4,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.6",
+      "kind": "grass",
+      "name": "Long Grass",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.6"
+      ],
+      "states": [],
+      "position": {
+        "x": 41.518,
+        "y": 0.0,
+        "z": 99.984
+      },
+      "yaw": 4.321,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 21
+      }
+    },
+    {
+      "id": "entity.grass.bundle.6",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.6",
+      "equipped_slot_id": null,
+      "position": {
+        "x": 41.518,
+        "y": 0.0,
+        "z": 99.984
+      },
+      "yaw": 4.321,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.7",
+      "kind": "grass",
+      "name": "Soft Tuft",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.7"
+      ],
+      "states": [],
+      "position": {
+        "x": -84.864,
+        "y": 0.0,
+        "z": 9.606
+      },
+      "yaw": 5.6,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 21
+      }
+    },
+    {
+      "id": "entity.grass.bundle.7",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.7",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -84.864,
+        "y": 0.0,
+        "z": 9.606
+      },
+      "yaw": 5.6,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.8",
+      "kind": "grass",
+      "name": "Split Blade",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.8"
+      ],
+      "states": [],
+      "position": {
+        "x": -27.616,
+        "y": 0.0,
+        "z": -59.618
+      },
+      "yaw": 1.612,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 24
+      }
+    },
+    {
+      "id": "entity.grass.bundle.8",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.8",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -27.616,
+        "y": 0.0,
+        "z": -59.618
+      },
+      "yaw": 1.612,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.9",
+      "kind": "grass",
+      "name": "Flat Leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.9"
+      ],
+      "states": [],
+      "position": {
+        "x": -97.301,
+        "y": 0.0,
+        "z": 37.68
+      },
+      "yaw": 5.789,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 3,
+        "blade_count": 17
+      }
+    },
+    {
+      "id": "entity.grass.bundle.9",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.9",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -97.301,
+        "y": 0.0,
+        "z": 37.68
+      },
+      "yaw": 5.789,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 3,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.10",
+      "kind": "grass",
+      "name": "Needle Grass",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.10"
+      ],
+      "states": [],
+      "position": {
+        "x": -93.973,
+        "y": 0.0,
+        "z": -25.143
+      },
+      "yaw": 3.125,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 4,
+        "blade_count": 22
+      }
+    },
+    {
+      "id": "entity.grass.bundle.10",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.10",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -93.973,
+        "y": 0.0,
+        "z": -25.143
+      },
+      "yaw": 3.125,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 4,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.11",
+      "kind": "grass",
+      "name": "Long Grass",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.11"
+      ],
+      "states": [],
+      "position": {
+        "x": -105.033,
+        "y": 0.0,
+        "z": -53.039
+      },
+      "yaw": 4.003,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 15
+      }
+    },
+    {
+      "id": "entity.grass.bundle.11",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.11",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -105.033,
+        "y": 0.0,
+        "z": -53.039
+      },
+      "yaw": 4.003,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.12",
+      "kind": "grass",
+      "name": "Soft Tuft",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.12"
+      ],
+      "states": [],
+      "position": {
+        "x": -77.61,
+        "y": 0.0,
+        "z": 59.557
+      },
+      "yaw": 4.855,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 15
+      }
+    },
+    {
+      "id": "entity.grass.bundle.12",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.12",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -77.61,
+        "y": 0.0,
+        "z": 59.557
+      },
+      "yaw": 4.855,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.13",
+      "kind": "grass",
+      "name": "Split Blade",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.13"
+      ],
+      "states": [],
+      "position": {
+        "x": -86.751,
+        "y": 0.0,
+        "z": -86.688
+      },
+      "yaw": 4.541,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 21
+      }
+    },
+    {
+      "id": "entity.grass.bundle.13",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.13",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -86.751,
+        "y": 0.0,
+        "z": -86.688
+      },
+      "yaw": 4.541,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.14",
+      "kind": "grass",
+      "name": "Flat Leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.14"
+      ],
+      "states": [],
+      "position": {
+        "x": 100.058,
+        "y": 0.0,
+        "z": 61.952
+      },
+      "yaw": 1.657,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 3,
+        "blade_count": 30
+      }
+    },
+    {
+      "id": "entity.grass.bundle.14",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.14",
+      "equipped_slot_id": null,
+      "position": {
+        "x": 100.058,
+        "y": 0.0,
+        "z": 61.952
+      },
+      "yaw": 1.657,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 3,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.15",
+      "kind": "grass",
+      "name": "Needle Grass",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.15"
+      ],
+      "states": [],
+      "position": {
+        "x": -36.408,
+        "y": 0.0,
+        "z": -117.22
+      },
+      "yaw": 2.096,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 4,
+        "blade_count": 25
+      }
+    },
+    {
+      "id": "entity.grass.bundle.15",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.15",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -36.408,
+        "y": 0.0,
+        "z": -117.22
+      },
+      "yaw": 2.096,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 4,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.16",
+      "kind": "grass",
+      "name": "Long Grass",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.16"
+      ],
+      "states": [],
+      "position": {
+        "x": 76.576,
+        "y": 0.0,
+        "z": 80.524
+      },
+      "yaw": 4.959,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 25
+      }
+    },
+    {
+      "id": "entity.grass.bundle.16",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.16",
+      "equipped_slot_id": null,
+      "position": {
+        "x": 76.576,
+        "y": 0.0,
+        "z": 80.524
+      },
+      "yaw": 4.959,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 0,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.17",
+      "kind": "grass",
+      "name": "Soft Tuft",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.17"
+      ],
+      "states": [],
+      "position": {
+        "x": -119.643,
+        "y": 0.0,
+        "z": 69.53
+      },
+      "yaw": 4.82,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 21
+      }
+    },
+    {
+      "id": "entity.grass.bundle.17",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.17",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -119.643,
+        "y": 0.0,
+        "z": 69.53
+      },
+      "yaw": 4.82,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 1,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.grass.18",
+      "kind": "grass",
+      "name": "Split Blade",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.container"
+      ],
+      "opened": false,
+      "contained_item_ids": [
+        "entity.grass.bundle.18"
+      ],
+      "states": [],
+      "position": {
+        "x": -58.754,
+        "y": 0.0,
+        "z": -32.356
+      },
+      "yaw": 3.711,
+      "manifested": true,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 18
+      }
+    },
+    {
+      "id": "entity.grass.bundle.18",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "template_id": "template.grass_leaf",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.herb"
+      ],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "holder_id": null,
+      "container_id": "entity.grass.18",
+      "equipped_slot_id": null,
+      "position": {
+        "x": -58.754,
+        "y": 0.0,
+        "z": -32.356
+      },
+      "yaw": 3.711,
+      "manifested": false,
+      "presentation": {
+        "asset_id": "asset.grass",
+        "variant": 2,
+        "blade_count": 5,
+        "bundle": true
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.1",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 21.363,
+        "y": 0.0,
+        "z": 60.843
+      },
+      "yaw": 0.833,
+      "occupancy": {
+        "radius": 0.379
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.604,
+          "y": 0.605,
+          "z": 0.689
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.2",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -89.913,
+        "y": 0.0,
+        "z": 53.717
+      },
+      "yaw": 0.38,
+      "occupancy": {
+        "radius": 0.365
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.539,
+          "y": 0.546,
+          "z": 0.664
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.3",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -96.631,
+        "y": 0.0,
+        "z": 72.938
+      },
+      "yaw": -0.418,
+      "occupancy": {
+        "radius": 0.396
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.554,
+          "y": 0.51,
+          "z": 0.72
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.4",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -112.452,
+        "y": 0.0,
+        "z": 42.497
+      },
+      "yaw": 0.872,
+      "occupancy": {
+        "radius": 0.405
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.674,
+          "y": 0.585,
+          "z": 0.737
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.5",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 84.724,
+        "y": 0.0,
+        "z": -14.154
+      },
+      "yaw": -0.164,
+      "occupancy": {
+        "radius": 0.507
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.921,
+          "y": 1.005,
+          "z": 0.896
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.6",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 88.543,
+        "y": 0.0,
+        "z": -63.4
+      },
+      "yaw": 0.66,
+      "occupancy": {
+        "radius": 0.402
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.715,
+          "y": 0.594,
+          "z": 0.732
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.7",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -66.245,
+        "y": 0.0,
+        "z": -90.289
+      },
+      "yaw": 0.612,
+      "occupancy": {
+        "radius": 0.548
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.996,
+          "y": 0.966,
+          "z": 0.794
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.8",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 19.979,
+        "y": 0.0,
+        "z": 79.193
+      },
+      "yaw": 0.75,
+      "occupancy": {
+        "radius": 0.287
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.521,
+          "y": 0.415,
+          "z": 0.46
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.9",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 41.587,
+        "y": 0.0,
+        "z": 108.822
+      },
+      "yaw": 0.614,
+      "occupancy": {
+        "radius": 0.164
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.298,
+          "y": 0.332,
+          "z": 0.289
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.10",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 7.105,
+        "y": 0.0,
+        "z": 80.872
+      },
+      "yaw": -0.808,
+      "occupancy": {
+        "radius": 0.508
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.904,
+          "y": 0.766,
+          "z": 0.924
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.11",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -11.249,
+        "y": 0.0,
+        "z": 116.38
+      },
+      "yaw": -0.717,
+      "occupancy": {
+        "radius": 0.406
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.495,
+          "y": 0.411,
+          "z": 0.738
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.12",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -63.369,
+        "y": 0.0,
+        "z": 51.409
+      },
+      "yaw": -0.373,
+      "occupancy": {
+        "radius": 0.361
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.618,
+          "y": 0.451,
+          "z": 0.657
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.13",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 23.534,
+        "y": 0.0,
+        "z": 87.617
+      },
+      "yaw": -0.558,
+      "occupancy": {
+        "radius": 0.58
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.827,
+          "y": 0.639,
+          "z": 1.054
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.14",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 33.862,
+        "y": 0.0,
+        "z": -68.376
+      },
+      "yaw": -0.772,
+      "occupancy": {
+        "radius": 0.365
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.663,
+          "y": 0.553,
+          "z": 0.619
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.15",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 71.922,
+        "y": 0.0,
+        "z": -29.702
+      },
+      "yaw": -0.247,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.224,
+          "y": 0.154,
+          "z": 0.189
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.16",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -53.007,
+        "y": 0.0,
+        "z": -67.805
+      },
+      "yaw": -0.298,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.256,
+          "y": 0.175,
+          "z": 0.269
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.17",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 21.689,
+        "y": 0.0,
+        "z": -74.156
+      },
+      "yaw": 0.71,
+      "occupancy": {
+        "radius": 0.294
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.535,
+          "y": 0.392,
+          "z": 0.51
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.18",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 115.095,
+        "y": 0.0,
+        "z": 50.273
+      },
+      "yaw": 0.982,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.228,
+          "y": 0.169,
+          "z": 0.189
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.19",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 5.599,
+        "y": 0.0,
+        "z": -57.877
+      },
+      "yaw": 0.821,
+      "occupancy": {
+        "radius": 0.32
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.581,
+          "y": 0.332,
+          "z": 0.468
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.20",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -68.085,
+        "y": 0.0,
+        "z": -78.6
+      },
+      "yaw": -0.412,
+      "occupancy": {
+        "radius": 0.226
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.411,
+          "y": 0.318,
+          "z": 0.346
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.21",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -65.272,
+        "y": 0.0,
+        "z": -17.152
+      },
+      "yaw": 0.399,
+      "occupancy": {
+        "radius": 0.217
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.395,
+          "y": 0.249,
+          "z": 0.37
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.22",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 32.443,
+        "y": 0.0,
+        "z": -57.833
+      },
+      "yaw": 0.354,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.207,
+          "y": 0.194,
+          "z": 0.228
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.23",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -72.334,
+        "y": 0.0,
+        "z": -61.148
+      },
+      "yaw": 0.754,
+      "occupancy": {
+        "radius": 0.203
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.368,
+          "y": 0.197,
+          "z": 0.326
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.24",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 19.525,
+        "y": 0.0,
+        "z": 17.717
+      },
+      "yaw": 0.408,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.265,
+          "y": 0.151,
+          "z": 0.246
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.25",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -25.993,
+        "y": 0.0,
+        "z": -57.504
+      },
+      "yaw": -0.007,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.276,
+          "y": 0.161,
+          "z": 0.262
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.26",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 89.205,
+        "y": 0.0,
+        "z": -84.618
+      },
+      "yaw": -1.036,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.278,
+          "y": 0.148,
+          "z": 0.271
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.27",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -35.435,
+        "y": 0.0,
+        "z": 91.795
+      },
+      "yaw": -1.134,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.255,
+          "y": 0.183,
+          "z": 0.236
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.28",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -61.019,
+        "y": 0.0,
+        "z": 47.008
+      },
+      "yaw": -0.045,
+      "occupancy": {
+        "radius": 0.33
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.564,
+          "y": 0.593,
+          "z": 0.6
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.29",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 74.572,
+        "y": 0.0,
+        "z": -60.183
+      },
+      "yaw": 0.684,
+      "occupancy": {
+        "radius": 0.39
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.615,
+          "y": 0.448,
+          "z": 0.709
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.30",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 19.863,
+        "y": 0.0,
+        "z": 51.927
+      },
+      "yaw": -0.269,
+      "occupancy": {
+        "radius": 0.458
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.79,
+          "y": 0.627,
+          "z": 0.832
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.31",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -16.815,
+        "y": 0.0,
+        "z": 100.451
+      },
+      "yaw": -0.469,
+      "occupancy": {
+        "radius": 0.16
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.252,
+          "y": 0.174,
+          "z": 0.266
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.32",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -64.009,
+        "y": 0.0,
+        "z": -6.678
+      },
+      "yaw": 0.388,
+      "occupancy": {
+        "radius": 0.322
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.469,
+          "y": 0.609,
+          "z": 0.586
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.33",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 95.414,
+        "y": 0.0,
+        "z": 5.586
+      },
+      "yaw": -0.512,
+      "occupancy": {
+        "radius": 0.339
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.575,
+          "y": 0.38,
+          "z": 0.615
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.34",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -91.853,
+        "y": 0.0,
+        "z": -74.773
+      },
+      "yaw": -1.154,
+      "occupancy": {
+        "radius": 0.224
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.407,
+          "y": 0.293,
+          "z": 0.291
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.35",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -37.563,
+        "y": 0.0,
+        "z": -49.397
+      },
+      "yaw": -0.553,
+      "occupancy": {
+        "radius": 0.625
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.994,
+          "y": 0.555,
+          "z": 1.136
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.36",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -43.281,
+        "y": 0.0,
+        "z": -85.803
+      },
+      "yaw": -0.849,
+      "occupancy": {
+        "radius": 0.2
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.316,
+          "y": 0.273,
+          "z": 0.364
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.37",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 55.992,
+        "y": 0.0,
+        "z": 51.719
+      },
+      "yaw": -1.027,
+      "occupancy": {
+        "radius": 0.27
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.482,
+          "y": 0.555,
+          "z": 0.49
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.38",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 93.704,
+        "y": 0.0,
+        "z": 60.077
+      },
+      "yaw": -0.954,
+      "occupancy": {
+        "radius": 0.317
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.562,
+          "y": 0.434,
+          "z": 0.576
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.39",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": 40.766,
+        "y": 0.0,
+        "z": 65.057
+      },
+      "yaw": -0.517,
+      "occupancy": {
+        "radius": 0.405
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.697,
+          "y": 0.492,
+          "z": 0.736
+        }
+      }
+    },
+    {
+      "id": "entity.shapeable_rock.scatter.40",
+      "kind": "world_object",
+      "name": "Shapeable Rock",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.rock",
+        "trait.shapeable"
+      ],
+      "states": [],
+      "manifested": true,
+      "yields_template_id": "template.stone_club",
+      "yields_base_color": "slate",
+      "position": {
+        "x": -35.754,
+        "y": 0.0,
+        "z": -84.443
+      },
+      "yaw": 1.104,
+      "occupancy": {
+        "radius": 0.423
+      },
+      "presentation": {
+        "asset_id": "asset.shapeable_rock",
+        "scale": {
+          "x": 0.687,
+          "y": 0.581,
+          "z": 0.769
+        }
+      }
+    }
+  ]
+}

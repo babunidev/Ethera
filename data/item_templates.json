@@ -10,7 +10,18 @@
       "equipment_slot_id": "slot.small_weapon",
       "attachment": "back",
       "presentation": { "asset_id": "asset.stone_club" },
-      "description": "Primitive club formed from suitable rock. Two Milestone 1 instances differ only by base color."
+      "description": "Primitive club formed from suitable rock. Color variants are data, not separate item types."
+    },
+    {
+      "id": "template.grass_leaf",
+      "kind": "item",
+      "name": "Grass Bundle",
+      "traits": ["trait.herb"],
+      "condition": "okay",
+      "equipment_slot_id": "slot.herb",
+      "attachment": "hip",
+      "presentation": { "asset_id": "asset.grass" },
+      "description": "Five grass blades tied as a small bundle. Presentation variants are data, not separate item types."
     }
   ]
 }
