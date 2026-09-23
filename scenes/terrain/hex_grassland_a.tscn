@@ -13,43 +13,8 @@
 [ext_resource type="PackedScene" path="res://scenes/props/bush.tscn" id="13_bush"]
 [ext_resource type="PackedScene" path="res://scenes/props/grass_clump.tscn" id="14_grass"]
 [ext_resource type="PackedScene" path="res://scenes/props/burrow.tscn" id="14_qhnsg"]
-[ext_resource type="Shader" uid="uid://bi3o8elbtqoni" path="res://addons/simplegrasstextured/shaders/grass.gdshader" id="15_m4f07"]
 [ext_resource type="PackedScene" path="res://scenes/props/scatter_stone.tscn" id="15_pet4v"]
-[ext_resource type="Texture2D" uid="uid://c4ggdp0kg5wjk" path="res://addons/simplegrasstextured/textures/grassbushcc008.png" id="16_8m0gm"]
-[ext_resource type="ArrayMesh" uid="uid://sptcpdx6wtm8" path="res://addons/simplegrasstextured/default_mesh.tres" id="17_vpmfi"]
-[ext_resource type="Script" uid="uid://2juaclm8gc1n" path="res://addons/simplegrasstextured/grass.gd" id="18_m0bbg"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m4f07"]
-render_priority = 0
-shader = ExtResource("15_m4f07")
-shader_parameter/albedo = Color(1, 1, 1, 1)
-shader_parameter/texture_albedo = ExtResource("16_8m0gm")
-shader_parameter/texture_frames = Vector2(1, 1)
-shader_parameter/light_mode = 1
-shader_parameter/alpha_scissor_threshold = 0.5
-shader_parameter/normal_scale = 1.0
-shader_parameter/metallic = 0.0
-shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
-shader_parameter/roughness = 1.0
-shader_parameter/roughness_texture_channel = Vector4(1, 0, 0, 0)
-shader_parameter/specular = 0.5
-shader_parameter/scale_h = 1.0
-shader_parameter/scale_w = 1.0
-shader_parameter/scale_var = -0.25
-shader_parameter/grass_strength = 0.55
-shader_parameter/optimization_by_distance = true
-shader_parameter/optimization_level = 7.0
-shader_parameter/optimization_dist_min = 10.0
-shader_parameter/optimization_dist_max = 50.0
-shader_parameter/grass_size_y = 1.0
-shader_parameter/interactive_mode = true
-shader_parameter/interactive_level_xz = 3.0
-shader_parameter/interactive_level_y = 0.3
-metadata/SimpleGrassTexturedMaterial = "2.1.0"
-
-[sub_resource type="MultiMesh" id="MultiMesh_m4f07"]
-transform_format = 1
-mesh = ExtResource("17_vpmfi")
+[ext_resource type="PackedScene" uid="uid://boupsjjfhea6s" path="res://glTF/TwistedTree_2.gltf" id="18_wfe7n"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtd6x"]
 albedo_color = Color(0.2, 0.2, 0.2, 1)
@@ -326,27 +291,6 @@ data = PackedVector3Array(-16, 0, 16, -15, 0, 15, -12, 0, 16, -16, 0, 16, -16, 0
 [node name="HexGrasslandA" type="Node3D" unique_id=879067240]
 script = ExtResource("1_0l1l7")
 
-[node name="SimpleGrassTextured" type="MultiMeshInstance3D" parent="." unique_id=368226851]
-material_override = SubResource("ShaderMaterial_m4f07")
-multimesh = SubResource("MultiMesh_m4f07")
-script = ExtResource("18_m0bbg")
-optimization_by_distance = true
-sgt_radius = 3.4
-sgt_density = 25
-sgt_scale = 1.0
-sgt_rotation = 0.0
-sgt_rotation_rand = 1.0
-sgt_dist_min = 0.25
-sgt_follow_normal = false
-sgt_slope = Vector2(0, 45)
-sgt_tool_shape = {
-"airbrush": 1,
-"eraser": 0,
-"pencil": 1
-}
-metadata/_custom_type_script = "uid://2juaclm8gc1n"
-metadata/SimpleGrassTextured = "2.0.5"
-
 [node name="LowPolyTerrainManager" type="Node3D" parent="." unique_id=835688109]
 script = ExtResource("2_al72w")
 terrain_shape = 1
@@ -355,10 +299,10 @@ preview_world_chunks = Vector2i(9, 10)
 preview_chunk_size = 32
 custom_material = SubResource("StandardMaterial3D_qtd6x")
 tool_mode = 7
-brush_radius = 5
+brush_radius = 1
 brush_strength = 1.8
 brush_falloff_strength = 0.65
-paint_layer = 2
+paint_layer = 4
 paint_material = SubResource("ShaderMaterial_yqfar")
 collision_cull_radius = 64.0
 _derived_cull_radius = 64.0
@@ -421,6 +365,52 @@ transform = Transform3D(0.07388392, 0, 0.99726677, 0, 1, 0, -0.99726677, 0, 0.07
 
 [node name="StoneBench" parent="." unique_id=251470287 instance=ExtResource("8_m4f07")]
 transform = Transform3D(0.03974423, 0, -0.99920976, 0, 1, 0, 0.99920976, 0, 0.03974423, 5, -0.22381008, -0.01)
+
+[node name="EchoCradle9" parent="." unique_id=1762005272 instance=ExtResource("10_vpmfi")]
+transform = Transform3D(-4.438266, 0, -11.149071, 0, 12, 0, 11.149071, 0, -4.438266, -27.365839, -0.7167455, -7.765871)
+entity_id = "entity.echo_cradle.1"
+metadata/entity_id = "entity.echo_cradle.1"
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="EchoCradle9" unique_id=46276057]
+transform = Transform3D(-0.4014658, 0, 0.2407119, 0, 0.4680995, 0, -0.2407119, 0, -0.4014658, -0.0064965487, 0.7034831, -0.1438415)
+light_color = Color(0.4392157, 0.8509804, 1, 1)
+light_energy = 0.77
+light_indirect_energy = 2.466
+light_volumetric_fog_energy = 1.352
+shadow_enabled = true
+omni_range = 3.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="EchoCradle9" unique_id=1483337515]
+transform = Transform3D(0.05845734, 0, 0.21117532, 0, 0.21911727, 0, -0.21117532, 0, 0.05845734, -0.0034295712, 0.7038948, 0.14419329)
+light_color = Color(0.4392157, 0.8509804, 1, 1)
+light_energy = 0.77
+light_indirect_energy = 2.466
+light_volumetric_fog_energy = 1.352
+shadow_enabled = true
+omni_range = 3.0
+
+[node name="EchoCradle10" parent="." unique_id=1593503100 instance=ExtResource("10_vpmfi")]
+transform = Transform3D(2.90503, 0, 11.643058, 0, 12, 0, -11.643058, 0, 2.90503, -24.577309, -0.7167455, -15.2344055)
+entity_id = "entity.echo_cradle.1"
+metadata/entity_id = "entity.echo_cradle.1"
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="EchoCradle10" unique_id=1376823697]
+transform = Transform3D(-0.4014658, 0, 0.2407119, 0, 0.4680995, 0, -0.2407119, 0, -0.4014658, -0.0064965487, 0.7034831, -0.1438415)
+light_color = Color(0.4392157, 0.8509804, 1, 1)
+light_energy = 0.77
+light_indirect_energy = 2.466
+light_volumetric_fog_energy = 1.352
+shadow_enabled = true
+omni_range = 3.0
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="EchoCradle10" unique_id=263782329]
+transform = Transform3D(0.05845734, 0, 0.21117532, 0, 0.21911727, 0, -0.21117532, 0, 0.05845734, -0.0034295712, 0.7038948, 0.14419329)
+light_color = Color(0.4392157, 0.8509804, 1, 1)
+light_energy = 0.77
+light_indirect_energy = 2.466
+light_volumetric_fog_energy = 1.352
+shadow_enabled = true
+omni_range = 3.0
 
 [node name="EchoCradle1" parent="." unique_id=1233859831 instance=ExtResource("10_vpmfi")]
 transform = Transform3D(1.3917141, 0, -1.6207726, 0, 2.136298, 0, 1.6207726, 0, 1.3917141, 4.5528336, -0.22853233, -4.3738317)
@@ -748,11 +738,6 @@ bush_radius = 0.601229
 transform = Transform3D(-0.9855872, 0, -0.16916841, 0, 1, 0, 0.16916841, 0, -0.9855872, 1.535038, 0, -126.812164)
 bush_height = 1.0674881
 bush_radius = 0.5835762
-
-[node name="Bush7" parent="." unique_id=1786211480 instance=ExtResource("13_bush")]
-transform = Transform3D(-0.99929553, 0, 0.03752915, 0, 1, 0, -0.03752915, 0, -0.99929553, 26.856152, 0, -109.11391)
-bush_height = 1.2693771
-bush_radius = 0.5650209
 
 [node name="Bush8" parent="." unique_id=590392770 instance=ExtResource("13_bush")]
 transform = Transform3D(0.9880305, 0, 0.1542588, 0, 1, 0, -0.1542588, 0, 0.9880305, 48.430267, 0, -97.28766)
@@ -1964,3 +1949,6 @@ collision_mask = 0
 
 [node name="Chunk_5_9_Col" type="CollisionShape3D" parent="LowPolyTerrainManager_Collisions/Static_Chunk_5_9" unique_id=462955552]
 shape = SubResource("ConcavePolygonShape3D_ohd68")
+
+[node name="TwistedTree_22" parent="." unique_id=1774911605 instance=ExtResource("18_wfe7n")]
+transform = Transform3D(0.5860728, 0, 0, 0, 0.5860728, 0, 0, 0, 0.5860728, 94.04892, 10.29805, -24.967918)

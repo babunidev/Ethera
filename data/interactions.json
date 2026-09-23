@@ -27,7 +27,7 @@
         }
       ],
       "results": [
-        { "type": "remove_manifestation", "entity": "target" },
+        { "type": "add_state", "entity": "target", "state_id": "state.shaped" },
         {
           "type": "equip_spawned_item",
           "entity": "actor",

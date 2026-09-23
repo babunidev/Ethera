@@ -38,22 +38,35 @@ func _rebuild() -> void:
 		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = stone_seed
+	var model_path: String = EtheraAssetLibrary.medium_rock_scene_path(stone_seed)
+	if model_path == "" or not ResourceLoader.exists(model_path):
+		model_path = ROCK_SCENE
 	var visual := get_node_or_null("RockVisual") as Node3D
+	if visual != null and str(visual.get_meta("model_path", "")) != model_path:
+		visual.free()
+		visual = null
+		var old_collision := find_child("StoneCollision", true, false)
+		if old_collision != null:
+			old_collision.free()
 	if visual == null:
-		if not ResourceLoader.exists(ROCK_SCENE):
+		if not ResourceLoader.exists(model_path):
 			return
-		var packed: PackedScene = load(ROCK_SCENE) as PackedScene
+		var packed: PackedScene = load(model_path) as PackedScene
 		if packed == null:
 			return
 		visual = packed.instantiate() as Node3D
 		if visual == null:
 			return
 		visual.name = "RockVisual"
+		visual.set_meta("model_path", model_path)
 		add_child(visual)
 	var yaw: float = rng.randf_range(0.0, TAU)
 	var tilt: float = rng.randf_range(-0.18, 0.18)
+	visual.scale = Vector3.ONE
+	visual.rotation = Vector3.ZERO
+	var fit: float = EtheraAssetLibrary.new().footprint_fit(visual)
 	visual.rotation = Vector3(tilt, yaw, rng.randf_range(-0.12, 0.12))
-	visual.scale = Vector3.ONE * stone_size
+	visual.scale = Vector3.ONE * stone_size * fit
 	EtheraAssetLibrary.new().seat_rock_in_ground(visual, self)
 	_ensure_collision(visual)
 

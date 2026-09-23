@@ -10,6 +10,13 @@
       "description": "People of living stone. Required by Echo Imprint."
     },
     {
+      "id": "trait.female",
+      "name": "Female",
+      "kind": "identity",
+      "milestone_1": true,
+      "description": "Female."
+    },
+    {
       "id": "trait.weapon_shaping",
       "name": "Weapon Shaping",
       "kind": "capability",
@@ -92,6 +99,23 @@
       "kind": "target_capability",
       "milestone_1": false,
       "description": "A place that can receive a Make Offering action."
+    },
+    {
+      "id": "trait.objective",
+      "name": "Objective",
+      "kind": "objective",
+      "temporary": true,
+      "character_specific": true,
+      "description": "Family for a temporary character-specific objective mark. A reserved entity receives the owner's trait.objective id."
+    },
+    {
+      "id": "trait.objective.khar_morr",
+      "name": "Objective: Khar-Morr",
+      "kind": "objective",
+      "temporary": true,
+      "family": "trait.objective",
+      "owner_entity_id": "entity.khar_morr",
+      "description": "This entity is Khar-Morr's reserved objective."
     }
   ]
 }

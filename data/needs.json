@@ -1,0 +1,17 @@
+{
+  "schema": "ethera.content.needs.v1",
+  "notes": "A Need is present while its condition is unmet. Milestone 3 authors Stone Weapon only. An injury Need is not authored.",
+  "needs": [
+    {
+      "id": "need.stone_weapon",
+      "name": "Stone Weapon",
+      "description": "A stone weapon is required.",
+      "important": true,
+      "task_id": "task.acquire_stone_weapon",
+      "present_while": {
+        "type": "lacks_possessed_item_trait",
+        "trait_id": "trait.stone_weapon"
+      }
+    }
+  ]
+}

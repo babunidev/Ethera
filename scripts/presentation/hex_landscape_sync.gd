@@ -6,11 +6,11 @@ class_name EtheraHexLandscapeSync
 
 const SCATTER_PATH := "res://data/milestone1/landscape_scatter.json"
 const GRASS_KINDS := [
-	{"variant": 0, "name": "Long Grass"},
-	{"variant": 1, "name": "Soft Tuft"},
-	{"variant": 2, "name": "Split Blade"},
-	{"variant": 3, "name": "Flat Leaf"},
-	{"variant": 4, "name": "Needle Grass"},
+	{"variant": 0, "name": "Offering Herb"},
+	{"variant": 1, "name": "Offering Herb"},
+	{"variant": 2, "name": "Offering Herb"},
+	{"variant": 3, "name": "Offering Herb"},
+	{"variant": 4, "name": "Offering Herb"},
 ]
 
 
@@ -61,7 +61,7 @@ func _grass_records(grass: EtheraGrassClump) -> Array:
 		{
 			"id": grass.entity_id,
 			"kind": "grass",
-			"name": str(kind.get("name", "Long Grass")),
+			"name": str(kind.get("name", "Offering Herb")),
 			"place_id": "place.village_center",
 			"traits": ["trait.container"],
 			"opened": false,
@@ -80,7 +80,7 @@ func _grass_records(grass: EtheraGrassClump) -> Array:
 		{
 			"id": bundle_id,
 			"kind": "item",
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"template_id": "template.grass_leaf",
 			"place_id": "place.village_center",
 			"traits": ["trait.herb"],

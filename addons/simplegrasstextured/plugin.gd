@@ -325,6 +325,16 @@ func _make_visible(visible : bool) -> void:
 
 
 func _physics_process(_delta) -> void:
+	# Mouse motion can be queued, then the editor clears the grass selection
+	# before this frame runs. Reading collision_mask on that null selection
+	# aborts the function and leaves the mouse event stuck, so the error repeats.
+	if _grass_selected == null:
+		_mouse_event = EVENT_MOUSE.EVENT_NONE
+		_draw_paused = true
+		_time_draw = 0
+		if _pointer_decal != null:
+			_pointer_decal.visible = false
+		return
 	if _mouse_event == EVENT_MOUSE.EVENT_CLICK:
 		_raycast_3d.global_transform.origin = _project_ray_origin
 		_raycast_3d.global_transform.basis.y = _project_ray_normal

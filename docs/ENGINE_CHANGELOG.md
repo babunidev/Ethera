@@ -6,6 +6,15 @@ Concept, lore and design rulings stay in the Morkahja concept changelog (`Morkah
 
 ## 2026-09-23
 
+- Shape Weapon leaves the rock in place and gives it Shaped for one minute. That state disables Shapeable, so the same rock cannot be shaped again until it ends.
+- Scattered rocks use Rock Medium 1–3 at the same footprint, sit down into the ground, and stay off slopes steeper than 45°.
+- Shapeable rocks are two to four times their previous size, in ten steps, and their footprints follow.
+- Opening an Offering Herb leaves its click box off, so the herb that drops can be picked up.
+- Harvestable plants use Plant_1 and Plant_1_Big, and are named Offering Herb. Scattered shapeable rocks use the round and square pebble models. Both stay the same interactions.
+- The Ground Wind-Wave follows the sculpted ground, about 10 m long and 5 m to one side. The Ground Glint is a one-meter omni light close to the ground, about 14 m ahead, easing in and out.
+- The Interactions tab is a record of interactions she has completed. Nothing is listed until then. Hovering or selecting one shows what it requires. Khar-Morr's traits include Female with Grimnir.
+- Destiny replaces the character-panel contents. Common tasks is a bottom-left list for the priority stone, and the right side draws a small Destiny Crest. The development log records a need appearing, being selected, and being fulfilled; a task being chosen, receiving the priority stone, and being fulfilled; an objective being reserved or released; and each Divine Orientation sign. Those lines are observation only.
+- Milestone 3: Need Stone Weapon, Common Task Acquire a Stone Weapon, a reserved free shapeable rock, and Ground Wind-Wave / Ground Glint signs toward its live position. The sole task becomes active on load. Selecting the Need opens Destiny and moves the priority stone only when another task is already selected. Possession of any Stone Weapon completes it. If no free rock remains, the whole occupant of `node.village_001` is replaced by a shapeable rock. No injury is authored. A later state can name the task it makes impossible and the task that resolves it.
 - Authored props carry a collision shape on the body so the editor does not warn that they have no shape. Play does not rewrite instance scale. A town-hall box is only an editor placeholder; play uses the mesh so the door and room stay open. Godot may still warn about a non-uniform physics scale; that warning is not a reason to change a placed object.
 - A run builds from a walk and eases back to a walk in the last few metres before it stops. The clips follow that speed instead of snapping.
 - The orbit camera only pulls in when it would sit inside a solid. A rock or building between the camera and her can cover her for a scenic shot. Ground skim is unchanged.

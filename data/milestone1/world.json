@@ -22,7 +22,13 @@
     "walk_clearance": 0.11,
     "path_cell": 0.32,
     "walkable_slope_degrees": 50,
-    "shaping_drop_offset": { "x": 0.55, "y": 0.0, "z": 0.0 }
+    "shaping_drop_offset": { "x": 0.55, "y": 0.0, "z": 0.0 },
+    "orientation_cue_interval_ms": 10000,
+    "orientation_wave_aside": 5.0,
+    "orientation_wave_travel": 5.0,
+    "orientation_glint_ahead": 14.0,
+    "orientation_glint_travel": 3.0,
+    "orientation_cue_life_ms": 1600
   },
   "places": [
     {
@@ -46,6 +52,7 @@
       "place_id": "place.village_center",
       "traits": [
         "trait.grimnir",
+        "trait.female",
         "trait.weapon_shaping",
         "trait.echo_imprint",
         "trait.shard_holder"
@@ -59,11 +66,7 @@
       "states": [],
       "known_shard_ids": [],
       "needed_shard_ids": [],
-      "known_interaction_ids": [
-        "interaction.shape_weapon",
-        "interaction.echo_imprint",
-        "interaction.make_offering"
-      ],
+      "known_interaction_ids": [],
       "equipment": {
         "slot.small_weapon": null,
         "slot.herb": null
@@ -128,9 +131,10 @@
       "yields_base_color": "slate",
       "position": { "x": -5.0, "y": 0.0, "z": 3.4 },
       "yaw": 0.4,
-      "occupancy": { "radius": 0.55 },
+      "occupancy": { "radius": 1.344 },
       "presentation": {
-        "asset_id": "asset.shapeable_rock"
+        "asset_id": "asset.shapeable_rock",
+        "scale": { "x": 2.444, "y": 2.444, "z": 2.444 }
       }
     },
     {

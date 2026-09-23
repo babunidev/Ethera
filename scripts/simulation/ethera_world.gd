@@ -27,6 +27,8 @@ var shards: Dictionary = {}
 var tick: int = 0
 var world_time_ms: int = 0
 var id_seq: int = 0
+# Advances only when a new objective is chosen among several free solutions.
+var objective_pick_seed: int = 1
 var inhabited_entity_id: String = ""
 var place_id: String = ""
 var tuning: Dictionary = {}
@@ -98,6 +100,14 @@ static func to_vector(point: Variant) -> Vector3:
 	return Vector3(float(point.get("x", 0.0)), float(point.get("y", 0.0)), float(point.get("z", 0.0)))
 
 
+func add_entity(raw: Dictionary) -> Dictionary:
+	var entity: Dictionary = _normalize_entity(raw.duplicate(true))
+	var entity_id: String = str(entity.get("id", ""))
+	entities[entity_id] = entity
+	_ensure_versions(entity_id)
+	return entity
+
+
 func make_id(prefix: String) -> String:
 	id_seq += 1
 	return "%s.runtime.%d" % [prefix, id_seq]
@@ -123,7 +133,14 @@ func versions_of(entity_id: String) -> Dictionary:
 
 
 func has_trait(entity: Dictionary, trait_id: String) -> bool:
-	return _string_array(entity.get("traits", [])).has(trait_id)
+	if not _string_array(entity.get("traits", [])).has(trait_id):
+		return false
+	# A state's blocked traits are disabled on the entity that carries the state.
+	for state_id in _string_array(entity.get("states", [])):
+		var state: Dictionary = catalog.states.get(str(state_id), {})
+		if _string_array(state.get("blocked_trait_ids", [])).has(trait_id):
+			return false
+	return true
 
 
 func is_manifested(entity: Dictionary) -> bool:
@@ -218,6 +235,19 @@ func grant_shard(entity_id: String, shard_id: String) -> bool:
 	known.append(shard_id)
 	entity["known_shard_ids"] = known
 	bump(entity_id, EtheraIds.CHANGE_SHARDS)
+	return true
+
+
+func remember_interaction(actor_id: String, interaction_id: String) -> bool:
+	var actor: Dictionary = get_entity(actor_id)
+	if actor.is_empty() or interaction_id == "":
+		return false
+	var known: Array[String] = _string_array(actor.get("known_interaction_ids", []))
+	if known.has(interaction_id):
+		return false
+	known.append(interaction_id)
+	actor["known_interaction_ids"] = known
+	bump(actor_id, EtheraIds.CHANGE_TRAITS)
 	return true
 
 
@@ -936,6 +966,7 @@ func serialize() -> Dictionary:
 		"schema": SNAPSHOT_SCHEMA,
 		"tick": tick,
 		"id_seq": id_seq,
+		"objective_pick_seed": objective_pick_seed,
 		"place_id": place_id,
 		"inhabited_entity_id": inhabited_entity_id,
 		"entities": entities.duplicate(true),
@@ -956,6 +987,7 @@ func restore(snapshot: Dictionary) -> bool:
 	tick = int(snapshot.get("tick", 0))
 	world_time_ms = tick * MS_PER_TICK
 	id_seq = int(snapshot.get("id_seq", 0))
+	objective_pick_seed = int(snapshot.get("objective_pick_seed", 1))
 	place_id = str(snapshot.get("place_id", place_id))
 	inhabited_entity_id = str(snapshot.get("inhabited_entity_id", inhabited_entity_id))
 	entities = (snapshot.get("entities", {}) as Dictionary).duplicate(true)

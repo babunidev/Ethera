@@ -45,7 +45,8 @@ These were open questions. They are now implemented and covered by tests.
 
 ## Design questions intentionally not implemented
 
-- Needs, Divine Orientation, greeting, inhabitation switching, save/reload
+- Greeting, inhabitation switching, save/reload
+- An authored injury Need. Task selection can already yield the priority stone when a state lists `impossible_task_ids` and `resolving_task_id`. Milestone 3 does not author that state, and clearing it does not move the stone back.
 - Whether pickup or failed skill attempts enter the 100-entry interaction history
 - Fountain permanence flags, retention clocks, archival stones, Echo Cradle
 - Combat injuries beyond the blocker-filter shape and healthy body regions

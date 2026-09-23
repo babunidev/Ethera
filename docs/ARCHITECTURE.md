@@ -54,12 +54,16 @@ Presentation and tests send dictionaries:
 | `begin_interaction` | `target_id`, `interaction_id` | Starts authored approach, then the skill phase |
 | `skill_pointer` | `x`, `y` in 0–1 skill space | Hits Shape Trace checkpoints; positions Shard Fit |
 | `skill_click` | none | Confirms Shape Trace or attempts Shard Fit |
+| `select_need` | `need_id`, optional `actor_id` | Opens the matching Common Task onto the priority stone only when another task is already selected. The sole task is already active. |
+| `activate_task` | `task_id`, optional `actor_id` | Moves the priority stone to one of the character's tasks. Receiving a new task does not do this by itself. |
 
-Queries: `query_available_interactions`, `query_hover`, `query_inhabited_id`, `query_panel`, `query_skill`, `query_dev_log(limit)`, `query_recent_interactions`, `query_world_view`, `resolve_shard`. Snapshots: `create_snapshot`, `state_hash`, `restore_snapshot`, `replay`.
+Queries: `query_available_interactions`, `query_hover`, `query_inhabited_id`, `query_panel`, `query_skill`, `query_dev_log(limit)`, `query_recent_interactions`, `query_world_view`, `query_orientation`, `resolve_shard`. Snapshots: `create_snapshot`, `state_hash`, `restore_snapshot`, `replay`.
+
+`query_panel()` for the inhabited character includes real Need records, Common Tasks, the active task, the checklist of requirements she already knows, and the reserved objective id. `query_orientation()` is that objective's live position and bearing. It is empty when she has no active objective. Another character's panel does not receive her checklist or bearing.
 
 `query_skill()` returns the running round plus a `phase` block carrying the authored shape presentation needs to draw it, so the overlay never reads the content catalog. The round's own stage is `stage` (`approaching` or `skill`); `phase` is always the authored skill-phase definition.
 
-Returned events use `event_time` for the envelope timestamp so a payload's own `world_time` — a Shard's original timestamp — is never overwritten. The development log is capped at `EtheraWorld.DEV_LOG_LIMIT`; pass a limit to `query_dev_log` instead of copying the whole log each frame.
+Returned events use `event_time` for the envelope timestamp so a payload's own `world_time` — a Shard's original timestamp — is never overwritten. The development log is capped at `EtheraWorld.DEV_LOG_LIMIT`; pass a limit to `query_dev_log` instead of copying the whole log each frame. Need, task, and objective lines are written there when those sets change. `development_note` appends an observation such as a Divine Orientation sign. It is not a command and is not journaled.
 
 ## Authored results
 
@@ -79,7 +83,7 @@ Creating, transferring or changing ownership of an item is immediate to the play
 
 ## What crosses to a client
 
-Hidden knowledge is authoritative state. `query_panel()` serves a character's own Shards and known interactions only when the id is the inhabited character; `knowledge_visible` reports which case the caller got. Other entities, including the Memory Fountain, are described by what an onlooker could see.
+Hidden knowledge is authoritative state. `query_panel()` serves a character's own Shards and discovered interactions only when the id is the inhabited character; `knowledge_visible` reports which case the caller got. An interaction is offered from authored requirements, whether or not she has used it. Completing it once adds it to `known_interaction_ids` and keeps it there. The panel record includes the requirement phrases. Other entities, including the Memory Fountain, are described by what an onlooker could see.
 
 The evaluator still reads the Fountain's full contents when it decides availability, because it runs inside the runtime. The restriction is on what leaves it.
 

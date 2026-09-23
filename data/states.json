@@ -11,6 +11,15 @@
       "duration_ms": 180000,
       "blocked_interaction_ids": [],
       "blocked_trait_ids": []
+    },
+    {
+      "id": "state.shaped",
+      "name": "Shaped",
+      "kind": "cooldown",
+      "description": "This rock was just shaped. Shapeable is disabled until the state ends.",
+      "duration_ms": 60000,
+      "blocked_interaction_ids": [],
+      "blocked_trait_ids": ["trait.shapeable"]
     }
   ]
 }

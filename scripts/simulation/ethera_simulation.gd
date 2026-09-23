@@ -5,6 +5,8 @@ var catalog: EtheraCatalog
 var world: EtheraWorld
 var evaluator: EtheraEvaluator
 var results: EtheraResults
+const _Tasks := preload("res://scripts/simulation/ethera_tasks.gd")
+var tasks
 # The command journal is how this node got here, not part of the hashed world. A
 # snapshot replaces it; a validator replays the journal against an earlier snapshot.
 var command_log: Array[Dictionary] = []
@@ -20,7 +22,9 @@ func _init(loaded_catalog: EtheraCatalog = null) -> void:
 	world.setup_milestone_1(catalog)
 	evaluator = EtheraEvaluator.new(world)
 	results = EtheraResults.new(world, catalog, evaluator)
+	tasks = _Tasks.new(world, catalog)
 	_emit_boot_log()
+	tasks.refresh(world.inhabited_entity_id)
 
 
 # Presentation reports authored hex poses at load. Not a player command; not journaled.
@@ -95,8 +99,13 @@ func apply(command: Dictionary) -> Array[Dictionary]:
 			events.append_array(_skill_pointer(command))
 		EtheraIds.CMD_SKILL_CLICK:
 			events.append_array(_skill_click(command))
+		EtheraIds.CMD_SELECT_NEED:
+			tasks.select_need(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("need_id", "")))
+		EtheraIds.CMD_ACTIVATE_TASK:
+			tasks.activate_task(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("task_id", "")))
 		_:
 			events.append(_log_event("error", "Unknown command %s" % command_type, {"command": command_type}))
+	tasks.refresh(world.inhabited_entity_id)
 	return events
 
 
@@ -139,8 +148,21 @@ func query_panel(entity_id: String = "") -> Dictionary:
 	}
 	if id == world.inhabited_entity_id:
 		panel["known_shards"] = _shard_summaries(world.known_shards(entity))
-		panel["known_interactions"] = _named_ids(entity.get("known_interaction_ids", []), catalog.interactions, "name")
+		panel["known_interactions"] = _interaction_records(entity.get("known_interaction_ids", []))
+		var task_view: Dictionary = tasks.panel_fields(id)
+		panel["needs"] = task_view.get("needs", [])
+		panel["tasks"] = task_view.get("tasks", [])
+		panel["active_task_id"] = str(task_view.get("active_task_id", ""))
+		panel["checklist"] = task_view.get("checklist", {})
+		panel["reserved_objective_id"] = str(task_view.get("reserved_objective_id", ""))
 	return panel
+
+
+func query_orientation(actor_id: String = "") -> Dictionary:
+	var id: String = actor_id if actor_id != "" else world.inhabited_entity_id
+	if id != world.inhabited_entity_id:
+		return {"active": false, "entity_id": "", "cue_interval_ms": int(world.tuning.get("orientation_cue_interval_ms", 10000))}
+	return tasks.orientation(id)
 
 
 # The round plus the authored phase shape presentation needs to draw it, so the
@@ -160,6 +182,11 @@ func query_skill() -> Dictionary:
 		"rotation": phase.get("rotation", {}),
 	}
 	return skill
+
+
+# Observation only. Not a command, not journaled, and not part of the hashed world.
+func development_note(kind: String, text: String) -> void:
+	world.add_log(kind, text)
 
 
 func query_dev_log(limit: int = 0) -> Array[Dictionary]:
@@ -209,6 +236,7 @@ func restore_snapshot(snapshot: Dictionary) -> bool:
 		return false
 	evaluator.cache.clear()
 	command_log.clear()
+	tasks.refresh(world.inhabited_entity_id)
 	return true
 
 
@@ -650,7 +678,10 @@ func _succeed_skill() -> Array[Dictionary]:
 	if not bool(resolved.get("ok", false)):
 		return _fail_skill(str(resolved.get("reason", "unknown_result")))
 	var events: Array[Dictionary] = resolved.get("events", []) as Array[Dictionary]
-	events.append(_log_event("action_succeeded", "%s succeeded" % catalog.get_interaction(interaction_id).get("name", interaction_id), {"interaction_id": interaction_id}))
+	var interaction_name: String = str(catalog.get_interaction(interaction_id).get("name", interaction_id))
+	if world.remember_interaction(actor_id, interaction_id):
+		events.append(_log_event("interaction_discovered", "Interaction discovered: %s" % interaction_name, {"interaction_id": interaction_id}))
+	events.append(_log_event("action_succeeded", "%s succeeded" % interaction_name, {"interaction_id": interaction_id}))
 	events.append(_event(EtheraIds.EVENT_SKILL_ENDED, {"outcome": "success", "interaction_id": interaction_id}))
 	world.append_history(actor_id, {
 		"interaction_id": interaction_id,
@@ -1042,6 +1073,67 @@ func _presentation_entity(entity: Dictionary) -> Dictionary:
 		"presentation": entity.get("presentation", {}),
 		"traits": entity.get("traits", []),
 	}
+
+
+func _interaction_records(ids: Variant) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	if typeof(ids) != TYPE_ARRAY:
+		return result
+	for item_id in ids:
+		var definition: Dictionary = catalog.get_interaction(str(item_id))
+		result.append({
+			"id": str(item_id),
+			"name": str(definition.get("name", item_id)),
+			"requirements": _requirement_phrases(definition),
+		})
+	return result
+
+
+func _requirement_phrases(definition: Dictionary) -> Array[String]:
+	var phrases: Array[String] = []
+	var groups: Array = definition.get("requirement_groups", [])
+	var wrote_group := false
+	for group in groups:
+		if typeof(group) != TYPE_DICTIONARY:
+			continue
+		var group_phrases: Array[String] = []
+		for side in ["actor", "target"]:
+			var conditions: Variant = group.get(side, [])
+			if typeof(conditions) != TYPE_ARRAY:
+				continue
+			for condition in conditions:
+				if typeof(condition) != TYPE_DICTIONARY:
+					continue
+				var phrase: String = _requirement_phrase(condition)
+				if phrase != "" and not group_phrases.has(phrase):
+					group_phrases.append(phrase)
+		if group_phrases.is_empty():
+			continue
+		if wrote_group:
+			phrases.append("or")
+		wrote_group = true
+		phrases.append_array(group_phrases)
+	return phrases
+
+
+func _requirement_phrase(condition: Dictionary) -> String:
+	match str(condition.get("type", "")):
+		"has_trait":
+			return str(catalog.traits.get(str(condition.get("trait_id", "")), {}).get("name", ""))
+		"healthy_region":
+			var region_name: String = str(catalog.get_body_region(str(condition.get("region_id", ""))).get("name", ""))
+			return "healthy %s" % region_name if region_name != "" else ""
+		"has_equipped":
+			var trait_id: String = str(condition.get("trait_id", ""))
+			if trait_id != "":
+				return str(catalog.traits.get(trait_id, {}).get("name", ""))
+			return str(catalog.get_slot(str(condition.get("slot_id", ""))).get("name", ""))
+		"actor_has_shard_unknown_to_target":
+			return "a Shard the target does not know"
+		"knows_discovery_of_target":
+			return "the place is known"
+		_:
+			return ""
 
 
 func _named_ids(ids: Variant, catalog_map: Dictionary, field: String) -> Array[Dictionary]:

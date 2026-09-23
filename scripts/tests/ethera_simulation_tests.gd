@@ -1,6 +1,8 @@
 extends RefCounted
 class_name EtheraSimulationTests
 
+const _Orientation := preload("res://scripts/simulation/ethera_orientation.gd")
+
 # A crashing script still lets assertions be skipped rather than fail, so a floor on the
 # assertion count turns a mass failure into a reported failure instead of a short pass.
 const MINIMUM_ASSERTIONS := 200
@@ -50,6 +52,7 @@ func run() -> int:
 	_test_blockers_and_injury()
 	_test_radial_selection()
 	_test_event_envelope_and_logs()
+	_test_stone_weapon_need()
 	var total: int = _passed + _failed.size()
 	if total < MINIMUM_ASSERTIONS:
 		_failed.append("only %d assertions ran; expected at least %d, so something aborted early" % [total, MINIMUM_ASSERTIONS])
@@ -66,7 +69,8 @@ func _test_starting_data() -> void:
 	_eq("start people", panel.get("people"), "grimnir")
 	_eq("start sex", panel.get("sex"), "female")
 	_eq("start shards empty", (panel.get("known_shards", []) as Array).size(), 0)
-	_eq("start needs empty", (panel.get("needs", []) as Array).size(), 0)
+	_eq("start need is stone weapon", str((panel.get("needs", []) as Array)[0].get("id", "")), EtheraIds.NEED_STONE_WEAPON)
+	_true("start need is important", bool((panel.get("needs", []) as Array)[0].get("important", false)))
 	_eq("start small weapon empty", bool(panel.get("equipment", {}).get(EtheraIds.SLOT_SMALL_WEAPON, {}).get("empty", false)), true)
 	_eq("start herb empty", bool(panel.get("equipment", {}).get(EtheraIds.SLOT_HERB, {}).get("empty", false)), true)
 	var regions: Dictionary = panel.get("body_regions", {})
@@ -75,8 +79,10 @@ func _test_starting_data() -> void:
 	_eq("body region carries its authored name", str(regions.get(EtheraIds.BODY_ARMS, {}).get("name", "")), "Arms")
 	var trait_ids := _ids(panel.get("traits", []))
 	_true("has grimnir", trait_ids.has(EtheraIds.TRAIT_GRIMNIR))
+	_true("has female", trait_ids.has(EtheraIds.TRAIT_FEMALE))
 	_true("has weapon shaping", trait_ids.has(EtheraIds.TRAIT_WEAPON_SHAPING))
 	_true("has echo imprint", trait_ids.has(EtheraIds.TRAIT_ECHO_IMPRINT))
+	_eq("no interactions are recorded before she uses one", (panel.get("known_interactions", []) as Array).size(), 0)
 	_eq("start states empty", (panel.get("states", []) as Array).size(), 0)
 	var fountain: Dictionary = sim.world.get_entity(EtheraIds.ENTITY_FOUNTAIN)
 	_eq("fountain shards empty", sim.world.known_shards(fountain).size(), 0)
@@ -176,6 +182,7 @@ func _test_landscape_and_herb() -> void:
 	_eq("the harvestable bundle is five blades", int(sim.world.get_entity("entity.grass.bundle.1").get("presentation", {}).get("blade_count", 0)), 5)
 	_true("the bundle stays unmanifested until the patch is opened", not sim.world.is_manifested(sim.world.get_entity("entity.grass.bundle.1")))
 	_true("shapeable scatter rocks are present", rock_ids.size() >= 20)
+	_eq("the harvestable plant is an offering herb", str(sim.world.get_entity("entity.grass.1").get("name", "")), "Offering Herb")
 	_eq("hover open on a grass patch", str(sim.query_hover(EtheraIds.ENTITY_KHAR_MORR, "entity.grass.1").get("kind", "")), EtheraIds.HOVER_OPEN)
 	_eq("a grass patch is its own kind", str(sim.world.get_entity("entity.grass.1").get("kind", "")), EtheraIds.KIND_GRASS)
 	sim.apply({"type": EtheraIds.CMD_PICKUP_ITEM, "item_id": "entity.grass.1"})
@@ -733,7 +740,15 @@ func _test_shape_trace_timeout_and_success() -> void:
 	_true("timeout leaves rock", sim.world.is_manifested(sim.world.get_entity(EtheraIds.ENTITY_ROCK)))
 	_true("timeout leaves slot empty", sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_SMALL_WEAPON) == "")
 	_complete_shape_weapon(sim)
-	_true("rock unmanifested after success", not sim.world.is_manifested(sim.world.get_entity(EtheraIds.ENTITY_ROCK)))
+	var shaped: Dictionary = sim.world.get_entity(EtheraIds.ENTITY_ROCK)
+	_true("rock stays after shaping", sim.world.is_manifested(shaped))
+	_true("shaping marks the rock Shaped", (shaped.get("states", []) as Array).has(EtheraIds.STATE_SHAPED))
+	_true("Shaped disables Shapeable", not sim.world.has_trait(shaped, EtheraIds.TRAIT_SHAPEABLE))
+	_eq("shape weapon cannot use the same rock while it is Shaped", sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_ROCK).size(), 0)
+	_tick(sim, _seconds(60.0))
+	_true("Shaped ends after one minute", not (sim.world.get_entity(EtheraIds.ENTITY_ROCK).get("states", []) as Array).has(EtheraIds.STATE_SHAPED))
+	_true("Shapeable returns when Shaped ends", sim.world.has_trait(sim.world.get_entity(EtheraIds.ENTITY_ROCK), EtheraIds.TRAIT_SHAPEABLE))
+	_true("shape weapon can use the rock again", sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_ROCK).size() > 0)
 	var equipped_id: String = sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_SMALL_WEAPON)
 	_true("club equipped", equipped_id != "")
 	var club: Dictionary = sim.world.get_entity(equipped_id)
@@ -749,6 +764,13 @@ func _test_shape_trace_timeout_and_success() -> void:
 	_eq("shard result is club", (shard.get("result_ids", []) as Array)[0], equipped_id)
 	_eq("shard place", str(shard.get("place_id", "")), EtheraIds.PLACE_VILLAGE_CENTER)
 	_true("khar-morr knows the event", sim.world.knows_shard(sim.world.inhabiting(), str(shard["id"])))
+	var discovered: Array = sim.query_panel().get("known_interactions", [])
+	_eq("using shape weapon records it", discovered.size(), 1)
+	_eq("the record names shape weapon", str((discovered[0] as Dictionary).get("name", "")), "Shape Weapon")
+	var requirements: Array = (discovered[0] as Dictionary).get("requirements", [])
+	_true("the record requires weapon shaping", requirements.has("Weapon Shaping"))
+	_true("the record requires shapeable", requirements.has("Shapeable"))
+	_true("the log records the discovered interaction", _log_has(sim, "Interaction discovered: Shape Weapon"))
 
 
 func _test_right_click_cancels_approach() -> void:
@@ -768,6 +790,7 @@ func _test_right_click_cancels_approach() -> void:
 	_true("no skill phase starts after cancelling", sim.query_skill().is_empty())
 	_true("cancelling creates no shard", sim.world.shards.is_empty())
 	_eq("cancelling records no history", sim.query_recent_interactions().size(), 0)
+	_eq("cancelling does not record the interaction", (sim.query_panel().get("known_interactions", []) as Array).size(), 0)
 	_true("the interaction is offered again", sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_ROCK).size() > 0)
 
 	sim.apply({
@@ -1370,6 +1393,154 @@ func _complete_shard_fit(sim: EtheraSimulation) -> void:
 	_true("shard fit reached alignment", aligned)
 	sim.apply({"type": EtheraIds.CMD_SKILL_CLICK})
 	_eq("shard fit ended", sim.query_skill().is_empty(), true)
+
+
+func _test_stone_weapon_need() -> void:
+	var sim := _new_sim()
+	var other := _new_sim()
+	var panel: Dictionary = sim.query_panel()
+	_eq("the sole task is active without a click", str(panel.get("active_task_id", "")), EtheraIds.TASK_ACQUIRE_STONE_WEAPON)
+	_true("the log records the need appearing", _log_has(sim, "Need appeared: Stone Weapon"))
+	_true("the log records the priority stone", _log_has(sim, "Priority stone placed on Acquire a Stone Weapon"))
+	_true("the log records the reserved objective", _log_has(sim, "Objective reserved: Shapeable Rock"))
+	var reserved: String = str(panel.get("reserved_objective_id", ""))
+	_eq("a second start reserves the same rock", reserved, str(other.query_panel().get("reserved_objective_id", "")))
+	var rock: Dictionary = sim.world.get_entity(reserved)
+	_true("the reserved entity is a manifested shapeable rock", sim.world.is_manifested(rock) and sim.world.has_trait(rock, EtheraIds.TRAIT_ROCK) and sim.world.has_trait(rock, EtheraIds.TRAIT_SHAPEABLE))
+	_true("the reserved rock carries her objective trait", sim.world.has_trait(rock, EtheraIds.TRAIT_OBJECTIVE_KHAR_MORR))
+	_true("the container stays while a free rock exists", sim.world.is_manifested(sim.world.get_entity(EtheraIds.ENTITY_CONTAINER)))
+	var checklist: Dictionary = panel.get("checklist", {})
+	_eq("the checklist states the goal", str(checklist.get("goal", "")), "Acquire a Stone Weapon")
+	_eq("unknown solution knowledge stays off the checklist", (checklist.get("requirements", []) as Array).size(), 0)
+	_true("the checklist does not name the hidden rock traits", not str(checklist).contains("trait.rock") and not str(checklist).contains("Shapeable"))
+	var guide: Dictionary = sim.query_orientation()
+	_true("guidance is active for the inhabited character", bool(guide.get("active", false)))
+	_eq("guidance names the reserved rock", str(guide.get("entity_id", "")), reserved)
+	_eq("cue interval is ten seconds", int(guide.get("cue_interval_ms", 0)), 10000)
+	_eq("the wind shade sits five meters aside", float(guide.get("wave_aside", 0.0)), 5.0)
+	_eq("the glint appears fourteen meters out", float(guide.get("glint_ahead", 0.0)), 14.0)
+	_eq("the glint travels a few meters", float(guide.get("glint_travel", 0.0)), 3.0)
+	_true("another character is not given her bearing", not bool(sim.query_orientation(EtheraIds.ENTITY_FOUNTAIN).get("active", true)))
+	var kinds: Dictionary = {}
+	for index in 8:
+		var kind: String = _Orientation.cue_kind(index)
+		_true("a cue is one sign", kind == _Orientation.CUE_WIND_WAVE or kind == _Orientation.CUE_GLINT)
+		kinds[kind] = true
+	_eq("the schedule uses both signs", kinds.size(), 2)
+	var seed_before: int = sim.world.objective_pick_seed
+	sim.apply({"type": EtheraIds.CMD_SELECT_NEED, "need_id": EtheraIds.NEED_STONE_WEAPON})
+	_true("the log records the selected need", _log_has(sim, "Need selected: Stone Weapon"))
+	_eq("selecting the only need does not move the stone", str(sim.query_panel().get("reserved_objective_id", "")), reserved)
+	_eq("selecting the only need does not roll again", sim.world.objective_pick_seed, seed_before)
+	sim.apply({"type": EtheraIds.CMD_ACTIVATE_TASK, "task_id": EtheraIds.TASK_ACQUIRE_STONE_WEAPON})
+	_true("the log records the chosen task", _log_has(sim, "Task chosen: Acquire a Stone Weapon"))
+	_eq("activating the current task leaves the rock", str(sim.query_panel().get("reserved_objective_id", "")), reserved)
+
+	sim.world.set_position(reserved, Vector3(30.0, 0.0, 12.0), 0.0)
+	var moved: Dictionary = sim.query_orientation()
+	_eq("guidance follows the same entity", str(moved.get("entity_id", "")), reserved)
+	_eq("guidance uses the new position", float(moved.get("x", 0.0)), float(sim.world.get_entity(reserved).get("position", {}).get("x", 0.0)))
+
+	sim.world.get_entity(reserved)["manifested"] = false
+	sim.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+	var again: String = str(sim.query_panel().get("reserved_objective_id", ""))
+	_true("an invalid rock is replaced by another free one", again != "" and again != reserved)
+	_true("the old rock loses the objective trait", not sim.world.has_trait(sim.world.get_entity(reserved), EtheraIds.TRAIT_OBJECTIVE_KHAR_MORR))
+	_true("the container is still untouched", sim.world.is_manifested(sim.world.get_entity(EtheraIds.ENTITY_CONTAINER)))
+
+	for entity_id in sim.world.entities.keys():
+		var entity: Dictionary = sim.world.get_entity(str(entity_id))
+		if sim.world.has_trait(entity, EtheraIds.TRAIT_ROCK) and sim.world.has_trait(entity, EtheraIds.TRAIT_SHAPEABLE):
+			entity["manifested"] = false
+	var shards_before: int = sim.world.shards.size()
+	sim.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+	var placed: String = str(sim.query_panel().get("reserved_objective_id", ""))
+	var placed_rock: Dictionary = sim.world.get_entity(placed)
+	_eq("the fallback rock occupies the village node", str(placed_rock.get("world_node_id", "")), EtheraIds.NODE_VILLAGE_001)
+	_true("the fallback rock is shapeable", sim.world.has_trait(placed_rock, EtheraIds.TRAIT_SHAPEABLE))
+	_true("the container is no longer manifested", not sim.world.is_manifested(sim.world.get_entity(EtheraIds.ENTITY_CONTAINER)))
+	_true("the club inside the container stays unmanifested", not sim.world.is_manifested(sim.world.get_entity(EtheraIds.ENTITY_CLUB_GREEN)))
+	_eq("placement creates no shard", sim.world.shards.size(), shards_before)
+
+	var bare := _new_sim()
+	var actor: Dictionary = bare.world.get_entity(EtheraIds.ENTITY_KHAR_MORR)
+	var traits: Array = (actor.get("traits", []) as Array).duplicate()
+	traits.erase(EtheraIds.TRAIT_WEAPON_SHAPING)
+	actor["traits"] = traits
+	bare.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+	var bare_panel: Dictionary = bare.query_panel()
+	_eq("the need remains without weapon shaping", str((bare_panel.get("needs", []) as Array)[0].get("id", "")), EtheraIds.NEED_STONE_WEAPON)
+	_eq("no task is given without the capability", str(bare_panel.get("active_task_id", "")), "")
+	_true("guidance stops when there is no task", not bool(bare.query_orientation().get("active", true)))
+	_eq("no objective is reserved without a task", _objective_mark_count(bare), 0)
+	_true("losing the capability removes the task in the log", _log_has(bare, "Task removed: Acquire a Stone Weapon"))
+	_true("losing the capability is not fulfillment", not _log_has(bare, "Task fulfilled:"))
+
+	var pickup := _new_sim()
+	var marked: String = str(pickup.query_panel().get("reserved_objective_id", ""))
+	pickup.apply({"type": EtheraIds.CMD_PICKUP_ITEM, "item_id": EtheraIds.ENTITY_CLUB_UMBER})
+	_arrive(pickup, EtheraIds.ENTITY_KHAR_MORR)
+	var after_pickup: Dictionary = pickup.query_panel()
+	_eq("picking up a stone weapon clears the need", (after_pickup.get("needs", []) as Array).size(), 0)
+	_eq("picking up a stone weapon clears the task", str(after_pickup.get("active_task_id", "")), "")
+	_true("guidance stops after the need is met", not bool(pickup.query_orientation().get("active", true)))
+	_true("the reservation is released after pickup", not pickup.world.has_trait(pickup.world.get_entity(marked), EtheraIds.TRAIT_OBJECTIVE_KHAR_MORR))
+	_true("the log records the fulfilled need", _log_has(pickup, "Need fulfilled: Stone Weapon"))
+	_true("the log records the fulfilled task", _log_has(pickup, "Task fulfilled: Acquire a Stone Weapon"))
+	_true("the log records the released objective", _log_has(pickup, "Objective released"))
+	pickup.development_note("orientation", "Divine Orientation: Ground Glint")
+	_true("a development note stays in the log", _log_has(pickup, "Divine Orientation: Ground Glint"))
+
+	var blocked := _new_sim()
+	blocked.catalog.needs["need.test_block"] = {
+		"id": "need.test_block",
+		"name": "Test Block",
+		"important": false,
+		"task_id": "task.test_block",
+		"present_while": {"type": "lacks_possessed_item_trait", "trait_id": "trait.test_unpossessed"},
+	}
+	blocked.catalog.tasks["task.test_block"] = {
+		"id": "task.test_block",
+		"name": "Resolve The Block",
+		"kind": "common",
+		"need_id": "need.test_block",
+		"requires_trait_id": EtheraIds.TRAIT_GRIMNIR,
+		"objective_trait_id": EtheraIds.TRAIT_OBJECTIVE_KHAR_MORR,
+		"goal": "Resolve the block",
+		"checklist": [],
+		"completion": {"type": "none"},
+		"hidden_solution": {"type": "none"},
+	}
+	blocked.catalog.states["state.test_impossible_task"] = {
+		"id": "state.test_impossible_task",
+		"impossible_task_ids": [EtheraIds.TASK_ACQUIRE_STONE_WEAPON],
+		"resolving_task_id": "task.test_block",
+	}
+	blocked.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+	_eq("a new task does not take the stone", str(blocked.query_panel().get("active_task_id", "")), EtheraIds.TASK_ACQUIRE_STONE_WEAPON)
+	blocked.world.add_state(EtheraIds.ENTITY_KHAR_MORR, "state.test_impossible_task")
+	blocked.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+	_eq("an impossible task yields the stone to the resolving task", str(blocked.query_panel().get("active_task_id", "")), "task.test_block")
+	blocked.world.remove_state(EtheraIds.ENTITY_KHAR_MORR, "state.test_impossible_task")
+	blocked.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+	_eq("clearing the block does not move the stone back", str(blocked.query_panel().get("active_task_id", "")), "task.test_block")
+	blocked.apply({"type": EtheraIds.CMD_ACTIVATE_TASK, "task_id": EtheraIds.TASK_ACQUIRE_STONE_WEAPON})
+	_eq("the player can return the stone", str(blocked.query_panel().get("active_task_id", "")), EtheraIds.TASK_ACQUIRE_STONE_WEAPON)
+
+
+func _log_has(sim: EtheraSimulation, text: String) -> bool:
+	for entry in sim.query_dev_log():
+		if str(entry.get("text", "")).find(text) >= 0:
+			return true
+	return false
+
+
+func _objective_mark_count(sim: EtheraSimulation) -> int:
+	var count: int = 0
+	for entity_id in sim.world.entities.keys():
+		if sim.world.has_trait(sim.world.get_entity(str(entity_id)), EtheraIds.TRAIT_OBJECTIVE_KHAR_MORR):
+			count += 1
+	return count
 
 
 func _tick(sim: EtheraSimulation, ticks: int) -> void:

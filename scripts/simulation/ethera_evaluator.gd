@@ -67,7 +67,7 @@ func eligible_shards(actor: Dictionary, target: Dictionary, limit: int = 1) -> A
 
 func _compute(actor: Dictionary, target: Dictionary) -> Array[Dictionary]:
 	var results: Array[Dictionary] = []
-	for interaction_id in actor.get("known_interaction_ids", []):
+	for interaction_id in world.catalog.interactions.keys():
 		var definition: Dictionary = world.catalog.get_interaction(str(interaction_id))
 		if definition.is_empty():
 			continue

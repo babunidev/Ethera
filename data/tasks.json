@@ -1,0 +1,35 @@
+{
+  "schema": "ethera.content.tasks.v1",
+  "notes": "Common Tasks are generated only when the owner has the permanent capability. The hidden solution is system knowledge and is not a Shard. Checklist entries appear only when known is true or the owner already knows revealed_by_shard_id. A later negative state may name impossible_task_ids and resolving_task_id; Milestone 3 authors none.",
+  "tasks": [
+    {
+      "id": "task.acquire_stone_weapon",
+      "name": "Acquire a Stone Weapon",
+      "kind": "common",
+      "need_id": "need.stone_weapon",
+      "requires_trait_id": "trait.weapon_shaping",
+      "objective_trait_id": "trait.objective.khar_morr",
+      "goal": "Acquire a Stone Weapon",
+      "checklist": [],
+      "completion": {
+        "type": "possesses_item_trait",
+        "trait_id": "trait.stone_weapon"
+      },
+      "hidden_solution": {
+        "type": "manifested_traits",
+        "trait_ids": ["trait.rock", "trait.shapeable"],
+        "shown_as_known": false
+      },
+      "fallback": {
+        "type": "replace_world_node_occupant",
+        "node_id": "node.village_001",
+        "name": "Shapeable Rock",
+        "traits": ["trait.rock", "trait.shapeable"],
+        "yields_template_id": "template.stone_club",
+        "yields_base_color": "slate",
+        "asset_id": "asset.shapeable_rock",
+        "occupancy_radius": 0.55
+      }
+    }
+  ]
+}

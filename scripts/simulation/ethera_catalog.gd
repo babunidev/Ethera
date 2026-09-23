@@ -8,6 +8,8 @@ var skill_phases: Dictionary = {}
 var interactions: Dictionary = {}
 var item_templates: Dictionary = {}
 var states: Dictionary = {}
+var needs: Dictionary = {}
+var tasks: Dictionary = {}
 var milestone1_world: Dictionary = {}
 var milestone1_landscape: Dictionary = {}
 
@@ -28,6 +30,8 @@ func load_from_res() -> Error:
 		"interactions": ["interactions", "interactions"],
 		"item_templates": ["templates", "item_templates"],
 		"states": ["states", "states"],
+		"needs": ["needs", "needs"],
+		"tasks": ["tasks", "tasks"],
 	}
 	for file_key in collections.keys():
 		var entry: Array = collections[file_key]

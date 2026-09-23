@@ -15,13 +15,13 @@
     {
       "id": "template.grass_leaf",
       "kind": "item",
-      "name": "Grass Bundle",
+      "name": "Offering Herb",
       "traits": ["trait.herb"],
       "condition": "okay",
       "equipment_slot_id": "slot.herb",
       "attachment": "hip",
       "presentation": { "asset_id": "asset.grass" },
-      "description": "Five grass blades tied as a small bundle. Presentation variants are data, not separate item types."
+      "description": "The herb gathered from an offering plant. Presentation size is data, not a separate item type."
     }
   ]
 }

@@ -76,6 +76,17 @@ var panel_tab_row: HBoxContainer
 var panel_page: Label
 var panel_shards: ItemList
 var panel_shard_detail: Label
+var panel_needs: VBoxContainer
+var destiny_button: Button
+var character_root: Control
+var destiny_root: Control
+var destiny_task_title: Label
+var destiny_body: Label
+var destiny_tasks: VBoxContainer
+var destiny_open := false
+var task_list_open := false
+var _need_button_key := ""
+var _task_button_key := ""
 var log_label: Label
 var overlay: Control
 var toast_label: Label
@@ -99,6 +110,10 @@ func _ready() -> void:
 		_streamed_hex_key = hex_stream.loaded_key()
 	_rebuild_views()
 	_apply_living_stone_glow()
+	var orientation = (preload("res://scripts/presentation/divine_orientation.gd") as GDScript).new()
+	orientation.name = "DivineOrientation"
+	orientation.game = self
+	world_root.add_child(orientation)
 	_refresh_hud()
 
 
@@ -267,15 +282,13 @@ func _sync_views(delta: float) -> void:
 		if lid != null:
 			lid.sync_lid(bool(entity.get("container_lid_open", false)), delta)
 		_sync_discovery_aura(node, bool(entity.get("discovered_by_inhabited", false)))
-		var sink: Node = node.get_node_or_null("GrassPatchSink")
-		if sink != null:
-			sink.sync_sink(bool(entity.get("container_opened", false)), delta)
 		var holder_id: Variant = entity.get("holder_id", null)
 		var carried: bool = not EtheraIds.is_empty_slot(holder_id) and views.has(str(holder_id))
 		var pos: Dictionary = entity.get("position", {})
 		var rest := Vector3(float(pos.get("x", 0.0)), float(pos.get("y", 0.0)), float(pos.get("z", 0.0)))
 		if authored_views.has(entity_id):
 			node.visible = bool(entity.get("manifested", false))
+			_sync_grass_sink(node, entity, delta)
 			continue
 		if not carried:
 			rest.y = terrain_height(rest.x, rest.z)
@@ -294,12 +307,15 @@ func _sync_views(delta: float) -> void:
 		if handoff.is_active(entity_id):
 			node.global_transform = handoff.step(entity_id, delta, goal)
 			assets.apply_carried_visual(node, carried or handoff.is_airborne(entity_id))
+			_sync_grass_sink(node, entity, delta)
 			continue
 		if carried:
 			node.global_transform = goal
 			assets.apply_carried_visual(node, true)
+			_sync_grass_sink(node, entity, delta)
 			continue
 		assets.apply_carried_visual(node, false)
+		_sync_grass_sink(node, entity, delta)
 		if node.global_position.distance_to(rest) > VIEW_SNAP_DISTANCE:
 			node.global_transform = goal
 		else:
@@ -310,6 +326,15 @@ func _sync_views(delta: float) -> void:
 		(views[entity_id] as Node).queue_free()
 		views.erase(entity_id)
 		handoff.forget(entity_id)
+
+
+# Carried-item layout turns every collision shape back on. The harvested plant
+# must stay unclickable afterwards, or its box covers the herb that just dropped.
+func _sync_grass_sink(node: Node, entity: Dictionary, delta: float) -> void:
+	var sink: Node = node.get_node_or_null("GrassPatchSink")
+	if sink == null:
+		return
+	sink.sync_sink(bool(entity.get("container_opened", false)), delta)
 
 
 func _ensure_view(entity: Dictionary) -> void:
@@ -1068,18 +1093,29 @@ func _refresh_hud() -> void:
 	var using_models: bool = assets.has_model("asset.khar_morr") or assets.has_model("asset.memory_fountain") or assets.has_model("asset.village_center") or assets.has_model("asset.stone_club")
 	status_label.text = "Local simulation running\n%s\nC toggles the character panel" % ("Models loaded from assets/models" if using_models else "Placeholder meshes; drop GLBs into assets/models")
 	title_chrome.visible = not panel_visible
-	log_chrome.visible = not panel_visible
+	log_chrome.visible = true
 	title_content.visible = title_open
 	log_label.visible = log_open
-	log_label.custom_minimum_size = Vector2(380, 200) if log_open else Vector2(0, 0)
-	log_chrome.offset_bottom = 16 + (248 if log_open else 44)
+	log_label.custom_minimum_size = Vector2(380, 280) if log_open else Vector2(0, 0)
+	log_chrome.offset_bottom = 16 + (328 if log_open else 44)
 	title_toggle.text = "▾" if title_open else "▸"
 	log_toggle.text = "▾" if log_open else "▸"
 	panel_chrome.visible = panel_visible
+	if not panel_visible:
+		destiny_open = false
+		task_list_open = false
+	if character_root != null:
+		character_root.visible = not destiny_open
+	if destiny_root != null:
+		destiny_root.visible = panel_visible and destiny_open
+	if panel_visible:
+		log_chrome.move_to_front()
 	if panel_visible:
 		_refresh_character_panel(simulation.query_panel())
+		if destiny_open:
+			_refresh_destiny(simulation.query_panel())
 	var lines: PackedStringArray = PackedStringArray()
-	for entry in simulation.query_dev_log(12):
+	for entry in simulation.query_dev_log(16):
 		lines.append(str(entry.get("text", "")))
 	log_label.text = "\n".join(lines)
 	overlay.queue_redraw()
@@ -1090,15 +1126,23 @@ func _build_character_panel(host: PanelContainer) -> void:
 	var root := HBoxContainer.new()
 	root.add_theme_constant_override("separation", 18)
 	host.add_child(root)
+	character_root = root
 	var left := VBoxContainer.new()
 	left.custom_minimum_size = Vector2(280, 0)
 	left.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	panel_identity = _panel_label(ink, 22)
 	panel_body = _panel_label(ink)
 	panel_gear = _panel_label(ink)
+	destiny_button = Button.new()
+	destiny_button.text = "Destiny"
+	destiny_button.focus_mode = Control.FOCUS_NONE
+	destiny_button.pressed.connect(func() -> void:
+		destiny_open = true
+	)
 	left.add_child(panel_identity)
 	left.add_child(panel_body)
 	left.add_child(panel_gear)
+	left.add_child(destiny_button)
 	root.add_child(left)
 	var right := VBoxContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1117,6 +1161,10 @@ func _build_character_panel(host: PanelContainer) -> void:
 	panel_page = _panel_label(ink)
 	panel_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right.add_child(panel_page)
+	panel_needs = VBoxContainer.new()
+	panel_needs.visible = false
+	panel_needs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	right.add_child(panel_needs)
 	panel_shards = ItemList.new()
 	panel_shards.custom_minimum_size = Vector2(0, 220)
 	panel_shards.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -1128,6 +1176,177 @@ func _build_character_panel(host: PanelContainer) -> void:
 	panel_shard_detail.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right.add_child(panel_shard_detail)
 	root.add_child(right)
+	_build_destiny_screen(host)
+
+
+func _build_destiny_screen(host: PanelContainer) -> void:
+	var ink := Color(0.93, 0.90, 0.82)
+	destiny_root = VBoxContainer.new()
+	destiny_root.visible = false
+	destiny_root.add_theme_constant_override("separation", 10)
+	host.add_child(destiny_root)
+	var header := HBoxContainer.new()
+	var back := Button.new()
+	back.text = "Character"
+	back.custom_minimum_size = Vector2(110, 0)
+	back.focus_mode = Control.FOCUS_NONE
+	back.pressed.connect(func() -> void:
+		destiny_open = false
+		task_list_open = false
+	)
+	header.add_child(back)
+	var title := Label.new()
+	title.text = "Destiny"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.add_theme_color_override("font_color", ink)
+	title.add_theme_font_size_override("font_size", 22)
+	header.add_child(title)
+	var balance := Control.new()
+	balance.custom_minimum_size = Vector2(110, 0)
+	balance.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	header.add_child(balance)
+	destiny_root.add_child(header)
+	var columns := HBoxContainer.new()
+	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	columns.add_theme_constant_override("separation", 16)
+	destiny_root.add_child(columns)
+	var left := VBoxContainer.new()
+	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	left.size_flags_stretch_ratio = 1.0
+	left.add_theme_constant_override("separation", 8)
+	columns.add_child(left)
+	destiny_task_title = _panel_label(ink, 20)
+	left.add_child(destiny_task_title)
+	destiny_body = _panel_label(ink)
+	destiny_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	left.add_child(destiny_body)
+	destiny_tasks = VBoxContainer.new()
+	destiny_tasks.visible = false
+	left.add_child(destiny_tasks)
+	var common := Button.new()
+	common.text = "Common tasks"
+	common.focus_mode = Control.FOCUS_NONE
+	common.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	common.pressed.connect(func() -> void:
+		task_list_open = not task_list_open
+	)
+	left.add_child(common)
+	var crest = (preload("res://scripts/presentation/destiny_crest.gd") as GDScript).new()
+	crest.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	crest.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	crest.size_flags_stretch_ratio = 3.0
+	columns.add_child(crest)
+
+
+func _sync_need_buttons(needs: Variant) -> void:
+	var records: Array = needs if typeof(needs) == TYPE_ARRAY else []
+	var key: String = ""
+	for entry in records:
+		if typeof(entry) == TYPE_DICTIONARY:
+			key += str(entry.get("id", "")) + "|"
+	if key == _need_button_key:
+		return
+	_need_button_key = key
+	for child in panel_needs.get_children():
+		child.queue_free()
+	var heading := Label.new()
+	heading.text = "Needs"
+	heading.add_theme_color_override("font_color", Color(0.93, 0.90, 0.82))
+	panel_needs.add_child(heading)
+	if records.is_empty():
+		var empty := Label.new()
+		empty.text = "none"
+		empty.add_theme_color_override("font_color", Color(0.93, 0.90, 0.82))
+		panel_needs.add_child(empty)
+		return
+	for entry in records:
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		var button := Button.new()
+		var name: String = str(entry.get("name", entry.get("id", "")))
+		if bool(entry.get("important", false)):
+			button.text = "%s    important" % name
+			button.modulate = Color(1.0, 0.92, 0.62)
+		else:
+			button.text = name
+		button.focus_mode = Control.FOCUS_NONE
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		var need_id: String = str(entry.get("id", ""))
+		button.pressed.connect(_choose_need.bind(need_id))
+		panel_needs.add_child(button)
+
+
+func _choose_need(need_id: String) -> void:
+	simulation.apply({"type": EtheraIds.CMD_SELECT_NEED, "need_id": need_id})
+	destiny_open = true
+
+
+func _refresh_destiny(panel: Dictionary) -> void:
+	if destiny_tasks == null:
+		return
+	destiny_tasks.visible = task_list_open
+	var tasks: Array = panel.get("tasks", [])
+	var key: String = ""
+	for entry in tasks:
+		if typeof(entry) == TYPE_DICTIONARY:
+			key += str(entry.get("id", "")) + "|"
+	if key != _task_button_key:
+		_task_button_key = key
+		for child in destiny_tasks.get_children():
+			child.queue_free()
+		if tasks.is_empty():
+			var empty := Label.new()
+			empty.text = "none"
+			empty.add_theme_color_override("font_color", Color(0.93, 0.90, 0.82))
+			destiny_tasks.add_child(empty)
+		for entry in tasks:
+			if typeof(entry) != TYPE_DICTIONARY:
+				continue
+			var button := Button.new()
+			button.focus_mode = Control.FOCUS_NONE
+			button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			button.set_meta("task_id", str(entry.get("id", "")))
+			var task_id: String = str(entry.get("id", ""))
+			button.pressed.connect(_choose_task.bind(task_id))
+			destiny_tasks.add_child(button)
+	var active_name := ""
+	for button in destiny_tasks.get_children():
+		if not button.has_meta("task_id"):
+			continue
+		var task_id: String = str(button.get_meta("task_id", ""))
+		var task_name: String = task_id
+		var active: bool = false
+		for entry in tasks:
+			if typeof(entry) == TYPE_DICTIONARY and str(entry.get("id", "")) == task_id:
+				task_name = str(entry.get("name", task_id))
+				active = bool(entry.get("active", false))
+		button.text = ("priority stone    " if active else "") + task_name
+		if active:
+			active_name = task_name
+	if active_name == "":
+		destiny_task_title.text = "No common task"
+		destiny_body.text = ""
+		return
+	destiny_task_title.text = active_name
+	var checklist: Dictionary = panel.get("checklist", {})
+	var lines: PackedStringArray = PackedStringArray(["priority stone", "", "Goal", str(checklist.get("goal", ""))])
+	lines.append("")
+	lines.append("Known requirements")
+	var requirements: Array = checklist.get("requirements", [])
+	if requirements.is_empty():
+		lines.append("none")
+	else:
+		for requirement in requirements:
+			if typeof(requirement) == TYPE_DICTIONARY:
+				lines.append(str(requirement.get("text", "")))
+	destiny_body.text = "\n".join(lines)
+
+
+func _choose_task(task_id: String) -> void:
+	simulation.apply({"type": EtheraIds.CMD_ACTIVATE_TASK, "task_id": task_id})
+	task_list_open = false
 
 
 func _panel_label(ink: Color, size: int = 16) -> Label:
@@ -1180,9 +1399,14 @@ func _refresh_character_panel(panel: Dictionary) -> void:
 	var states: Array = panel.get("states", [])
 	var show_shards: bool = panel_tab == "shards"
 	var show_states: bool = panel_tab == "states"
-	panel_shards.visible = show_shards or show_states
-	panel_shard_detail.visible = show_shards or show_states
-	panel_page.visible = not show_shards and not show_states
+	var show_interactions: bool = panel_tab == "interactions"
+	panel_shards.visible = show_shards or show_states or show_interactions
+	panel_shard_detail.visible = show_shards or show_states or show_interactions
+	var show_needs: bool = panel_tab == "needs"
+	panel_needs.visible = show_needs
+	panel_page.visible = not show_shards and not show_states and not show_needs and not show_interactions
+	if show_needs:
+		_sync_need_buttons(panel.get("needs", []))
 	if show_shards:
 		_fill_panel_list(shards, "No known Shards.", _shard_title, _shard_detail)
 		panel_refreshing = false
@@ -1191,13 +1415,11 @@ func _refresh_character_panel(panel: Dictionary) -> void:
 		_fill_panel_list(states, "No current States.", _state_title, _state_detail)
 		panel_refreshing = false
 		return
-	match panel_tab:
-		"traits":
-			panel_page.text = _named_list("Traits", panel.get("traits", []))
-		"needs":
-			panel_page.text = _id_list("Needs", panel.get("needs", []))
-		_:
-			panel_page.text = _named_list("Interactions", panel.get("known_interactions", []))
+	if show_interactions:
+		_fill_panel_list(panel.get("known_interactions", []), "No discovered interactions.", _interaction_title, _interaction_detail)
+		panel_refreshing = false
+		return
+	panel_page.text = _named_list("Traits", panel.get("traits", []))
 	panel_refreshing = false
 
 
@@ -1211,6 +1433,10 @@ func _fill_panel_list(entries: Array, empty_text: String, title_fn: Callable, de
 		return
 	for entry in entries:
 		panel_shards.add_item(str(title_fn.call(entry)))
+		if typeof(entry) == TYPE_DICTIONARY:
+			var tip: String = _requirement_tooltip(entry.get("requirements", []))
+			if tip != "":
+				panel_shards.set_item_tooltip(panel_shards.item_count - 1, tip)
 	selected = clampi(selected, 0, entries.size() - 1)
 	panel_shards.select(selected)
 	panel_shard_detail.text = str(detail_fn.call(entries[selected]))
@@ -1235,6 +1461,42 @@ func _shard_detail(shard: Variant) -> String:
 		"Time  %.1fs" % seconds,
 		"Id  %s" % str(data.get("id", "")),
 	]))
+
+
+func _interaction_title(entry: Variant) -> String:
+	var data: Dictionary = entry if typeof(entry) == TYPE_DICTIONARY else {}
+	return str(data.get("name", data.get("id", "interaction")))
+
+
+func _interaction_detail(entry: Variant) -> String:
+	var data: Dictionary = entry if typeof(entry) == TYPE_DICTIONARY else {}
+	var lines: PackedStringArray = PackedStringArray([str(data.get("name", "")), "", "Requires"])
+	var requirements: Array = data.get("requirements", [])
+	if requirements.is_empty():
+		lines.append("none")
+	else:
+		for phrase in requirements:
+			lines.append(str(phrase))
+	return "\n".join(lines)
+
+
+func _requirement_tooltip(requirements: Variant) -> String:
+	if typeof(requirements) != TYPE_ARRAY or (requirements as Array).is_empty():
+		return ""
+	var chunks: PackedStringArray = PackedStringArray()
+	var current: PackedStringArray = PackedStringArray()
+	for phrase in requirements:
+		if str(phrase) == "or":
+			if current.size() > 0:
+				chunks.append(", ".join(current))
+			current = PackedStringArray()
+		else:
+			current.append(str(phrase))
+	if current.size() > 0:
+		chunks.append(", ".join(current))
+	if chunks.is_empty():
+		return ""
+	return "Requires %s" % " or ".join(chunks)
 
 
 func _state_title(state: Variant) -> String:

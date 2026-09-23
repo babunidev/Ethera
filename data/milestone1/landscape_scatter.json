@@ -7,7 +7,7 @@
 			"id": "entity.grass.1",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -36,7 +36,7 @@
 			"id": "entity.grass.bundle.1",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -12.0,
@@ -62,7 +62,7 @@
 			"id": "entity.grass.2",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -91,7 +91,7 @@
 			"id": "entity.grass.bundle.2",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -11.0,
@@ -117,7 +117,7 @@
 			"id": "entity.grass.3",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -146,7 +146,7 @@
 			"id": "entity.grass.bundle.3",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 8.0,
@@ -172,7 +172,7 @@
 			"id": "entity.grass.4",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Flat Leaf",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -201,7 +201,7 @@
 			"id": "entity.grass.bundle.4",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 12.0,
@@ -227,7 +227,7 @@
 			"id": "entity.grass.5",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Needle Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -256,7 +256,7 @@
 			"id": "entity.grass.bundle.5",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 35.364,
@@ -282,7 +282,7 @@
 			"id": "entity.grass.6",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -311,7 +311,7 @@
 			"id": "entity.grass.bundle.6",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 41.518,
@@ -337,7 +337,7 @@
 			"id": "entity.grass.7",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -366,7 +366,7 @@
 			"id": "entity.grass.bundle.7",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -84.864,
@@ -392,7 +392,7 @@
 			"id": "entity.grass.8",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -421,7 +421,7 @@
 			"id": "entity.grass.bundle.8",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -27.616,
@@ -447,7 +447,7 @@
 			"id": "entity.grass.9",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Flat Leaf",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -476,7 +476,7 @@
 			"id": "entity.grass.bundle.9",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -97.301,
@@ -502,7 +502,7 @@
 			"id": "entity.grass.10",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Needle Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -531,7 +531,7 @@
 			"id": "entity.grass.bundle.10",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -93.973,
@@ -557,7 +557,7 @@
 			"id": "entity.grass.11",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -586,7 +586,7 @@
 			"id": "entity.grass.bundle.11",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -105.033,
@@ -612,7 +612,7 @@
 			"id": "entity.grass.12",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -641,7 +641,7 @@
 			"id": "entity.grass.bundle.12",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -77.61,
@@ -667,7 +667,7 @@
 			"id": "entity.grass.13",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -696,7 +696,7 @@
 			"id": "entity.grass.bundle.13",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -86.751,
@@ -722,7 +722,7 @@
 			"id": "entity.grass.14",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Flat Leaf",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -751,7 +751,7 @@
 			"id": "entity.grass.bundle.14",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 100.058,
@@ -777,7 +777,7 @@
 			"id": "entity.grass.15",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Needle Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -806,7 +806,7 @@
 			"id": "entity.grass.bundle.15",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -36.408,
@@ -832,7 +832,7 @@
 			"id": "entity.grass.16",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -861,7 +861,7 @@
 			"id": "entity.grass.bundle.16",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 76.576,
@@ -887,7 +887,7 @@
 			"id": "entity.grass.17",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -916,7 +916,7 @@
 			"id": "entity.grass.bundle.17",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -119.643,
@@ -942,7 +942,7 @@
 			"id": "entity.grass.18",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -971,7 +971,7 @@
 			"id": "entity.grass.bundle.18",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -58.754,
@@ -996,7 +996,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.379
+				"radius": 1.011
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1007,9 +1007,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.604,
-					"y": 0.605,
-					"z": 0.689
+					"x": 1.611,
+					"y": 1.613,
+					"z": 1.837
 				}
 			},
 			"states": [],
@@ -1027,7 +1027,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.365
+				"radius": 1.054
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1038,9 +1038,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.539,
-					"y": 0.546,
-					"z": 0.664
+					"x": 1.557,
+					"y": 1.577,
+					"z": 1.918
 				}
 			},
 			"states": [],
@@ -1058,7 +1058,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.396
+				"radius": 1.232
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1069,9 +1069,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.554,
-					"y": 0.51,
-					"z": 0.72
+					"x": 1.724,
+					"y": 1.587,
+					"z": 2.240
 				}
 			},
 			"states": [],
@@ -1089,7 +1089,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.405
+				"radius": 1.350
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1100,9 +1100,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.674,
-					"y": 0.585,
-					"z": 0.737
+					"x": 2.247,
+					"y": 1.950,
+					"z": 2.457
 				}
 			},
 			"states": [],
@@ -1120,20 +1120,20 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.507
+				"radius": 1.803
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": 84.724,
+				"x": 86.456,
 				"y": 0.0,
-				"z": -14.154
+				"z": -13.154
 			},
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.921,
-					"y": 1.005,
-					"z": 0.896
+					"x": 3.275,
+					"y": 3.573,
+					"z": 3.186
 				}
 			},
 			"states": [],
@@ -1151,7 +1151,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.402
+				"radius": 1.519
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1162,9 +1162,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.715,
-					"y": 0.594,
-					"z": 0.732
+					"x": 2.701,
+					"y": 2.244,
+					"z": 2.765
 				}
 			},
 			"states": [],
@@ -1182,7 +1182,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.548
+				"radius": 2.192
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1193,9 +1193,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.996,
-					"y": 0.966,
-					"z": 0.794
+					"x": 3.984,
+					"y": 3.864,
+					"z": 3.176
 				}
 			},
 			"states": [],
@@ -1213,7 +1213,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.287
+				"radius": 0.574
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1224,9 +1224,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.521,
-					"y": 0.415,
-					"z": 0.46
+					"x": 1.042,
+					"y": 0.830,
+					"z": 0.920
 				}
 			},
 			"states": [],
@@ -1244,7 +1244,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.164
+				"radius": 0.364
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1255,9 +1255,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.298,
-					"y": 0.332,
-					"z": 0.289
+					"x": 0.662,
+					"y": 0.738,
+					"z": 0.642
 				}
 			},
 			"states": [],
@@ -1275,7 +1275,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.508
+				"radius": 2.032
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1286,9 +1286,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.904,
-					"y": 0.766,
-					"z": 0.924
+					"x": 3.616,
+					"y": 3.064,
+					"z": 3.696
 				}
 			},
 			"states": [],
@@ -1306,7 +1306,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.406
+				"radius": 0.812
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1317,9 +1317,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.495,
-					"y": 0.411,
-					"z": 0.738
+					"x": 0.990,
+					"y": 0.822,
+					"z": 1.476
 				}
 			},
 			"states": [],
@@ -1337,7 +1337,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.361
+				"radius": 0.802
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1348,9 +1348,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.618,
-					"y": 0.451,
-					"z": 0.657
+					"x": 1.373,
+					"y": 1.002,
+					"z": 1.460
 				}
 			},
 			"states": [],
@@ -1368,7 +1368,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.58
+				"radius": 1.418
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1379,9 +1379,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.827,
-					"y": 0.639,
-					"z": 1.054
+					"x": 2.022,
+					"y": 1.562,
+					"z": 2.576
 				}
 			},
 			"states": [],
@@ -1399,7 +1399,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.365
+				"radius": 0.973
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1410,9 +1410,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.663,
-					"y": 0.553,
-					"z": 0.619
+					"x": 1.768,
+					"y": 1.475,
+					"z": 1.651
 				}
 			},
 			"states": [],
@@ -1430,7 +1430,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.462
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1441,9 +1441,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.224,
-					"y": 0.154,
-					"z": 0.189
+					"x": 0.647,
+					"y": 0.445,
+					"z": 0.546
 				}
 			},
 			"states": [],
@@ -1461,7 +1461,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.498
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1472,9 +1472,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.256,
-					"y": 0.175,
-					"z": 0.269
+					"x": 0.796,
+					"y": 0.544,
+					"z": 0.837
 				}
 			},
 			"states": [],
@@ -1492,7 +1492,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.294
+				"radius": 0.980
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1503,9 +1503,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.535,
-					"y": 0.392,
-					"z": 0.51
+					"x": 1.783,
+					"y": 1.307,
+					"z": 1.700
 				}
 			},
 			"states": [],
@@ -1523,7 +1523,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.569
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1534,9 +1534,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.228,
-					"y": 0.169,
-					"z": 0.189
+					"x": 0.811,
+					"y": 0.601,
+					"z": 0.672
 				}
 			},
 			"states": [],
@@ -1554,20 +1554,20 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.32
+				"radius": 1.209
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": 5.599,
+				"x": 7.331,
 				"y": 0.0,
-				"z": -57.877
+				"z": -56.877
 			},
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.581,
-					"y": 0.332,
-					"z": 0.468
+					"x": 2.195,
+					"y": 1.254,
+					"z": 1.768
 				}
 			},
 			"states": [],
@@ -1585,7 +1585,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.226
+				"radius": 0.552
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1596,9 +1596,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.411,
-					"y": 0.318,
-					"z": 0.346
+					"x": 1.005,
+					"y": 0.777,
+					"z": 0.846
 				}
 			},
 			"states": [],
@@ -1616,20 +1616,20 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.217
+				"radius": 0.579
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": -65.272,
+				"x": -63.719,
 				"y": 0.0,
-				"z": -17.152
+				"z": -11.356
 			},
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.395,
-					"y": 0.249,
-					"z": 0.37
+					"x": 1.053,
+					"y": 0.664,
+					"z": 0.987
 				}
 			},
 			"states": [],
@@ -1647,7 +1647,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.462
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1658,9 +1658,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.207,
-					"y": 0.194,
-					"z": 0.228
+					"x": 0.598,
+					"y": 0.560,
+					"z": 0.659
 				}
 			},
 			"states": [],
@@ -1678,7 +1678,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.203
+				"radius": 0.632
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1689,9 +1689,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.368,
-					"y": 0.197,
-					"z": 0.326
+					"x": 1.145,
+					"y": 0.613,
+					"z": 1.014
 				}
 			},
 			"states": [],
@@ -1709,7 +1709,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.533
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1720,9 +1720,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.265,
-					"y": 0.151,
-					"z": 0.246
+					"x": 0.883,
+					"y": 0.503,
+					"z": 0.820
 				}
 			},
 			"states": [],
@@ -1740,20 +1740,20 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.569
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": -25.993,
+				"x": -28.993,
 				"y": 0.0,
-				"z": -57.504
+				"z": -52.308
 			},
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.276,
-					"y": 0.161,
-					"z": 0.262
+					"x": 0.981,
+					"y": 0.572,
+					"z": 0.932
 				}
 			},
 			"states": [],
@@ -1771,7 +1771,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.604
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1782,9 +1782,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.278,
-					"y": 0.148,
-					"z": 0.271
+					"x": 1.050,
+					"y": 0.559,
+					"z": 1.024
 				}
 			},
 			"states": [],
@@ -1802,7 +1802,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.640
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1813,9 +1813,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.255,
-					"y": 0.183,
-					"z": 0.236
+					"x": 1.020,
+					"y": 0.732,
+					"z": 0.944
 				}
 			},
 			"states": [],
@@ -1833,7 +1833,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.33
+				"radius": 0.660
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1844,9 +1844,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.564,
-					"y": 0.593,
-					"z": 0.6
+					"x": 1.128,
+					"y": 1.186,
+					"z": 1.200
 				}
 			},
 			"states": [],
@@ -1864,7 +1864,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.39
+				"radius": 0.867
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1875,9 +1875,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.615,
-					"y": 0.448,
-					"z": 0.709
+					"x": 1.367,
+					"y": 0.996,
+					"z": 1.576
 				}
 			},
 			"states": [],
@@ -1895,7 +1895,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.458
+				"radius": 1.425
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1906,9 +1906,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.79,
-					"y": 0.627,
-					"z": 0.832
+					"x": 2.458,
+					"y": 1.951,
+					"z": 2.588
 				}
 			},
 			"states": [],
@@ -1926,7 +1926,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.16
+				"radius": 0.533
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1937,9 +1937,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.252,
-					"y": 0.174,
-					"z": 0.266
+					"x": 0.840,
+					"y": 0.580,
+					"z": 0.887
 				}
 			},
 			"states": [],
@@ -1957,7 +1957,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.322
+				"radius": 1.145
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1968,9 +1968,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.469,
-					"y": 0.609,
-					"z": 0.586
+					"x": 1.668,
+					"y": 2.165,
+					"z": 2.084
 				}
 			},
 			"states": [],
@@ -1988,7 +1988,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.339
+				"radius": 1.281
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -1999,9 +1999,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.575,
-					"y": 0.38,
-					"z": 0.615
+					"x": 2.172,
+					"y": 1.436,
+					"z": 2.323
 				}
 			},
 			"states": [],
@@ -2019,7 +2019,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.224
+				"radius": 0.896
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -2030,9 +2030,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.407,
-					"y": 0.293,
-					"z": 0.291
+					"x": 1.628,
+					"y": 1.172,
+					"z": 1.164
 				}
 			},
 			"states": [],
@@ -2050,20 +2050,20 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.625
+				"radius": 1.250
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": -37.563,
+				"x": -38.563,
 				"y": 0.0,
-				"z": -49.397
+				"z": -47.665
 			},
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.994,
-					"y": 0.555,
-					"z": 1.136
+					"x": 1.988,
+					"y": 1.110,
+					"z": 2.272
 				}
 			},
 			"states": [],
@@ -2081,7 +2081,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.2
+				"radius": 0.444
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -2092,9 +2092,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.316,
-					"y": 0.273,
-					"z": 0.364
+					"x": 0.702,
+					"y": 0.607,
+					"z": 0.809
 				}
 			},
 			"states": [],
@@ -2112,7 +2112,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.27
+				"radius": 0.660
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -2123,9 +2123,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.482,
-					"y": 0.555,
-					"z": 0.49
+					"x": 1.178,
+					"y": 1.357,
+					"z": 1.198
 				}
 			},
 			"states": [],
@@ -2143,7 +2143,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.317
+				"radius": 0.845
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -2154,9 +2154,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.562,
-					"y": 0.434,
-					"z": 0.576
+					"x": 1.499,
+					"y": 1.157,
+					"z": 1.536
 				}
 			},
 			"states": [],
@@ -2174,7 +2174,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.405
+				"radius": 1.170
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -2185,9 +2185,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.697,
-					"y": 0.492,
-					"z": 0.736
+					"x": 2.014,
+					"y": 1.421,
+					"z": 2.126
 				}
 			},
 			"states": [],
@@ -2205,7 +2205,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.423
+				"radius": 1.598
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -2216,9 +2216,9 @@
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"scale": {
-					"x": 0.687,
-					"y": 0.581,
-					"z": 0.769
+					"x": 2.595,
+					"y": 2.195,
+					"z": 2.905
 				}
 			},
 			"states": [],
@@ -2237,7 +2237,7 @@
 			"id": "entity.grass.19",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2267,7 +2267,7 @@
 			"id": "entity.grass.bundle.19",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 118.904,
@@ -2294,7 +2294,7 @@
 			"id": "entity.grass.20",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2324,7 +2324,7 @@
 			"id": "entity.grass.bundle.20",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -112.605,
@@ -2351,7 +2351,7 @@
 			"id": "entity.grass.21",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Flat Leaf",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2381,7 +2381,7 @@
 			"id": "entity.grass.bundle.21",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -97.698,
@@ -2408,7 +2408,7 @@
 			"id": "entity.grass.22",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Needle Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2438,7 +2438,7 @@
 			"id": "entity.grass.bundle.22",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -79.49,
@@ -2465,7 +2465,7 @@
 			"id": "entity.grass.23",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2495,7 +2495,7 @@
 			"id": "entity.grass.bundle.23",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -61.347,
@@ -2522,7 +2522,7 @@
 			"id": "entity.grass.24",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2552,7 +2552,7 @@
 			"id": "entity.grass.bundle.24",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -37.819,
@@ -2579,7 +2579,7 @@
 			"id": "entity.grass.25",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2609,7 +2609,7 @@
 			"id": "entity.grass.bundle.25",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -25.921,
@@ -2636,7 +2636,7 @@
 			"id": "entity.grass.26",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Flat Leaf",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2666,7 +2666,7 @@
 			"id": "entity.grass.bundle.26",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -9.223,
@@ -2693,7 +2693,7 @@
 			"id": "entity.grass.27",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Needle Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2723,7 +2723,7 @@
 			"id": "entity.grass.bundle.27",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -103.733,
@@ -2750,7 +2750,7 @@
 			"id": "entity.grass.28",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2780,7 +2780,7 @@
 			"id": "entity.grass.bundle.28",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -86.684,
@@ -2807,7 +2807,7 @@
 			"id": "entity.grass.29",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2837,7 +2837,7 @@
 			"id": "entity.grass.bundle.29",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -77.693,
@@ -2864,7 +2864,7 @@
 			"id": "entity.grass.30",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2894,7 +2894,7 @@
 			"id": "entity.grass.bundle.30",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -61.01,
@@ -2921,7 +2921,7 @@
 			"id": "entity.grass.31",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Flat Leaf",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -2951,7 +2951,7 @@
 			"id": "entity.grass.bundle.31",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -41.334,
@@ -2978,7 +2978,7 @@
 			"id": "entity.grass.32",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Needle Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3008,7 +3008,7 @@
 			"id": "entity.grass.bundle.32",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -19.8,
@@ -3035,7 +3035,7 @@
 			"id": "entity.grass.33",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3065,7 +3065,7 @@
 			"id": "entity.grass.bundle.33",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -117.497,
@@ -3092,7 +3092,7 @@
 			"id": "entity.grass.34",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3122,7 +3122,7 @@
 			"id": "entity.grass.bundle.34",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -119.325,
@@ -3149,7 +3149,7 @@
 			"id": "entity.grass.35",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3179,7 +3179,7 @@
 			"id": "entity.grass.bundle.35",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -107.374,
@@ -3206,7 +3206,7 @@
 			"id": "entity.grass.36",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Flat Leaf",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3236,7 +3236,7 @@
 			"id": "entity.grass.bundle.36",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 62.23,
@@ -3263,7 +3263,7 @@
 			"id": "entity.grass.37",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Needle Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3293,7 +3293,7 @@
 			"id": "entity.grass.bundle.37",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 65.529,
@@ -3320,7 +3320,7 @@
 			"id": "entity.grass.38",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Long Grass",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3350,7 +3350,7 @@
 			"id": "entity.grass.bundle.38",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": -68.074,
@@ -3377,7 +3377,7 @@
 			"id": "entity.grass.39",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Soft Tuft",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3407,7 +3407,7 @@
 			"id": "entity.grass.bundle.39",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 33.862,
@@ -3434,7 +3434,7 @@
 			"id": "entity.grass.40",
 			"kind": "grass",
 			"manifested": true,
-			"name": "Split Blade",
+			"name": "Offering Herb",
 			"opened": false,
 			"place_id": "place.village_center",
 			"position": {
@@ -3464,7 +3464,7 @@
 			"id": "entity.grass.bundle.40",
 			"kind": "item",
 			"manifested": false,
-			"name": "Grass Bundle",
+			"name": "Offering Herb",
 			"place_id": "place.village_center",
 			"position": {
 				"x": 56.137,
@@ -3490,7 +3490,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.599
+				"radius": 2.396
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3502,9 +3502,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.09,
-					"y": 1.09,
-					"z": 1.09
+					"x": 4.360,
+					"y": 4.360,
+					"z": 4.360
 				}
 			},
 			"states": [],
@@ -3522,7 +3522,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.633
+				"radius": 1.266
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3534,9 +3534,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.151,
-					"y": 1.151,
-					"z": 1.151
+					"x": 2.302,
+					"y": 2.302,
+					"z": 2.302
 				}
 			},
 			"states": [],
@@ -3554,7 +3554,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.755
+				"radius": 1.678
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3566,9 +3566,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.373,
-					"y": 1.373,
-					"z": 1.373
+					"x": 3.051,
+					"y": 3.051,
+					"z": 3.051
 				}
 			},
 			"states": [],
@@ -3586,7 +3586,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.614
+				"radius": 1.501
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3598,9 +3598,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.116,
-					"y": 1.116,
-					"z": 1.116
+					"x": 2.728,
+					"y": 2.728,
+					"z": 2.728
 				}
 			},
 			"states": [],
@@ -3618,7 +3618,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.367
+				"radius": 0.979
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3630,9 +3630,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.668,
-					"y": 0.668,
-					"z": 0.668
+					"x": 1.781,
+					"y": 1.781,
+					"z": 1.781
 				}
 			},
 			"states": [],
@@ -3650,7 +3650,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.496
+				"radius": 1.433
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3662,9 +3662,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.903,
-					"y": 0.903,
-					"z": 0.903
+					"x": 2.609,
+					"y": 2.609,
+					"z": 2.609
 				}
 			},
 			"states": [],
@@ -3682,7 +3682,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.839
+				"radius": 2.610
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3694,9 +3694,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.525,
-					"y": 1.525,
-					"z": 1.525
+					"x": 4.744,
+					"y": 4.744,
+					"z": 4.744
 				}
 			},
 			"states": [],
@@ -3714,7 +3714,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.61
+				"radius": 2.033
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3726,9 +3726,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.109,
-					"y": 1.109,
-					"z": 1.109
+					"x": 3.697,
+					"y": 3.697,
+					"z": 3.697
 				}
 			},
 			"states": [],
@@ -3746,7 +3746,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.564
+				"radius": 2.005
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3758,9 +3758,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.026,
-					"y": 1.026,
-					"z": 1.026
+					"x": 3.648,
+					"y": 3.648,
+					"z": 3.648
 				}
 			},
 			"states": [],
@@ -3778,7 +3778,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.304
+				"radius": 0.676
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3790,9 +3790,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.553,
-					"y": 0.553,
-					"z": 0.553
+					"x": 1.229,
+					"y": 1.229,
+					"z": 1.229
 				}
 			},
 			"states": [],
@@ -3810,7 +3810,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.882
+				"radius": 2.156
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3822,9 +3822,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.603,
-					"y": 1.603,
-					"z": 1.603
+					"x": 3.918,
+					"y": 3.918,
+					"z": 3.918
 				}
 			},
 			"states": [],
@@ -3842,7 +3842,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.508
+				"radius": 1.355
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3854,9 +3854,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.923,
-					"y": 0.923,
-					"z": 0.923
+					"x": 2.461,
+					"y": 2.461,
+					"z": 2.461
 				}
 			},
 			"states": [],
@@ -3874,7 +3874,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.778
+				"radius": 2.248
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3886,9 +3886,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.415,
-					"y": 1.415,
-					"z": 1.415
+					"x": 4.088,
+					"y": 4.088,
+					"z": 4.088
 				}
 			},
 			"states": [],
@@ -3906,7 +3906,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.739
+				"radius": 2.299
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3918,9 +3918,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.344,
-					"y": 1.344,
-					"z": 1.344
+					"x": 4.181,
+					"y": 4.181,
+					"z": 4.181
 				}
 			},
 			"states": [],
@@ -3938,7 +3938,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.314
+				"radius": 1.047
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3950,9 +3950,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.571,
-					"y": 0.571,
-					"z": 0.571
+					"x": 1.903,
+					"y": 1.903,
+					"z": 1.903
 				}
 			},
 			"states": [],
@@ -3970,7 +3970,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.511
+				"radius": 1.817
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -3982,9 +3982,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.929,
-					"y": 0.929,
-					"z": 0.929
+					"x": 3.303,
+					"y": 3.303,
+					"z": 3.303
 				}
 			},
 			"states": [],
@@ -4002,7 +4002,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.606
+				"radius": 2.289
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4014,9 +4014,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.102,
-					"y": 1.102,
-					"z": 1.102
+					"x": 4.163,
+					"y": 4.163,
+					"z": 4.163
 				}
 			},
 			"states": [],
@@ -4034,7 +4034,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.538
+				"radius": 2.152
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4046,9 +4046,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.979,
-					"y": 0.979,
-					"z": 0.979
+					"x": 3.916,
+					"y": 3.916,
+					"z": 3.916
 				}
 			},
 			"states": [],
@@ -4066,7 +4066,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.698
+				"radius": 1.396
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4078,9 +4078,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.269,
-					"y": 1.269,
-					"z": 1.269
+					"x": 2.538,
+					"y": 2.538,
+					"z": 2.538
 				}
 			},
 			"states": [],
@@ -4098,7 +4098,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.595
+				"radius": 1.719
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4110,9 +4110,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.081,
-					"y": 1.081,
-					"z": 1.081
+					"x": 3.123,
+					"y": 3.123,
+					"z": 3.123
 				}
 			},
 			"states": [],
@@ -4130,7 +4130,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.614
+				"radius": 1.910
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4142,9 +4142,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.116,
-					"y": 1.116,
-					"z": 1.116
+					"x": 3.472,
+					"y": 3.472,
+					"z": 3.472
 				}
 			},
 			"states": [],
@@ -4162,7 +4162,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.605
+				"radius": 2.017
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4174,9 +4174,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.1,
-					"y": 1.1,
-					"z": 1.1
+					"x": 3.667,
+					"y": 3.667,
+					"z": 3.667
 				}
 			},
 			"states": [],
@@ -4194,7 +4194,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.682
+				"radius": 2.425
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4206,9 +4206,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.24,
-					"y": 1.24,
-					"z": 1.24
+					"x": 4.409,
+					"y": 4.409,
+					"z": 4.409
 				}
 			},
 			"states": [],
@@ -4226,7 +4226,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.591
+				"radius": 2.233
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4238,9 +4238,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.075,
-					"y": 1.075,
-					"z": 1.075
+					"x": 4.061,
+					"y": 4.061,
+					"z": 4.061
 				}
 			},
 			"states": [],
@@ -4258,7 +4258,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.9
+				"radius": 3.600
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4270,9 +4270,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.636,
-					"y": 1.636,
-					"z": 1.636
+					"x": 6.544,
+					"y": 6.544,
+					"z": 6.544
 				}
 			},
 			"states": [],
@@ -4290,7 +4290,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.34
+				"radius": 0.680
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4302,9 +4302,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.618,
-					"y": 0.618,
-					"z": 0.618
+					"x": 1.236,
+					"y": 1.236,
+					"z": 1.236
 				}
 			},
 			"states": [],
@@ -4322,7 +4322,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.714
+				"radius": 1.587
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4334,9 +4334,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.299,
-					"y": 1.299,
-					"z": 1.299
+					"x": 2.887,
+					"y": 2.887,
+					"z": 2.887
 				}
 			},
 			"states": [],
@@ -4354,7 +4354,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.606
+				"radius": 1.481
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4366,9 +4366,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.102,
-					"y": 1.102,
-					"z": 1.102
+					"x": 2.694,
+					"y": 2.694,
+					"z": 2.694
 				}
 			},
 			"states": [],
@@ -4386,7 +4386,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.625
+				"radius": 1.667
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4398,9 +4398,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.136,
-					"y": 1.136,
-					"z": 1.136
+					"x": 3.029,
+					"y": 3.029,
+					"z": 3.029
 				}
 			},
 			"states": [],
@@ -4418,7 +4418,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.506
+				"radius": 1.799
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4430,9 +4430,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.921,
-					"y": 0.921,
-					"z": 0.921
+					"x": 3.275,
+					"y": 3.275,
+					"z": 3.275
 				}
 			},
 			"states": [],
@@ -4450,7 +4450,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.478
+				"radius": 1.806
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4462,9 +4462,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.87,
-					"y": 0.87,
-					"z": 0.87
+					"x": 3.287,
+					"y": 3.287,
+					"z": 3.287
 				}
 			},
 			"states": [],
@@ -4482,7 +4482,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.516
+				"radius": 2.064
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4494,9 +4494,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.938,
-					"y": 0.938,
-					"z": 0.938
+					"x": 3.752,
+					"y": 3.752,
+					"z": 3.752
 				}
 			},
 			"states": [],
@@ -4514,7 +4514,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.743
+				"radius": 1.486
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4526,9 +4526,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.35,
-					"y": 1.35,
-					"z": 1.35
+					"x": 2.700,
+					"y": 2.700,
+					"z": 2.700
 				}
 			},
 			"states": [],
@@ -4546,11 +4546,11 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.564
+				"radius": 1.253
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": -0.666,
+				"x": 3.334,
 				"y": 0.0,
 				"z": -43.288
 			},
@@ -4558,9 +4558,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.026,
-					"y": 1.026,
-					"z": 1.026
+					"x": 2.280,
+					"y": 2.280,
+					"z": 2.280
 				}
 			},
 			"states": [],
@@ -4578,7 +4578,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.56
+				"radius": 1.369
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4590,9 +4590,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.018,
-					"y": 1.018,
-					"z": 1.018
+					"x": 2.488,
+					"y": 2.488,
+					"z": 2.488
 				}
 			},
 			"states": [],
@@ -4610,7 +4610,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.693
+				"radius": 1.848
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4622,9 +4622,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.259,
-					"y": 1.259,
-					"z": 1.259
+					"x": 3.357,
+					"y": 3.357,
+					"z": 3.357
 				}
 			},
 			"states": [],
@@ -4642,7 +4642,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.818
+				"radius": 2.363
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4654,9 +4654,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.487,
-					"y": 1.487,
-					"z": 1.487
+					"x": 4.296,
+					"y": 4.296,
+					"z": 4.296
 				}
 			},
 			"states": [],
@@ -4674,7 +4674,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.861
+				"radius": 2.679
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4686,9 +4686,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.565,
-					"y": 1.565,
-					"z": 1.565
+					"x": 4.869,
+					"y": 4.869,
+					"z": 4.869
 				}
 			},
 			"states": [],
@@ -4706,7 +4706,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.585
+				"radius": 1.950
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4718,9 +4718,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.063,
-					"y": 1.063,
-					"z": 1.063
+					"x": 3.543,
+					"y": 3.543,
+					"z": 3.543
 				}
 			},
 			"states": [],
@@ -4738,7 +4738,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.657
+				"radius": 1.314
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4750,9 +4750,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.194,
-					"y": 1.194,
-					"z": 1.194
+					"x": 2.388,
+					"y": 2.388,
+					"z": 2.388
 				}
 			},
 			"states": [],
@@ -4770,7 +4770,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.694
+				"radius": 1.542
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4782,9 +4782,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.262,
-					"y": 1.262,
-					"z": 1.262
+					"x": 2.804,
+					"y": 2.804,
+					"z": 2.804
 				}
 			},
 			"states": [],
@@ -4802,7 +4802,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.669
+				"radius": 1.635
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4814,9 +4814,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.216,
-					"y": 1.216,
-					"z": 1.216
+					"x": 2.972,
+					"y": 2.972,
+					"z": 2.972
 				}
 			},
 			"states": [],
@@ -4834,7 +4834,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.575
+				"radius": 1.533
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4846,9 +4846,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.046,
-					"y": 1.046,
-					"z": 1.046
+					"x": 2.789,
+					"y": 2.789,
+					"z": 2.789
 				}
 			},
 			"states": [],
@@ -4866,7 +4866,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.356
+				"radius": 1.028
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4878,9 +4878,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.647,
-					"y": 0.647,
-					"z": 0.647
+					"x": 1.869,
+					"y": 1.869,
+					"z": 1.869
 				}
 			},
 			"states": [],
@@ -4898,7 +4898,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.648
+				"radius": 2.016
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4910,9 +4910,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.178,
-					"y": 1.178,
-					"z": 1.178
+					"x": 3.665,
+					"y": 3.665,
+					"z": 3.665
 				}
 			},
 			"states": [],
@@ -4930,7 +4930,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.608
+				"radius": 2.027
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4942,9 +4942,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.106,
-					"y": 1.106,
-					"z": 1.106
+					"x": 3.687,
+					"y": 3.687,
+					"z": 3.687
 				}
 			},
 			"states": [],
@@ -4962,7 +4962,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.311
+				"radius": 1.106
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -4974,9 +4974,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.565,
-					"y": 0.565,
-					"z": 0.565
+					"x": 2.009,
+					"y": 2.009,
+					"z": 2.009
 				}
 			},
 			"states": [],
@@ -4994,21 +4994,21 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.331
+				"radius": 1.250
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": -62.095,
+				"x": -63.130,
 				"y": 0.0,
-				"z": -48.493
+				"z": -52.357
 			},
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.602,
-					"y": 0.602,
-					"z": 0.602
+					"x": 2.274,
+					"y": 2.274,
+					"z": 2.274
 				}
 			},
 			"states": [],
@@ -5026,7 +5026,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.335
+				"radius": 1.340
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5038,9 +5038,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.61,
-					"y": 0.61,
-					"z": 0.61
+					"x": 2.440,
+					"y": 2.440,
+					"z": 2.440
 				}
 			},
 			"states": [],
@@ -5058,7 +5058,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.682
+				"radius": 1.819
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5070,9 +5070,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.24,
-					"y": 1.24,
-					"z": 1.24
+					"x": 3.307,
+					"y": 3.307,
+					"z": 3.307
 				}
 			},
 			"states": [],
@@ -5090,7 +5090,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.433
+				"radius": 1.251
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5102,9 +5102,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.788,
-					"y": 0.788,
-					"z": 0.788
+					"x": 2.276,
+					"y": 2.276,
+					"z": 2.276
 				}
 			},
 			"states": [],
@@ -5122,7 +5122,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.65
+				"radius": 2.022
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5134,9 +5134,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.182,
-					"y": 1.182,
-					"z": 1.182
+					"x": 3.677,
+					"y": 3.677,
+					"z": 3.677
 				}
 			},
 			"states": [],
@@ -5154,7 +5154,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.42
+				"radius": 1.400
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5166,9 +5166,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.763,
-					"y": 0.763,
-					"z": 0.763
+					"x": 2.543,
+					"y": 2.543,
+					"z": 2.543
 				}
 			},
 			"states": [],
@@ -5186,7 +5186,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.599
+				"radius": 2.130
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5198,9 +5198,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.089,
-					"y": 1.089,
-					"z": 1.089
+					"x": 3.872,
+					"y": 3.872,
+					"z": 3.872
 				}
 			},
 			"states": [],
@@ -5218,7 +5218,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.483
+				"radius": 1.825
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5230,9 +5230,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.878,
-					"y": 0.878,
-					"z": 0.878
+					"x": 3.317,
+					"y": 3.317,
+					"z": 3.317
 				}
 			},
 			"states": [],
@@ -5250,7 +5250,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.347
+				"radius": 1.388
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5262,9 +5262,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.63,
-					"y": 0.63,
-					"z": 0.63
+					"x": 2.520,
+					"y": 2.520,
+					"z": 2.520
 				}
 			},
 			"states": [],
@@ -5282,7 +5282,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.472
+				"radius": 0.944
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5294,9 +5294,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.857,
-					"y": 0.857,
-					"z": 0.857
+					"x": 1.714,
+					"y": 1.714,
+					"z": 1.714
 				}
 			},
 			"states": [],
@@ -5314,7 +5314,7 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.874
+				"radius": 1.942
 			},
 			"place_id": "place.village_center",
 			"position": {
@@ -5326,9 +5326,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.589,
-					"y": 1.589,
-					"z": 1.589
+					"x": 3.531,
+					"y": 3.531,
+					"z": 3.531
 				}
 			},
 			"states": [],
@@ -5346,21 +5346,21 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.359
+				"radius": 0.878
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": -36.41,
+				"x": -42.206,
 				"y": 0.0,
-				"z": -4.334
+				"z": -2.781
 			},
 			"presentation": {
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 0.652,
-					"y": 0.652,
-					"z": 0.652
+					"x": 1.594,
+					"y": 1.594,
+					"z": 1.594
 				}
 			},
 			"states": [],
@@ -5378,11 +5378,11 @@
 			"manifested": true,
 			"name": "Shapeable Rock",
 			"occupancy": {
-				"radius": 0.656
+				"radius": 2.187
 			},
 			"place_id": "place.village_center",
 			"position": {
-				"x": -53.655,
+				"x": -51.655,
 				"y": 0.0,
 				"z": -55.928
 			},
@@ -5390,9 +5390,9 @@
 				"asset_id": "asset.shapeable_rock",
 				"hex_authored": true,
 				"scale": {
-					"x": 1.192,
-					"y": 1.192,
-					"z": 1.192
+					"x": 3.973,
+					"y": 3.973,
+					"z": 3.973
 				}
 			},
 			"states": [],

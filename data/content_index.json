@@ -8,6 +8,8 @@
     "interactions": "res://data/interactions.json",
     "item_templates": "res://data/item_templates.json",
     "states": "res://data/states.json",
+    "needs": "res://data/needs.json",
+    "tasks": "res://data/tasks.json",
     "milestone1_world": "res://data/milestone1/world.json",
     "milestone1_landscape": "res://data/milestone1/landscape_scatter.json",
     "hex_library": "res://data/world/hex_library.json",

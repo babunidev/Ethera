@@ -2,6 +2,7 @@
 
 Positions are authored world data so simulation hashes stay deterministic.
 Scatter stays on the starting 256 m hex. Fountain and stone-circle pads stay empty.
+Rocks stay off ground steeper than 45 degrees.
 """
 from __future__ import annotations
 
@@ -19,11 +20,11 @@ APOTHEM = FLAT_TO_FLAT * 0.5
 STONE_CIRCLE = (108.0, 0.0)
 
 GRASS_KINDS = [
-    {"variant": 0, "name": "Long Grass"},
-    {"variant": 1, "name": "Soft Tuft"},
-    {"variant": 2, "name": "Split Blade"},
-    {"variant": 3, "name": "Flat Leaf"},
-    {"variant": 4, "name": "Needle Grass"},
+    {"variant": 0, "name": "Offering Herb"},
+    {"variant": 1, "name": "Offering Herb"},
+    {"variant": 2, "name": "Offering Herb"},
+    {"variant": 3, "name": "Offering Herb"},
+    {"variant": 4, "name": "Offering Herb"},
 ]
 
 
@@ -99,7 +100,7 @@ def grass_entities(index: int, kind: dict, x: float, z: float, yaw: float, blade
     bundle = {
         "id": bundle_id,
         "kind": "item",
-        "name": "Grass Bundle",
+        "name": "Offering Herb",
         "template_id": "template.grass_leaf",
         "place_id": "place.village_center",
         "traits": ["trait.herb"],
@@ -122,7 +123,23 @@ def grass_entities(index: int, kind: dict, x: float, z: float, yaw: float, blade
     return [patch, bundle]
 
 
+# Ten sizes from twice to four times the seeded span. The middle steps sit near three times.
+SIZE_STEPS = 10
+
+
+def size_factor(entity_id: str) -> float:
+    mixed = 0
+    for ch in entity_id:
+        mixed = (mixed * 33 + ord(ch)) % 1000003
+    step = mixed % SIZE_STEPS
+    return 2.0 + step * (2.0 / (SIZE_STEPS - 1))
+
+
 def rock_entity(index: int, x: float, z: float, yaw: float, sx: float, sy: float, sz: float) -> dict:
+    factor = size_factor(f"entity.shapeable_rock.scatter.{index}")
+    sx *= factor
+    sy *= factor
+    sz *= factor
     span = max(sx, sz)
     return {
         "id": f"entity.shapeable_rock.scatter.{index}",

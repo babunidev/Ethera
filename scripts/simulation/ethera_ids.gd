@@ -2,6 +2,7 @@ extends RefCounted
 class_name EtheraIds
 
 const TRAIT_GRIMNIR := "trait.grimnir"
+const TRAIT_FEMALE := "trait.female"
 const TRAIT_WEAPON_SHAPING := "trait.weapon_shaping"
 const TRAIT_ECHO_IMPRINT := "trait.echo_imprint"
 const TRAIT_ROCK := "trait.rock"
@@ -14,6 +15,12 @@ const TRAIT_SHARD_HOLDER := "trait.shard_holder"
 const TRAIT_CONTAINER := "trait.container"
 const TRAIT_HERB := "trait.herb"
 const TRAIT_OFFERING_PLACE := "trait.offering_place"
+const TRAIT_OBJECTIVE := "trait.objective"
+const TRAIT_OBJECTIVE_KHAR_MORR := "trait.objective.khar_morr"
+
+const NEED_STONE_WEAPON := "need.stone_weapon"
+const TASK_ACQUIRE_STONE_WEAPON := "task.acquire_stone_weapon"
+const NODE_VILLAGE_001 := "node.village_001"
 
 const SLOT_SMALL_WEAPON := "slot.small_weapon"
 const SLOT_HERB := "slot.herb"
@@ -65,6 +72,7 @@ const ENTITY_STONE_CIRCLE := "entity.stone_circle"
 const PLACE_VILLAGE_CENTER := "place.village_center"
 const PLACE_STONE_CIRCLE := "place.ancient_stone_circle"
 const STATE_SWIFTNESS := "state.swiftness"
+const STATE_SHAPED := "state.shaped"
 
 const ACTION_PICKUP := "action.pickup"
 const ACTION_DISCOVERY := "action.discovery"
@@ -90,6 +98,8 @@ const CMD_OBSERVE_TARGET := "observe_target"
 const CMD_BEGIN_INTERACTION := "begin_interaction"
 const CMD_SKILL_POINTER := "skill_pointer"
 const CMD_SKILL_CLICK := "skill_click"
+const CMD_SELECT_NEED := "select_need"
+const CMD_ACTIVATE_TASK := "activate_task"
 
 const COMMIT_PENDING := "pending"
 const COMMIT_VALIDATING := "validating"

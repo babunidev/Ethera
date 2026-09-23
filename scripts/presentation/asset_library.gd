@@ -7,6 +7,27 @@ var assets: Dictionary = {}
 var environment_asset_id: String = "asset.village_center"
 
 const FALLBACK_ASSETS_PATH := "res://data/presentation/assets.json"
+const PLANT_SCENE := "res://glTF/Plant_1.gltf"
+const PLANT_BIG_SCENE := "res://glTF/Plant_1_Big.gltf"
+const PEBBLE_FOOTPRINT := 0.5
+const MEDIUM_ROCK_SCENES: Array[String] = [
+	"res://glTF/Rock_Medium_1.gltf",
+	"res://glTF/Rock_Medium_2.gltf",
+	"res://glTF/Rock_Medium_3.gltf",
+]
+const PEBBLE_SCENES: Array[String] = [
+	"res://glTF/Pebble_Round_1.gltf",
+	"res://glTF/Pebble_Round_2.gltf",
+	"res://glTF/Pebble_Round_3.gltf",
+	"res://glTF/Pebble_Round_4.gltf",
+	"res://glTF/Pebble_Round_5.gltf",
+	"res://glTF/Pebble_Square_1.gltf",
+	"res://glTF/Pebble_Square_2.gltf",
+	"res://glTF/Pebble_Square_3.gltf",
+	"res://glTF/Pebble_Square_4.gltf",
+	"res://glTF/Pebble_Square_5.gltf",
+	"res://glTF/Pebble_Square_6.gltf",
+]
 
 # Presentation resolves its own asset manifest from the content index rather than reading
 # it off the simulation's catalog, so nothing here depends on the runtime object.
@@ -321,6 +342,8 @@ func _is_grass_patch(entity: Dictionary) -> bool:
 func _apply_visual_scale(visual: Node3D, entity: Dictionary) -> void:
 	var raw: Variant = entity.get("presentation", {}).get("scale", null)
 	if raw == null:
+		if visual.has_meta("footprint_fit"):
+			visual.scale *= float(visual.get_meta("footprint_fit"))
 		return
 	if typeof(raw) == TYPE_DICTIONARY:
 		var values: Dictionary = raw
@@ -328,6 +351,8 @@ func _apply_visual_scale(visual: Node3D, entity: Dictionary) -> void:
 	else:
 		var amount: float = float(raw)
 		visual.scale = Vector3(amount, amount, amount)
+	if visual.has_meta("footprint_fit"):
+		visual.scale *= float(visual.get_meta("footprint_fit"))
 
 
 func make_grass_patch_visual(variant: int, blade_count: int) -> Node3D:
@@ -355,15 +380,44 @@ func attach_grass_patch_sink(body: Node) -> void:
 	body.add_child(sink)
 
 
+static func medium_rock_scene_path(index: int) -> String:
+	if MEDIUM_ROCK_SCENES.is_empty():
+		return ""
+	return MEDIUM_ROCK_SCENES[posmod(index, MEDIUM_ROCK_SCENES.size())]
+
+
+static func pebble_scene_path(index: int) -> String:
+	if PEBBLE_SCENES.is_empty():
+		return ""
+	return PEBBLE_SCENES[posmod(index, PEBBLE_SCENES.size())]
+
+
+static func _stable_index(text: String, count: int) -> int:
+	if count <= 1:
+		return 0
+	var mixed := 0
+	for i in text.length():
+		mixed = (mixed * 33 + text.unicode_at(i)) % 1000003
+	return posmod(mixed, count)
+
+
 func _make_grass(entity: Dictionary) -> Node3D:
 	var root := Node3D.new()
 	root.set_meta("keep_carried_layout", true)
 	var presentation: Dictionary = entity.get("presentation", {})
 	var bundled: bool = bool(presentation.get("bundle", false)) or _is_herb_item(entity)
 	var variant: int = int(presentation.get("variant", 0))
-	var blades: int = 5 if bundled else clampi(int(presentation.get("blade_count", 18)), 15, 30)
 	if not bundled:
 		root.name = "GrassPatch"
+	var plant_path: String = PLANT_SCENE if (bundled or posmod(variant, 2) == 0) else PLANT_BIG_SCENE
+	var plant: Node3D = _instance_model(plant_path)
+	if plant != null:
+		root.add_child(plant)
+		if bundled:
+			root.scale = Vector3(0.34, 0.34, 0.34)
+		_seat_item_on_ground(root)
+		return root
+	var blades: int = 5 if bundled else clampi(int(presentation.get("blade_count", 18)), 15, 30)
 	var palette: Array[Color] = [
 		Color(0.32, 0.50, 0.21),
 		Color(0.38, 0.54, 0.24),
@@ -452,11 +506,34 @@ func _make_stone_circle(entity: Dictionary) -> Node3D:
 	return root
 
 
+func _instance_model(path: String) -> Node3D:
+	if path == "" or not ResourceLoader.exists(path):
+		return null
+	var packed: Resource = load(path)
+	if not packed is PackedScene:
+		return null
+	var instance: Node = (packed as PackedScene).instantiate()
+	if instance is Node3D:
+		return instance as Node3D
+	var root := Node3D.new()
+	root.add_child(instance)
+	return root
+
+
 func _make_visual(entity: Dictionary, asset_id: String) -> Node3D:
 	if _is_grass_patch(entity) or _is_herb_item(entity):
 		return _make_grass(entity)
 	if asset_id == "asset.stone_circle":
 		return _make_stone_circle(entity)
+	if asset_id == "asset.shapeable_rock":
+		var entity_id: String = str(entity.get("id", ""))
+		var scattered: bool = entity_id.begins_with("entity.shapeable_rock.scatter.")
+		var model_path: String = medium_rock_scene_path(_stable_index(entity_id, MEDIUM_ROCK_SCENES.size())) if scattered else pebble_scene_path(_stable_index(entity_id, PEBBLE_SCENES.size()))
+		var rock: Node3D = _instance_model(model_path)
+		if rock != null:
+			if scattered:
+				rock.set_meta("footprint_fit", footprint_fit(rock))
+			return rock
 	if has_model(asset_id):
 		var packed: Resource = load(path_for(asset_id))
 		if packed is PackedScene:
@@ -587,10 +664,17 @@ func _tint_meshes(node: Node, base_color: String) -> void:
 		_tint_meshes(child, base_color)
 
 
-# Seat the sculpt on the ground plane, then bury a little so it grows out of the dirt.
-const ROCK_EMBED_FRACTION := 0.2
-const ROCK_EMBED_MIN := 0.06
-const ROCK_EMBED_MAX := 0.24
+# Seat the mesh on the ground, then bury enough of it that it grows out of the dirt.
+const ROCK_EMBED_FRACTION := 0.55
+const ROCK_EMBED_MIN := 0.08
+
+
+func footprint_fit(visual: Node3D, footprint: float = PEBBLE_FOOTPRINT) -> float:
+	var box: AABB = _aabb_in_ancestor(visual, visual)
+	var span: float = maxf(box.size.x, box.size.z)
+	if span < 0.001:
+		return 1.0
+	return footprint / span
 
 
 func seat_rock_in_ground(visual: Node3D, ancestor: Node3D = null) -> void:
@@ -599,7 +683,8 @@ func seat_rock_in_ground(visual: Node3D, ancestor: Node3D = null) -> void:
 	var box: AABB = _aabb_in_ancestor(visual, ancestor)
 	if box.size.y < 0.02:
 		return
-	var embed: float = clampf(box.size.y * ROCK_EMBED_FRACTION, ROCK_EMBED_MIN, ROCK_EMBED_MAX)
+	var embed: float = maxf(box.size.y * ROCK_EMBED_FRACTION, ROCK_EMBED_MIN)
+	embed = minf(embed, box.size.y * 0.62)
 	visual.position.y -= box.position.y + embed
 
 
