@@ -12,7 +12,7 @@ class_name LowPolyTerrainInspector
 
 
 func _can_handle(object: Object) -> bool:
-	return object is LowPolyTerrainManager
+	return object is LowPolyTerrainManager and LowPolyTerrainManager.is_live_editor_instance(object)
 
 
 func _parse_property(
@@ -92,7 +92,7 @@ class LayerSelector extends EditorProperty:
 		for i in range(_buttons.size()):
 			var btn: Button = _buttons[i]
 			btn.set_pressed_no_signal(current == i + 1)
-			if _manager != null:
+			if _manager != null and LowPolyTerrainManager.is_live_editor_instance(_manager):
 				btn.icon = _swatch(_manager.get_paint_layer_color(i + 1))
 		_updating = false
 
@@ -100,7 +100,9 @@ class LayerSelector extends EditorProperty:
 	var _swatch_colors: PackedColorArray = PackedColorArray()
 
 	func _process(_delta: float) -> void:
-		if _manager == null:
+		if _manager == null or not is_instance_valid(_manager):
+			return
+		if not LowPolyTerrainManager.is_live_editor_instance(_manager):
 			return
 
 		var current := PackedColorArray()

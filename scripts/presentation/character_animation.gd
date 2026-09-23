@@ -13,6 +13,7 @@ var _last_idle: StringName = &""
 
 
 func _ready() -> void:
+	process_priority = -20
 	_body = get_parent() as Node3D
 	_previous_position = _body.global_position
 	var players := _body.find_children("*", "AnimationPlayer", true, false)
@@ -49,23 +50,23 @@ func _process(delta: float) -> void:
 	var moving := _speed > (0.06 if _locomotion != "idle" else 0.12)
 	var want := "idle"
 	if moving:
-		var run_at := 3.0 if _locomotion == "run" else 3.5
+		var run_at := 2.25 if _locomotion == "run" else 3.05
 		want = "run" if _speed > run_at and _run != &"" else "walk"
 	if want != _locomotion:
 		_locomotion = want
 		match _locomotion:
 			"walk":
 				if _walk != &"":
-					_player.play(_walk, 0.22)
+					_player.play(_walk, 0.42)
 			"run":
-				_player.play(_run, 0.28)
+				_player.play(_run, 0.48)
 			_:
-				_play_idle(0.26)
+				_play_idle(0.34)
 	# Locomotion clips are in-place. Only cadence changes, never the simulation's speed.
 	if _locomotion == "walk":
-		_player.speed_scale = clampf(_speed / 1.4, 0.4, 2.0)
+		_player.speed_scale = clampf(_speed / 1.92, 0.45, 1.2)
 	elif _locomotion == "run":
-		_player.speed_scale = clampf(_speed / 4.8, 0.6, 1.35)
+		_player.speed_scale = clampf(_speed / 4.16, 0.7, 1.12)
 	else:
 		_player.speed_scale = 1.0
 

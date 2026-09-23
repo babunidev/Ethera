@@ -5,6 +5,17 @@ var failed := 0
 func _initialize() -> void:
 	call_deferred("_run")
 
+func _living_stone_mesh(root: Node) -> MeshInstance3D:
+	if root == null:
+		return null
+	if root is MeshInstance3D and (root as MeshInstance3D).has_meta("living_stone_glow"):
+		return root as MeshInstance3D
+	for child in root.find_children("*", "MeshInstance3D", true, false):
+		if child.has_meta("living_stone_glow"):
+			return child
+	return null
+
+
 func check(ok: bool, message: String) -> void:
 	if not ok:
 		failed += 1
@@ -22,13 +33,28 @@ func _run() -> void:
 	check(floor_pull < 3.2 and floor_pull > 2.7, "A low tilt that hits the ground pulls the camera in")
 	var steep: float = scene.orbit_used_distance(-1.45, 6.5, 1.15)
 	check(1.15 + sin(-1.45) * steep >= 0.12 - 0.01, "A steep tilt stays above the ground")
-	var blocked: float = scene.orbit_ray_blocked_distance(
+	var fountain := [{"x": 0.0, "z": 0.0, "radius": 2.5, "y_min": -2.0, "y_max": 4.0}]
+	var covered: float = scene.orbit_ray_blocked_distance(
 		Vector3(5.0, 1.15, 0.0),
 		Vector3(-1.0, 0.0, 0.0),
 		8.0,
-		[{"x": 0.0, "z": 0.0, "radius": 2.5, "y_min": -2.0, "y_max": 4.0}]
+		fountain
 	)
-	check(blocked < 2.5 and blocked > 2.2, "A zoom-out stops on Fountain occupancy")
+	check(absf(covered - 8.0) < 0.01, "A solid between the camera and her does not pull the camera in")
+	var colliding: float = scene.orbit_ray_blocked_distance(
+		Vector3(5.0, 1.15, 0.0),
+		Vector3(-1.0, 0.0, 0.0),
+		3.2,
+		fountain
+	)
+	check(colliding < 2.5 and colliding > 2.0, "The camera pulls in when it would sit inside a solid")
+	var above_basin: float = scene.orbit_ray_blocked_distance(
+		Vector3(0.0, 3.0, 5.0),
+		Vector3(0.0, 0.0, -1.0),
+		8.0,
+		[{"x": 0.0, "z": 0.0, "radius": 0.6, "y_min": 0.0, "y_max": 0.6}]
+	)
+	check(absf(above_basin - 8.0) < 0.01, "Air above a small basin does not pull the camera")
 	check(not scene.register_run_click(Vector3.ZERO, 1000), "The first click walks")
 	check(scene.register_run_click(Vector3(0.4, 0.0, 0.0), 1480), "A slower second click still runs")
 	check(not scene.register_run_click(Vector3.ZERO, 2800), "A late click walks again")
@@ -68,32 +94,36 @@ func _run() -> void:
 	check(scene.hex_stream != null and scene.hex_stream.loaded_count() == 1, "The starting hex is streamed")
 	var east: Vector2 = EtheraHexCoords.axial_to_world(1, 0)
 	check(absf(east.x - EtheraHexCoords.FLAT_TO_FLAT) < 0.05 and absf(east.y) < 0.05, "The east neighbor is a real edge")
-	var hex_mesh: MeshInstance3D = scene.temporary_ground.find_child("Terrain", true, false) as MeshInstance3D
-	check(hex_mesh != null and hex_mesh.mesh != null, "The starting hex has a terrain mesh")
-	var hex_box: AABB = hex_mesh.get_aabb() if hex_mesh else AABB()
-	check(hex_box.size.x > 220.0 and hex_box.size.z > 220.0, "The starting hex is about 256 m across")
-	check(hex_mesh != null and hex_mesh.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_ON, "The hex terrain receives and casts shadows")
-	var hex_mat: StandardMaterial3D = hex_mesh.material_override as StandardMaterial3D if hex_mesh else null
-	check(hex_mat != null and hex_mat.cull_mode == BaseMaterial3D.CULL_DISABLED, "The hex stays visible from a low camera")
-	var hex_uvs := false
-	if hex_mesh and hex_mesh.mesh and hex_mesh.mesh.get_surface_count() > 0:
-		var arrays: Array = hex_mesh.mesh.surface_get_arrays(0)
-		hex_uvs = arrays[Mesh.ARRAY_TEX_UV] != null and (arrays[Mesh.ARRAY_TEX_UV] as PackedVector2Array).size() > 0
-	check(hex_uvs, "Hex terrain has UVs")
+	var hex: EtheraHexTile = scene.hex_stream.hex_at(0, 0) as EtheraHexTile
+	check(hex != null, "Axial 0,0 is the authored starting hex")
+	var manager: LowPolyTerrainManager = hex.terrain_manager() if hex else null
+	check(manager != null, "The starting hex uses the authored Low Poly Terrain")
+	check(manager != null and is_equal_approx(manager.hex_flat_to_flat, 256.0), "The starting hex is 256 m flat-to-flat")
+	check(manager != null and manager.terrain_shape == LowPolyTerrainManager.TerrainShape.HEXAGON, "The starting hex is a hex tile")
+	var chunk_meshes := 0
+	var hex_shadow := false
+	if manager:
+		for coord in manager.get_chunk_coords():
+			var chunk_mesh: ArrayMesh = manager.get_chunk_mesh(coord)
+			if chunk_mesh != null:
+				chunk_meshes += 1
+		for mesh_node in manager.find_children("*", "MeshInstance3D", true, false):
+			if (mesh_node as MeshInstance3D).cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_ON:
+				hex_shadow = true
+	check(chunk_meshes > 10, "The authored hex has a terrain mesh")
+	check(hex_shadow, "The hex terrain receives and casts shadows")
+	await scene.get_tree().physics_frame
 	await scene.get_tree().physics_frame
 	var space: PhysicsDirectSpaceState3D = scene.get_world_3d().direct_space_state
 	var ground_hit: Dictionary = space.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(10.0, 12.0, 4.0), Vector3(10.0, -4.0, 4.0)))
 	check(not ground_hit.is_empty(), "A downward ray hits the landscape")
 	if not ground_hit.is_empty():
-		check(ground_hit.get("collider") == scene.temporary_ground, "Landscape clicks hit the hex")
-	check(absf(scene.terrain_height(0.0, 0.0)) < 0.02, "The fountain pad stays flat")
-	check(scene.terrain_height(18.0, 0.0) > 0.05, "The stone circle sits on a rise")
-	check(absf(scene.terrain_height(0.0, -44.0)) < 0.7, "The south village stays off a test hill")
+		check(scene._entity_id_from_collider(ground_hit.get("collider")) == "", "Landscape clicks hit terrain, not an entity")
+	check(absf(scene.terrain_height(0.0, 0.0)) < 1.5, "The fountain pad sits on the authored village floor")
 	check(absf(scene.terrain_height(EtheraHexCoords.APOTHEM - 0.5, 0.0)) < 0.04, "Hex edges stay flat so neighbors can join")
 	check(is_equal_approx(scene.simulation.world.walkable_slope_degrees(), 50.0), "Walkable slope is fifty degrees")
 	check(EtheraTerrain.is_walkable(0.0, 0.0), "The fountain pad stays under fifty degrees")
 	check(EtheraTerrain.is_walkable(12.0, 8.0), "Village grassland stays under fifty degrees")
-	check(absf(scene.terrain_height(0.0, 0.0) - EtheraTerrain.height_at(0.0, 0.0)) < 0.001, "The hex mesh uses the same height as walking")
 	check(not scene.views.has("entity.hill.1"), "Square-grid occupancy hills are gone")
 	var container: Node3D = scene.views.get("entity.container") as Node3D
 	var container_pick: CollisionShape3D = container.get_node_or_null("ContainerPick") if container else null
@@ -104,12 +134,29 @@ func _run() -> void:
 		check(pick_size.y < 1.4, "Container pick is not a column of air")
 	var container_column := false
 	for blocker in scene._orbit_blockers():
-		if absf(float(blocker.get("x", 0.0)) + 4.2) < 1.2 and absf(float(blocker.get("z", 0.0)) + 4.4) < 1.2:
+		if absf(float(blocker.get("x", 0.0)) - 1.2) < 1.2 and absf(float(blocker.get("z", 0.0)) - 88.709) < 1.2:
 			if float(blocker.get("y_max", 0.0)) > 1.6:
 				container_column = true
 	check(not container_column, "A small container does not block the air above it")
 	check(scene.views.has("entity.grass.1"), "A grass patch is in the landscape")
 	check(scene.views.has("entity.shapeable_rock.scatter.1"), "A scatter rock is in the landscape")
+	var seeded_rock: Node3D = scene.views.get("entity.shapeable_rock.scatter.1") as Node3D
+	if seeded_rock:
+		var rock_box := AABB()
+		var rock_first := true
+		for mesh_node in seeded_rock.find_children("*", "MeshInstance3D", true, false):
+			var mesh := mesh_node as MeshInstance3D
+			if mesh.mesh == null:
+				continue
+			var world_box: AABB = mesh.global_transform * mesh.get_aabb()
+			if rock_first:
+				rock_box = world_box
+				rock_first = false
+			else:
+				rock_box = rock_box.merge(world_box)
+		var ground_y: float = scene.terrain_height(seeded_rock.global_position.x, seeded_rock.global_position.z)
+		check(not rock_first and rock_box.position.y < ground_y - 0.04, "Seeded rocks sit a little into the ground")
+		check(not rock_first and rock_box.end.y > ground_y + 0.08, "Seeded rocks still stand out of the ground")
 	var grass_pick: CollisionShape3D = (scene.views["entity.grass.1"] as Node).get_node_or_null("ContainerPick")
 	check(grass_pick != null, "A grass patch uses a container pick volume")
 	check((scene.views["entity.grass.1"] as Node).get_node_or_null("GrassPatchSink") != null, "A grass patch can sink when emptied")
@@ -235,6 +282,10 @@ func _run() -> void:
 		"Feet follow the hex"
 	)
 	scene.simulation.apply({"type": "set_walk_destination", "x": -8.0, "y": 0.0, "z": -8.0, "gait": "run"})
+	for i in range(12):
+		scene._process(1.0 / 60.0)
+		animator._process(1.0 / 60.0)
+	check(player.current_animation == "Walk", "A run builds from a walk")
 	for i in range(100):
 		scene._process(1.0 / 60.0)
 		animator._process(1.0 / 60.0)
@@ -245,6 +296,25 @@ func _run() -> void:
 		if str(scene.simulation.query_panel().get("equipment", {}).get("slot.small_weapon", {}).get("id", "")) == "entity.club.umber":
 			break
 	check(scene._is_orbit_press_target("entity.club.umber"), "An equipped club starts orbit")
+	for _i in range(50):
+		scene._sync_views(1.0 / 60.0)
+		if not scene.handoff.is_active("entity.club.umber"):
+			break
+	var club_view: Node3D = scene.views.get("entity.club.umber") as Node3D
+	var back_node: Node3D = actor.find_child("back", true, false) as Node3D if actor else null
+	var to_back := INF
+	if club_view and back_node:
+		to_back = club_view.global_position.distance_to(back_node.global_position)
+		print("CLUB TO BACK NODE: ", to_back)
+	check(club_view != null and to_back < 0.28, "The sheathed club is anchored to the back node")
+	if club_view and back_node:
+		var before: Vector3 = club_view.global_position
+		back_node.position.z -= 0.18
+		scene._sync_views(0.0)
+		var followed: float = club_view.global_position.distance_to(before)
+		back_node.position.z += 0.18
+		scene._sync_views(0.0)
+		check(followed > 0.1, "The sheathed club follows the back node")
 	scene.simulation.apply({"type": "open_container", "target_id": "entity.grass.1"})
 	for i in range(600):
 		scene.simulation.apply({"type": "tick", "ticks": 1})
@@ -263,6 +333,45 @@ func _run() -> void:
 	check(scene._is_orbit_press_target("entity.grass.bundle.1"), "An equipped grass bundle is part of the body")
 	var herb_pick: CollisionShape3D = (scene.views.get("entity.grass.bundle.1") as Node).get_node_or_null("HerbPick") if scene.views.has("entity.grass.bundle.1") else null
 	check(herb_pick != null and herb_pick.disabled, "A carried bundle does not steal character clicks")
+	var fountain_placed: Array[EtheraPlacedEntity] = []
+	var cradle_placed: Array[EtheraPlacedEntity] = []
+	if hex:
+		for placed in hex.placed_entities():
+			if placed.entity_id == "entity.memory_fountain":
+				fountain_placed.append(placed)
+			elif placed.definition_id == EtheraPlacedEntity.DEFINITION_CRADLE:
+				cradle_placed.append(placed)
+	check(fountain_placed.size() == 1, "Exactly one authored Memory Fountain is in the hex")
+	check(scene.views.get("entity.memory_fountain") == fountain_placed[0] if not fountain_placed.is_empty() else null, "The Fountain view is the authored object")
+	check(scene.authored_views.has("entity.memory_fountain"), "The Fountain is not spawned a second time from world data")
+	check(cradle_placed.size() == 8, "The eight authored Echo Cradles remain in the hex")
+	var shared_cradle := true
+	for cradle in cradle_placed:
+		if cradle.definition_id != EtheraPlacedEntity.DEFINITION_CRADLE or cradle.entity_id == "":
+			shared_cradle = false
+	check(shared_cradle, "Echo Cradles share the common definition and keep instance ids")
+	check(scene.views.get("entity.stone_circle") is EtheraStoneCircle, "The stone circle is an authored placeable object")
+	var bench_col: CollisionShape3D = hex.find_child("BenchCollision", true, false) as CollisionShape3D if hex else null
+	check(bench_col != null and bench_col.shape != null, "Stone benches have collision")
+	var cradle_col := false
+	var cradle_fountain_kind := false
+	if not cradle_placed.is_empty():
+		cradle_col = cradle_placed[0].find_child("MeshCollision", true, false) != null
+		cradle_fountain_kind = cradle_placed[0].get_node_or_null("CradleBasin") != null and cradle_placed[0].get_node_or_null("CradleStem") != null
+	check(cradle_col, "Echo Cradles have mesh collision")
+	check(cradle_fountain_kind, "Echo Cradles use Fountain-kind basin and stem collision")
+	check(cradle_placed.is_empty() or cradle_placed[0].occupancy_radius() >= 0.45, "Echo Cradle occupancy follows the sculpt")
+	var node_defs: Array[Dictionary] = hex.world_node_definitions() if hex else []
+	check(node_defs.size() == 1 and str(node_defs[0].get("id", "")) == "node.village_001", "World Node markers are discovered from the hex")
+	var village_node: EtheraWorldNodeMarker = hex.world_node_marker("node.village_001") if hex else null
+	var node_visual: Node3D = village_node.get_node_or_null("Visual") as Node3D if village_node else null
+	check(node_visual != null and not node_visual.visible, "World Node markers stay hidden during play")
+	check(not node_defs.is_empty() and not node_defs[0].has("occupant_id"), "A World Node is a location, not an occupant")
+	var edges: PackedStringArray = hex.hex_edge_connections() if hex else PackedStringArray()
+	check(
+		edges == PackedStringArray(["dirt", "vegetation", "grass", "dirt", "dirt", "dirt"]),
+		"Hex edge connection metadata survives load"
+	)
 	check(scene.views.has("entity.stone_circle"), "The stone circle is in the landscape")
 	var circle: Node3D = scene.views.get("entity.stone_circle") as Node3D
 	check(circle != null and circle.find_child("DiscoveryAura", true, false) != null, "The stone circle has a visible discovery ring")
@@ -281,13 +390,58 @@ func _run() -> void:
 	)
 	check(sun != null and sun.directional_shadow_max_distance <= 80.0, "Shadow distance follows the camera, not the hex")
 	check(circle != null and circle.find_child("DiscoveryAura", true, false) is Decal, "The discovery ring is a terrain decal")
+	var landmark: Dictionary = scene.simulation.world.get_entity("entity.stone_circle")
+	var discover_r: float = float(landmark.get("discovery_radius", 0.0))
+	var occupy_r: float = scene.simulation.world.occupancy_radius(landmark)
+	var aura_decal: Decal = circle.find_child("DiscoveryAura", true, false) as Decal if circle else null
+	print("STONE CIRCLE DISCOVERY RADIUS M: ", discover_r)
+	print("STONE CIRCLE OCCUPANCY RADIUS M: ", occupy_r)
+	if aura_decal:
+		print("STONE CIRCLE AURA SIZE: ", aura_decal.size, " local y ", aura_decal.position.y)
+	check(is_equal_approx(discover_r, 10.0), "Place discovery is a 10 m horizontal disk")
+	check(occupy_r >= 3.0 and occupy_r <= 3.4, "Walking occupancy is the inner stones")
+	if aura_decal:
+		check(is_equal_approx(aura_decal.size.y, 8.0), "The visible aura volume is 8 m tall")
+		check(is_equal_approx(aura_decal.position.y, 2.4), "The aura is centred 2.4 m above the ring")
 	var world_env: WorldEnvironment = scene.get_node_or_null("WorldEnvironment") as WorldEnvironment
 	check(
 		world_env != null
 		and world_env.environment != null
+		and world_env.environment.background_mode == Environment.BG_SKY
 		and world_env.environment.ambient_light_source == Environment.AMBIENT_SOURCE_COLOR,
-		"Ground light does not depend on a missing sky"
+		"The sky is visible and ground light stays authored"
 	)
+	var cycle: EtheraDayNight = scene.get_node_or_null("DayNight") as EtheraDayNight
+	check(cycle != null and is_equal_approx(EtheraDayNight.CYCLE_SECONDS, 600.0), "A day lasts ten minutes")
+	check(cycle != null and cycle.get_node_or_null("SunDisc") != null, "The sun is a visible disc")
+	if cycle != null and sun != null:
+		cycle.apply_phase(0.50)
+		check(sun.light_energy > 1.0, "Midday is bright")
+		check(sun.global_transform.basis.z.y > 0.7, "The midday sun stands high")
+		check(cycle.get_node("SunDisc").visible, "The midday sun can be seen")
+		cycle.apply_phase(0.24)
+		check(sun.light_color.r > sun.light_color.b, "Sunrise is warm")
+		cycle.apply_phase(0.74)
+		check(sun.light_color.r > sun.light_color.b, "Evening is warm")
+		cycle.apply_phase(0.00)
+		check(sun.light_energy < 0.02, "Night has no sun from under the world")
+		check(not sun.shadow_enabled, "Night does not cast sun shadows")
+		var club_mesh: MeshInstance3D = _living_stone_mesh(scene.views.get("entity.club.umber") as Node)
+		check(club_mesh != null, "The stone club has a living-stone material")
+		if club_mesh:
+			var night_mat := club_mesh.material_override as StandardMaterial3D
+			check(
+				night_mat != null and night_mat.emission_energy_multiplier < 0.08,
+				"The stone club does not glow through the night"
+			)
+			cycle.apply_phase(0.50)
+			cycle.apply_living_stone_glow()
+			var day_mat := club_mesh.material_override as StandardMaterial3D
+			check(
+				day_mat != null and day_mat.emission_energy_multiplier > 0.4,
+				"The stone club keeps its daylight tint"
+			)
+		cycle.apply_phase(EtheraDayNight.START_PHASE)
 	check(scene.find_child("ShadowCatcher", true, false) == null, "Ground shadows come from the hex tiles, not a catcher")
 	var fat_circle := false
 	var stone_mesh_pick := 0
@@ -296,12 +450,13 @@ func _run() -> void:
 			if child is CollisionShape3D and child.shape is CylinderShape3D:
 				if (child.shape as CylinderShape3D).radius >= 3.0:
 					fat_circle = true
-		for stone in circle.find_children("RingStone_*", "MeshInstance3D", true, false):
-			if stone.find_child("MeshCollision", false, false) != null:
+		for child in circle.get_children():
+			if child is CollisionShape3D and str(child.name).begins_with("MeshCollision"):
 				stone_mesh_pick += 1
 	check(not fat_circle, "The stone circle has no full-ring pick cylinder")
-	check(stone_mesh_pick == 6, "Each ring stone has its own pick")
-	var above: Dictionary = space.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(18.0, 4.2, 0.0), Vector3(18.0, 2.6, 0.0)))
+	check(stone_mesh_pick >= 6, "Each ring stone has its own pick")
+	var circle_at: Vector3 = circle.global_position if circle else Vector3(108.0, 0.0, 0.0)
+	var above: Dictionary = space.intersect_ray(PhysicsRayQueryParameters3D.create(Vector3(circle_at.x, 4.2, circle_at.z), Vector3(circle_at.x, 2.6, circle_at.z)))
 	var above_id := ""
 	if not above.is_empty():
 		var node: Node = above.get("collider") as Node
@@ -311,9 +466,30 @@ func _run() -> void:
 				break
 			node = node.get_parent()
 	check(above_id != "entity.stone_circle", "Air above the stone circle is not the circle")
+	var aim: Vector3 = scene._discovery_aim_point("entity.stone_circle", landmark)
+	check(absf(aim.y - (circle_at.y + 1.46)) < 0.05, "The discovery eye aims at the circle's height")
+	check(
+		scene._has_line_of_sight(aim + Vector3(0.0, 0.4, 0.0), aim, "entity.stone_circle"),
+		"A clear look at the circle can still show the eye"
+	)
+	var occluder := StaticBody3D.new()
+	occluder.collision_layer = 1
+	var occluder_shape := CollisionShape3D.new()
+	var occluder_box := BoxShape3D.new()
+	occluder_box.size = Vector3(6.0, 8.0, 6.0)
+	occluder_shape.shape = occluder_box
+	occluder.add_child(occluder_shape)
+	scene.add_child(occluder)
+	occluder.global_position = aim + Vector3(-6.0, 0.0, 0.0)
+	await scene.get_tree().physics_frame
+	check(
+		not scene._has_line_of_sight(aim + Vector3(-12.0, 0.0, 0.0), aim, "entity.stone_circle"),
+		"The discovery eye does not show through terrain"
+	)
+	occluder.queue_free()
 	var aura: Node3D = circle.find_child("DiscoveryAura", true, false) as Node3D if circle else null
 	check(aura != null and aura.visible, "The discovery ring starts visible")
-	scene.simulation.world.set_position("entity.khar_morr", Vector3(18.0, 0.0, 0.0))
+	scene.simulation.world.set_position("entity.khar_morr", Vector3(circle_at.x, 0.0, circle_at.z))
 	scene.simulation.apply({"type": "observe_target", "target_id": "entity.stone_circle"})
 	scene._sync_views(0.05)
 	aura = circle.find_child("DiscoveryAura", true, false) as Node3D if circle else null

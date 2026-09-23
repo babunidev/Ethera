@@ -23,6 +23,50 @@ func _init(loaded_catalog: EtheraCatalog = null) -> void:
 	_emit_boot_log()
 
 
+# Presentation reports authored hex poses at load. Not a player command; not journaled.
+func adopt_authored_placements(placements: Array) -> void:
+	for raw in placements:
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var entity_id: String = str(raw.get("entity_id", ""))
+		if entity_id == "" or world.get_entity(entity_id).is_empty():
+			continue
+		var point := Vector3(float(raw.get("x", 0.0)), 0.0, float(raw.get("z", 0.0)))
+		world.set_position(entity_id, point, float(raw.get("yaw", 0.0)))
+		if raw.has("radius"):
+			var entity: Dictionary = world.get_entity(entity_id)
+			if entity.has("occupancy") or str(entity.get("kind", "")) == "world_object":
+				entity["occupancy"] = {"radius": maxf(0.0, float(raw.get("radius", 0.0)))}
+
+
+# Authored hex scenery occupies like rocks and the Fountain. Not journaled.
+func adopt_scenery_blockers(blockers: Array) -> void:
+	var place: Dictionary = world.places.get(world.place_id, {})
+	if place.is_empty():
+		return
+	var kept: Array = []
+	for raw in place.get("blockers", []):
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		if str(raw.get("id", "")).begins_with("scenery."):
+			continue
+		kept.append(raw)
+	for raw in blockers:
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var radius: float = maxf(0.0, float(raw.get("radius", 0.0)))
+		if radius <= 0.0:
+			continue
+		kept.append({
+			"id": str(raw.get("id", "scenery")),
+			"x": float(raw.get("x", 0.0)),
+			"z": float(raw.get("z", 0.0)),
+			"radius": radius,
+		})
+	place["blockers"] = kept
+	world.places[world.place_id] = place
+
+
 func apply(command: Dictionary) -> Array[Dictionary]:
 	var recorded: Dictionary = command.duplicate(true)
 	command_log.append({"tick": world.tick, "command": recorded})
@@ -375,19 +419,27 @@ func _tick_walking() -> Array[Dictionary]:
 		var arrive_at: float = float(world.tuning.get("stop_distance", 0.18))
 		if str(motor.get("reason", "")) == "approach":
 			arrive_at = float(world.tuning.get("interaction_arrive_distance", 0.22))
-		var max_speed: float = float(world.tuning.get("walk_speed", 2.4))
+		var walk_speed: float = float(world.tuning.get("walk_speed", 1.92))
+		var max_speed: float = walk_speed
 		if str(motor.get("gait", "walk")) == "run":
-			max_speed = float(world.tuning.get("run_speed", 5.2))
-		max_speed *= world.movement_speed_scale(entity)
+			max_speed = float(world.tuning.get("run_speed", 4.16))
+		var speed_scale: float = world.movement_speed_scale(entity)
 		if world.focus_hold.has(str(entity_id)):
-			max_speed *= float(world.tuning.get("focus_hold_speed_scale", 0.45))
-		var accel: float = float(world.tuning.get("walk_acceleration", 7.0))
-		var decel: float = float(world.tuning.get("walk_deceleration", 9.0))
+			speed_scale *= float(world.tuning.get("focus_hold_speed_scale", 0.45))
+		max_speed *= speed_scale
+		var walk_cap: float = walk_speed * speed_scale
 		if str(motor.get("gait", "walk")) == "run":
-			accel = float(world.tuning.get("run_acceleration", 3.2))
-			decel = float(world.tuning.get("run_deceleration", 5.0))
+			var settle: float = float(world.tuning.get("run_settle_distance", 3.2))
+			if settle > 0.0 and distance <= settle:
+				max_speed = minf(max_speed, walk_cap)
+		var accel: float = float(world.tuning.get("walk_acceleration", 5.5))
+		var decel: float = float(world.tuning.get("walk_deceleration", 6.0))
+		if str(motor.get("gait", "walk")) == "run":
+			accel = float(world.tuning.get("run_acceleration", 2.6))
+			decel = float(world.tuning.get("run_deceleration", 3.6))
 		var speed: float = float(motor.get("speed", 0.0))
-		if distance <= arrive_at:
+		var arrive_speed: float = float(world.tuning.get("arrive_speed", 0.28))
+		if distance <= arrive_at and speed <= arrive_speed:
 			var stand: Vector3 = position
 			if world.is_blocked(stand, _walk_radius(), ignore_ids):
 				stand = world.nearest_open_point(stand, _walk_radius(), ignore_ids)
@@ -403,7 +455,7 @@ func _tick_walking() -> Array[Dictionary]:
 					events.append_array(_open_container_on_arrival(str(entity_id), str(motor.get("target_id", ""))))
 			continue
 		var stopping_distance: float = (speed * speed) / max(2.0 * decel, 0.001)
-		if stopping_distance >= distance:
+		if distance <= arrive_at or stopping_distance >= distance:
 			speed = max(0.0, speed - decel * dt)
 		elif speed > max_speed:
 			# A cap that drops mid-stride, such as focus hold, eases down instead of snapping.
@@ -433,6 +485,8 @@ func _tick_walking() -> Array[Dictionary]:
 					step = heading
 				next = world.slide_move(position, position + step, _walk_radius(), ignore_ids)
 		if _planar_distance(position, next) < 0.0005:
+			if distance <= arrive_at:
+				continue
 			if str(motor.get("reason", "")) == "approach":
 				events.append_array(_cancel_round("blocked"))
 			else:

@@ -219,7 +219,13 @@ func _on_editor_scene_changed(new_scene_root: Node) -> void:
 
 
 func _handles(object: Object) -> bool:
-	return object is LowPolyTerrainManager
+	return _can_use_manager(object)
+
+
+func _can_use_manager(object: Object) -> bool:
+	return object is LowPolyTerrainManager \
+		and is_instance_valid(object) \
+		and LowPolyTerrainManager.is_live_editor_instance(object)
 
 
 ## Detaches from whichever manager is being edited: disconnects its signals, clears the edit
@@ -234,20 +240,17 @@ func _release_active_manager() -> void:
 	if inspector and inspector.property_edited.is_connected(_on_inspector_property_edited):
 		inspector.property_edited.disconnect(_on_inspector_property_edited)
 
-	if active_manager and is_instance_valid(active_manager):
+	# A leftover reference is often a placeholder from an instanced hex. Reading its signals
+	# is the "Invalid access to property" error. Drop it without touching the script.
+	if _can_use_manager(active_manager):
 		if active_manager.signal_brush_settings_changed.is_connected(_on_signal_brush_settings_changed):
 			active_manager.signal_brush_settings_changed.disconnect(_on_signal_brush_settings_changed)
-
-		# Explicitly unbind the custom export signal from the previous manager instance
 		if active_manager.signal_export_requested.is_connected(_open_export_dialog_from_plugin):
 			active_manager.signal_export_requested.disconnect(_open_export_dialog_from_plugin)
-
 		if active_manager.signal_shrink_confirmation_requested.is_connected(_confirm_shrink):
 			active_manager.signal_shrink_confirmation_requested.disconnect(_confirm_shrink)
-
 		active_manager.set_meta("_edit_lock_", false)
-		if "is_paint_stroke_active" in active_manager:
-			active_manager.is_paint_stroke_active = false
+		active_manager.is_paint_stroke_active = false
 
 	active_manager = null
 	is_drawing = false
@@ -256,7 +259,7 @@ func _release_active_manager() -> void:
 func _edit(object: Object) -> void:
 	_release_active_manager()
 
-	if object is LowPolyTerrainManager and object.is_inside_tree():
+	if _can_use_manager(object):
 		active_manager = object
 		active_manager.set_meta("_edit_lock_", true)
 		# [E3] Only rebuilds when the chunk structure is actually missing. Selecting the

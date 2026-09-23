@@ -21,6 +21,11 @@
       "kind": "memory_fountain"
     },
     {
+      "id": "asset.echo_cradle",
+      "path": "res://assets/ech_cradle.glb",
+      "kind": "echo_cradle"
+    },
+    {
       "id": "asset.village_center",
       "path": "res://assets/models/village_center.glb",
       "kind": "environment"

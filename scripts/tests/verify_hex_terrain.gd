@@ -26,6 +26,8 @@ func run() -> void:
 func _test_hex_measures() -> void:
 	var flat := 256.0
 	check(is_equal_approx(LowPolyTerrainHex.apothem(flat), 128.0), "Apothem of a 256 m hex is 128 m")
+	check(LowPolyTerrainHex.nearest_edge(120.0, 0.0) == 0, "A point near +X is the east edge")
+	check(LowPolyTerrainHex.nearest_edge(-60.0, -100.0) == 2, "A point toward -X -Z is the northwest edge")
 	var corner: float = LowPolyTerrainHex.corner_to_corner(flat)
 	check(absf(corner - 295.603) < 0.01, "Corner-to-corner is about 295.603 m (got %s)" % corner)
 	check(
@@ -210,10 +212,16 @@ func _test_hex_tile() -> void:
 	check(jitter_raised == 0, "Jitter does not lift the perimeter off Y 0")
 	manager.free()
 
-	var editor: Node = load("res://scenes/tools/hex_tile_editor.tscn").instantiate()
-	root.add_child(editor)
+	var editor_script := FileAccess.get_file_as_string("res://scripts/presentation/hex_tile_editor.gd")
+	check(editor_script.contains("hex_grassland_a.tscn"), "The tile editor mounts the runtime hex")
+	var hex: Node = load("res://scenes/terrain/hex_grassland_a.tscn").instantiate()
+	root.add_child(hex)
 	await process_frame
-	var authored: LowPolyTerrainManager = editor.get_node("LowPolyTerrainManager")
+	var authored: LowPolyTerrainManager = hex.find_child("LowPolyTerrainManager", true, false) as LowPolyTerrainManager
+	check(authored != null, "The runtime hex carries LowPolyTerrainManager")
+	if authored == null:
+		hex.free()
+		return
 	check(authored.terrain_shape == LowPolyTerrainManager.TerrainShape.HEXAGON, "Tile editor opens in hex mode")
 	check(is_equal_approx(authored.hex_flat_to_flat, 256.0), "Tile editor hex is 256 m flat-to-flat")
 	check(
@@ -233,7 +241,12 @@ func _test_hex_tile() -> void:
 	check(tile.size() > 100, "The 256 m tile has a mesh (%d vertices)" % tile.size())
 	check(tile_outside == 0, "The 256 m tile stays inside its hex")
 	check(tile_edges_ok, "The 256 m tile has six straight edges")
-	editor.free()
+	check(authored.sculpt_data != null, "The starting hex uses an external sculpt resource")
+	check(
+		authored.get_hex_edge_connections() == PackedStringArray(["dirt", "vegetation", "grass", "dirt", "dirt", "dirt"]),
+		"The starting hex keeps its six authored edge connections"
+	)
+	hex.free()
 
 
 func _collect_vertices(manager: LowPolyTerrainManager) -> PackedVector3Array:

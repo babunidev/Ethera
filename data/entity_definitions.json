@@ -1,0 +1,20 @@
+{
+  "schema": "ethera.entity_definitions.v1",
+  "notes": "Shared gameplay kinds for reusable authored objects. A GLB is only the visual. Instance identity lives on the placed scene; this file is the common definition.",
+  "definitions": {
+    "definition.memory_fountain": {
+      "kind": "memory_fountain",
+      "entity_id": "entity.memory_fountain",
+      "name": "Memory Fountain"
+    },
+    "definition.echo_cradle": {
+      "kind": "echo_cradle",
+      "name": "Echo Cradle"
+    },
+    "definition.stone_circle": {
+      "kind": "landmark",
+      "entity_id": "entity.stone_circle",
+      "name": "Ancient Stone Circle"
+    }
+  }
+}

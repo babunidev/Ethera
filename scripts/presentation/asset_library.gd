@@ -63,6 +63,8 @@ func make_entity_body(entity: Dictionary) -> StaticBody3D:
 	var visual: Node3D = _make_visual(entity, asset_id)
 	_apply_visual_scale(visual, entity)
 	body.add_child(visual)
+	if asset_id == "asset.shapeable_rock":
+		seat_rock_in_ground(visual, body)
 	var kind: String = str(entity.get("kind", ""))
 	if kind == "character":
 		_add_pick_collision(body, kind)
@@ -96,7 +98,7 @@ func make_entity_body(entity: Dictionary) -> StaticBody3D:
 	return body
 
 
-func try_mount_environment(world_root: Node3D, temporary_ground: Node3D) -> void:
+func try_mount_environment(world_root: Node3D, _hex_host: Node3D) -> void:
 	if not has_model(environment_asset_id):
 		return
 	var packed: Resource = load(path_for(environment_asset_id))
@@ -111,7 +113,7 @@ func try_mount_environment(world_root: Node3D, temporary_ground: Node3D) -> void
 # rig, which is not the character's facing, and was leaving the club as a
 # crossbar through the torso. Orientation is built in character space: +Y up,
 # -Z out the back. The club's long axis (local +Z) lies on that back plane.
-func attach_world_transform(holder: Node3D, entity: Dictionary, attachment: String = "back") -> Transform3D:
+func attach_world_transform(holder: Node3D, entity: Dictionary, attachment: String = "back", carried: Node3D = null) -> Transform3D:
 	var points: Dictionary = entity.get("presentation", {}).get("attach_points", {})
 	var point: Dictionary = points.get(attachment, {"x": 0.0, "y": 1.15, "z": -0.22})
 	var facing := Basis.from_euler(Vector3(0.0, holder.rotation.y, 0.0))
@@ -127,11 +129,42 @@ func attach_world_transform(holder: Node3D, entity: Dictionary, attachment: Stri
 	if absf(lean) > 0.001:
 		extra = Basis.from_euler(Vector3(lean, deg_to_rad(18.0), deg_to_rad(-12.0)))
 	var local: Transform3D = sheath_transform(point.get("sheath", {}))
-	return Transform3D(facing * extra * local.basis, origin + facing * local.origin)
+	var posed := Transform3D(facing * extra * local.basis, origin + facing * local.origin)
+	if attachment == "back" and carried != null:
+		posed.origin += _sheath_pull_to_mount(carried, posed, origin, facing)
+	return posed
 
 
 func attach_world_position(holder: Node3D, entity: Dictionary) -> Vector3:
 	return attach_world_transform(holder, entity).origin
+
+
+# Keep the club on the animated `back` node. Pull the club mesh inward so its
+# inner face sits on the node instead of hovering by half the sculpt thickness.
+const SHEATH_PULL_IN := 0.28
+
+
+func _sheath_pull_to_mount(carried: Node3D, posed: Transform3D, mount: Vector3, facing: Basis) -> Vector3:
+	var back_out: Vector3 = facing * Vector3(0.0, 0.0, -1.0)
+	var club: AABB = _aabb_in_ancestor(carried, carried)
+	if club.size.x < 0.02 or club.size.y < 0.02 or club.size.z < 0.02:
+		return -back_out * SHEATH_PULL_IN
+	var club_in := INF
+	for corner in _aabb_corners(club):
+		club_in = minf(club_in, (posed * corner).dot(back_out))
+	if club_in >= INF:
+		return -back_out * SHEATH_PULL_IN
+	var target: float = mount.dot(back_out) - SHEATH_PULL_IN
+	return back_out * (target - club_in)
+
+
+func _aabb_corners(box: AABB) -> Array[Vector3]:
+	var corners: Array[Vector3] = []
+	for x in [0.0, 1.0]:
+		for y in [0.0, 1.0]:
+			for z in [0.0, 1.0]:
+				corners.append(box.position + box.size * Vector3(x, y, z))
+	return corners
 
 
 # Placeholder clubs sit 0.12 m up so they rest on the ground. That local Y becomes
@@ -297,6 +330,31 @@ func _apply_visual_scale(visual: Node3D, entity: Dictionary) -> void:
 		visual.scale = Vector3(amount, amount, amount)
 
 
+func make_grass_patch_visual(variant: int, blade_count: int) -> Node3D:
+	return _make_grass({
+		"kind": EtheraIds.KIND_GRASS,
+		"presentation": {
+			"variant": variant,
+			"blade_count": blade_count,
+		},
+	})
+
+
+func make_grass_patch_pick(body: StaticBody3D, visual: Node3D) -> void:
+	if body.get_node_or_null("ContainerPick") != null:
+		return
+	_add_fitted_pick(body, visual, "ContainerPick")
+
+
+func attach_grass_patch_sink(body: Node) -> void:
+	if body.get_node_or_null("GrassPatchSink") != null:
+		return
+	var sink := Node.new()
+	sink.name = "GrassPatchSink"
+	sink.set_script(preload("res://scripts/presentation/grass_patch_sink.gd"))
+	body.add_child(sink)
+
+
 func _make_grass(entity: Dictionary) -> Node3D:
 	var root := Node3D.new()
 	root.set_meta("keep_carried_layout", true)
@@ -390,90 +448,8 @@ func _grass_triangle_mesh(height: float, base: float, color: Color) -> ArrayMesh
 func _make_stone_circle(entity: Dictionary) -> Node3D:
 	var root := Node3D.new()
 	root.name = "StoneCircle"
-	var ring: float = 2.65
-	for i in range(6):
-		var angle: float = TAU * float(i) / 6.0 + 0.12
-		var stone := MeshInstance3D.new()
-		var box := BoxMesh.new()
-		box.size = Vector3(0.42 + 0.04 * float(i % 3), 0.92, 0.28 + 0.03 * float(i % 2))
-		stone.name = "RingStone_%d" % i
-		stone.mesh = box
-		var mat := StandardMaterial3D.new()
-		mat.albedo_color = Color(0.46, 0.44, 0.40).darkened(0.04 * float(i % 3))
-		mat.roughness = 0.92
-		stone.material_override = mat
-		stone.position = Vector3(cos(angle) * ring, box.size.y * 0.5, sin(angle) * ring)
-		stone.rotation.y = angle + 0.35
-		root.add_child(stone)
-	var center := MeshInstance3D.new()
-	var pillar := CylinderMesh.new()
-	pillar.top_radius = 0.22
-	pillar.bottom_radius = 0.34
-	pillar.height = 1.08
-	center.mesh = pillar
-	var center_mat := StandardMaterial3D.new()
-	center_mat.albedo_color = Color(0.40, 0.39, 0.36)
-	center_mat.roughness = 0.9
-	center.material_override = center_mat
-	center.position.y = 0.54
-	root.add_child(center)
-	var gem_mat := StandardMaterial3D.new()
-	gem_mat.albedo_color = Color(0.42, 0.78, 0.88)
-	gem_mat.emission_enabled = true
-	gem_mat.emission = Color(0.28, 0.72, 0.86)
-	gem_mat.emission_energy_multiplier = 1.45
-	gem_mat.roughness = 0.12
-	gem_mat.metallic = 0.18
-	var gem := MeshInstance3D.new()
-	gem.name = "CrystalGem"
-	var crystal := PrismMesh.new()
-	crystal.size = Vector3(0.58, 0.96, 0.58)
-	gem.mesh = crystal
-	gem.material_override = gem_mat
-	gem.position.y = 1.46
-	root.add_child(gem)
-	var gem_cross := MeshInstance3D.new()
-	var crystal_cross := PrismMesh.new()
-	crystal_cross.size = Vector3(0.42, 0.82, 0.42)
-	gem_cross.mesh = crystal_cross
-	gem_cross.material_override = gem_mat
-	gem_cross.position.y = 1.42
-	gem_cross.rotation.y = PI * 0.5
-	root.add_child(gem_cross)
-	var lamp := OmniLight3D.new()
-	lamp.light_color = Color(0.55, 0.86, 0.95)
-	lamp.light_energy = 1.15
-	lamp.omni_range = 7.5
-	lamp.shadow_enabled = false
-	lamp.position.y = 1.62
-	root.add_child(lamp)
-	var aura_radius: float = maxf(float(entity.get("discovery_radius", 10.0)), 4.0)
-	var aura := Decal.new()
-	aura.name = "DiscoveryAura"
-	aura.size = Vector3(aura_radius * 2.0, 8.0, aura_radius * 2.0)
-	aura.position.y = 2.4
-	aura.texture_albedo = _discovery_ring_texture()
-	aura.modulate = Color(0.52, 0.88, 0.96, 0.85)
-	aura.albedo_mix = 0.85
-	root.add_child(aura)
+	EtheraStoneCircle.populate(root, float(entity.get("discovery_radius", 10.0)))
 	return root
-
-
-func _discovery_ring_texture() -> Texture2D:
-	var image := Image.create(256, 256, false, Image.FORMAT_RGBA8)
-	var center := Vector2(127.5, 127.5)
-	for y in 256:
-		for x in 256:
-			var n: float = Vector2(x, y).distance_to(center) / 128.0
-			var alpha := 0.0
-			if n >= 0.84 and n <= 0.98:
-				alpha = 1.0
-			elif n > 0.80 and n < 0.84:
-				alpha = (n - 0.80) / 0.04
-			elif n > 0.98 and n < 1.0:
-				alpha = 1.0 - (n - 0.98) / 0.02
-			image.set_pixel(x, y, Color(1.0, 1.0, 1.0, clampf(alpha, 0.0, 1.0)))
-	return ImageTexture.create_from_image(image)
 
 
 func _make_visual(entity: Dictionary, asset_id: String) -> Node3D:
@@ -597,13 +573,34 @@ func _tint_meshes(node: Node, base_color: String) -> void:
 			material = StandardMaterial3D.new()
 			material.roughness = 0.72
 		# Keep the imported albedo map; the color multiplies it so variants stay readable.
+		# Emission is the living-stone tint, not a lamp. Day and night scale it.
 		material.albedo_color = color.lerp(Color.WHITE, 0.28)
+		material.next_pass = null
 		material.emission_enabled = true
 		material.emission = glow
 		material.emission_energy_multiplier = glow_energy
 		mesh.material_override = material
+		mesh.set_meta("living_stone_glow", glow_energy)
+		if not mesh.is_in_group("ethera_living_stone"):
+			mesh.add_to_group("ethera_living_stone")
 	for child in node.get_children():
 		_tint_meshes(child, base_color)
+
+
+# Seat the sculpt on the ground plane, then bury a little so it grows out of the dirt.
+const ROCK_EMBED_FRACTION := 0.2
+const ROCK_EMBED_MIN := 0.06
+const ROCK_EMBED_MAX := 0.24
+
+
+func seat_rock_in_ground(visual: Node3D, ancestor: Node3D = null) -> void:
+	if ancestor == null:
+		ancestor = visual
+	var box: AABB = _aabb_in_ancestor(visual, ancestor)
+	if box.size.y < 0.02:
+		return
+	var embed: float = clampf(box.size.y * ROCK_EMBED_FRACTION, ROCK_EMBED_MIN, ROCK_EMBED_MAX)
+	visual.position.y -= box.position.y + embed
 
 
 func _seat_item_on_ground(visual: Node3D) -> void:

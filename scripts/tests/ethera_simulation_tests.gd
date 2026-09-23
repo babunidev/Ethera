@@ -10,6 +10,8 @@ var _passed: int = 0
 
 func run() -> int:
 	_test_starting_data()
+	_test_adopt_authored_placements()
+	_test_adopt_scenery_blockers()
 	_test_landscape_and_herb()
 	_test_fixed_clock()
 	_test_determinism_and_quantization()
@@ -90,6 +92,59 @@ func _test_starting_data() -> void:
 			club_radius = float(entity.get("occupancy_radius", -1.0))
 	_eq("presentation sees Fountain occupancy", fountain_radius, 2.5)
 	_eq("a loose club does not occupy space", club_radius, 0.0)
+
+
+func _test_adopt_authored_placements() -> void:
+	var sim := _new_sim()
+	var before_log: int = sim.command_log.size()
+	var start: Vector3 = sim.world.position_of(sim.world.get_entity(EtheraIds.ENTITY_FOUNTAIN))
+	sim.adopt_authored_placements([
+		{"entity_id": EtheraIds.ENTITY_FOUNTAIN, "x": start.x + 1.5, "z": start.z - 0.25, "yaw": 0.4},
+		{"entity_id": "entity.echo_cradle.1", "x": 9.0, "z": 9.0, "yaw": 0.0},
+	])
+	var moved: Vector3 = sim.world.position_of(sim.world.get_entity(EtheraIds.ENTITY_FOUNTAIN))
+	_true("adopt moves a known authored entity", is_equal_approx(moved.x, start.x + 1.5))
+	_eq("adopt is not a journaled command", sim.command_log.size(), before_log)
+	_true("adopt ignores unknown instance ids", sim.world.get_entity("entity.echo_cradle.1").is_empty())
+	_true("Fountain identity is unchanged", sim.world.has_trait(sim.world.get_entity(EtheraIds.ENTITY_FOUNTAIN), EtheraIds.TRAIT_ECHO))
+
+
+func _test_adopt_scenery_blockers() -> void:
+	var sim := _new_sim()
+	_hide_landscape_occupancy(sim)
+	var before_log: int = sim.command_log.size()
+	sim.adopt_scenery_blockers([
+		{"id": "scenery.bush.Bush1", "x": 12.0, "z": 0.0, "radius": 0.5},
+		{"id": "scenery.bench.StoneBench", "x": 12.0, "z": 4.0, "radius": 0.8},
+		{"id": "scenery.cradle.EchoCradle1", "x": 12.0, "z": 8.0, "radius": 0.7},
+	])
+	_eq("scenery adopt is not journaled", sim.command_log.size(), before_log)
+	var ids: Array = []
+	for blocker in sim.world.blockers_near():
+		ids.append(str(blocker.get("id", "")))
+	_true("a bush occupies like a rock", ids.has("scenery.bush.Bush1"))
+	_true("a bench occupies like a rock", ids.has("scenery.bench.StoneBench"))
+	_true("a cradle occupies like the Fountain", ids.has("scenery.cradle.EchoCradle1"))
+	sim.world.set_position(EtheraIds.ENTITY_KHAR_MORR, Vector3(15.0, 0.0, 0.0))
+	sim.apply({"type": EtheraIds.CMD_SET_WALK_DESTINATION, "x": 12.0, "y": 0.0, "z": 0.0})
+	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
+	var after: Vector3 = sim.world.position_of(sim.world.get_entity(EtheraIds.ENTITY_KHAR_MORR))
+	var body: float = float(sim.world.tuning.get("body_radius", 0.38))
+	_true("a walk into a bush stops at its rim", after.distance_to(Vector3(12.0, 0.0, 0.0)) >= 0.5 + body - 0.05)
+	sim.adopt_scenery_blockers([{"id": "scenery.bush.Bush2", "x": 20.0, "z": 0.0, "radius": 0.4}])
+	var refreshed: Array = []
+	for blocker in sim.world.blockers_near():
+		refreshed.append(str(blocker.get("id", "")))
+	_true("a later hex refresh replaces old scenery disks", refreshed.has("scenery.bush.Bush2"))
+	_true("stale scenery disks are dropped", not refreshed.has("scenery.bush.Bush1"))
+	sim.adopt_scenery_blockers([
+		{"id": "scenery.hall.TownHall.0", "x": 30.0, "z": 0.0, "radius": 0.3},
+		{"id": "scenery.hall.TownHall.1", "x": 32.0, "z": 2.0, "radius": 0.3},
+		{"id": "scenery.hall.TownHall.2", "x": 32.0, "z": -2.0, "radius": 0.3},
+		{"id": "scenery.hall.TownHall.3", "x": 34.0, "z": 0.0, "radius": 0.3},
+	])
+	_true("a hollow building keeps its room open", not sim.world.is_blocked(Vector3(32.0, 0.0, 0.0), 0.2))
+	_true("a hollow building wall occupies", sim.world.is_blocked(Vector3(30.0, 0.0, 0.0), 0.2))
 
 
 func _test_landscape_and_herb() -> void:
@@ -402,6 +457,26 @@ func _test_run_uses_run_speed() -> void:
 	_true("a run builds speed instead of snapping", early < float(ramp.world.tuning.get("run_speed", 5.2)) * 0.45)
 	_true("run speed increases over the first strides", later > early + 0.4)
 
+	var settling := _new_sim()
+	var settle_start: Vector3 = settling.world.position_of(settling.world.inhabiting())
+	var settle_dest := Vector3(settle_start.x + 16.0, 0.0, settle_start.z)
+	settling.apply({"type": EtheraIds.CMD_SET_WALK_DESTINATION, "x": settle_dest.x, "y": 0.0, "z": settle_dest.z, "gait": "run"})
+	var settle_peak: float = 0.0
+	var settled_to_walk := false
+	var last_speed: float = 0.0
+	for _i in range(400):
+		if not settling.world.walk_motor.has(EtheraIds.ENTITY_KHAR_MORR):
+			break
+		last_speed = _motor_speed(settling)
+		settle_peak = maxf(settle_peak, last_speed)
+		var left: float = settling.world.position_of(settling.world.inhabiting()).distance_to(settle_dest)
+		if left < 1.4 and left > 0.3:
+			settled_to_walk = last_speed <= float(settling.world.tuning.get("walk_speed", 1.92)) + 0.2
+		_tick(settling, 1)
+	_true("a long run reaches run speed", settle_peak > float(settling.world.tuning.get("walk_speed", 1.92)) + 0.8)
+	_true("the last meters of a run ease back to a walk", settled_to_walk)
+	_true("a run finishes at a walk before it stops", last_speed <= float(settling.world.tuning.get("arrive_speed", 0.28)) + 0.05)
+
 
 func _test_fountain_approach_from_any_side() -> void:
 	var sim := _new_sim()
@@ -479,7 +554,7 @@ func _test_occupancy_blocks_walking() -> void:
 		blocked.world.position_of(blocked.world.inhabiting()).distance_to(rock_pos) >= rock_radius + body - 0.05
 	)
 	var circle: Vector3 = sim.world.position_of(sim.world.get_entity(EtheraIds.ENTITY_STONE_CIRCLE))
-	_true("the stone circle sits on the starting hex", circle.distance_to(Vector3(18.0, 0.0, 0.0)) < 0.05)
+	_true("the stone circle sits on the starting hex", circle.distance_to(Vector3(108.0, 0.0, 0.0)) < 0.05)
 
 
 func _test_walkable_slope() -> void:
@@ -541,9 +616,10 @@ func _test_sheath_pose() -> void:
 	var attach: Dictionary = _new_sim().world.inhabiting().get("presentation", {}).get("attach_points", {}).get("back", {})
 	var sheath: Dictionary = attach.get("sheath", {})
 	_true("the character authors a back-plane diagonal", sheath.has("diagonal_degrees"))
-	_true("the authored slash is steeper than a flat 45", float(sheath.get("diagonal_degrees", 0.0)) > 65.0)
-	_true("the authored slash sits close to the back", float(sheath.get("z", 0.0)) > -0.025)
-	_true("the authored slash sits high on the back", float(sheath.get("y", 0.0)) > 0.02)
+	_true("the authored slash is about forty-six degrees", absf(float(sheath.get("diagonal_degrees", 0.0)) - 46.0) < 0.5)
+	_true("the authored slash sits close to the back", float(sheath.get("z", 0.0)) > 0.18)
+	_true("the authored slash sits toward the spine", float(sheath.get("x", 0.0)) < -0.04)
+	_true("the authored slash sits high on the back", float(sheath.get("y", 0.0)) > 0.06)
 
 
 func _test_item_handoff() -> void:
@@ -735,6 +811,7 @@ func _test_pickup_and_container_shards() -> void:
 	var sim := _new_sim()
 	_eq("hover open on the closed container", str(sim.query_hover(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_CONTAINER).get("kind", "")), EtheraIds.HOVER_OPEN)
 	_true("the green club stays unmanifested until opened", not sim.world.is_manifested(sim.world.get_entity(EtheraIds.ENTITY_CLUB_GREEN)))
+	_place_beside(sim, EtheraIds.ENTITY_CONTAINER)
 	sim.apply({"type": EtheraIds.CMD_OPEN_CONTAINER, "target_id": EtheraIds.ENTITY_CONTAINER})
 	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
 	var container_pos: Vector3 = sim.world.position_of(sim.world.get_entity(EtheraIds.ENTITY_CONTAINER))
@@ -758,6 +835,7 @@ func _test_pickup_and_container_shards() -> void:
 		if str(sim.world.shards[shard_id].get("action_id", "")) == EtheraIds.ACTION_PICKUP:
 			pickup_id = str(shard_id)
 	_true("a pickup shard exists after taking the green club", pickup_id != "")
+	_place_beside(sim, EtheraIds.ENTITY_CLUB_UMBER)
 	sim.apply({"type": EtheraIds.CMD_PICKUP_ITEM, "item_id": EtheraIds.ENTITY_CLUB_UMBER})
 	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
 	_eq("umber is equipped after the second pickup", sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_SMALL_WEAPON), EtheraIds.ENTITY_CLUB_UMBER)
@@ -887,7 +965,7 @@ func _test_make_offering() -> void:
 
 func _test_long_walk_approaches_first() -> void:
 	var sim := _new_sim()
-	var dest := Vector3(18.0, 0.0, 0.0)
+	var dest: Vector3 = sim.world.position_of(sim.world.get_entity(EtheraIds.ENTITY_STONE_CIRCLE))
 	var planned: Array = sim.world.find_walk_path(Vector3.ZERO, dest, sim.world.walk_radius(), [EtheraIds.ENTITY_KHAR_MORR])
 	_true("a walk to the stone circle returns a path", planned.size() >= 1)
 	_true("a long walk does not grid the hex", planned.size() <= 8)
@@ -1021,12 +1099,14 @@ func _test_echo_imprint_shares_up_to_three() -> void:
 	sim.apply({"type": EtheraIds.CMD_PICKUP_ITEM, "item_id": EtheraIds.ENTITY_CLUB_UMBER})
 	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
 	_complete_shape_weapon(sim)
+	_place_beside(sim, EtheraIds.ENTITY_CONTAINER)
 	sim.apply({"type": EtheraIds.CMD_OPEN_CONTAINER, "target_id": EtheraIds.ENTITY_CONTAINER})
 	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
 	var actor: Dictionary = sim.world.inhabiting()
 	var fountain: Dictionary = sim.world.get_entity(EtheraIds.ENTITY_FOUNTAIN)
 	var eligible: Array[String] = sim.evaluator.eligible_shards(actor, fountain, 3)
 	_eq("three eligible records wait at the Fountain", eligible.size(), 3)
+	_place_beside(sim, EtheraIds.ENTITY_FOUNTAIN, Vector3(5.0, 0.0, 0.0))
 	_complete_echo_imprint(sim)
 	fountain = sim.world.get_entity(EtheraIds.ENTITY_FOUNTAIN)
 	for shard_id in eligible:
@@ -1328,6 +1408,11 @@ func _assert_revealed_beside(sim: EtheraSimulation, container_id: String, item_i
 	_true("%s is not on the opener" % label, item.distance_to(actor) >= 0.7)
 	if to_actor.length() > 0.001 and to_item.length() > 0.001:
 		_true("%s is off the opener's side of the object" % label, absf(to_item.normalized().dot(to_actor.normalized())) < 0.4)
+
+
+func _place_beside(sim: EtheraSimulation, entity_id: String, offset: Vector3 = Vector3(2.5, 0.0, 0.0)) -> void:
+	var at: Vector3 = sim.world.position_of(sim.world.get_entity(entity_id))
+	sim.world.set_position(EtheraIds.ENTITY_KHAR_MORR, at + offset)
 
 
 func _arrive(sim: EtheraSimulation, entity_id: String) -> void:

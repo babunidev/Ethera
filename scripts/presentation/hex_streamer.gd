@@ -67,6 +67,20 @@ func loaded_count() -> int:
 	return loaded.size()
 
 
+func loaded_hexes() -> Array:
+	return loaded.values()
+
+
+func loaded_key() -> String:
+	var keys: Array = loaded.keys()
+	keys.sort()
+	return ",".join(keys)
+
+
+func hex_at(q: int, r: int) -> Node:
+	return loaded.get(_key(q, r), null)
+
+
 func _load_hex(key: String, entry: Dictionary) -> void:
 	var tile_id: String = str(entry.get("tile_id", ""))
 	var spec: Dictionary = tiles.get(tile_id, {})

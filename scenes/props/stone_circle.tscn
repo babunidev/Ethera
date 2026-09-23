@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/presentation/stone_circle.gd" id="1_circle"]
+
+[sub_resource type="CylinderShape3D" id="CenterCollisionShape"]
+height = 1.08
+radius = 0.34
+
+[node name="StoneCircle" type="StaticBody3D"]
+collision_mask = 0
+script = ExtResource("1_circle")
+entity_id = "entity.stone_circle"
+definition_id = "definition.stone_circle"
+
+[node name="CenterCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54, 0)
+shape = SubResource("CenterCollisionShape")

@@ -16,7 +16,7 @@ SEED = 20260922
 FLAT_TO_FLAT = 256.0
 SIZE = FLAT_TO_FLAT / math.sqrt(3.0)
 APOTHEM = FLAT_TO_FLAT * 0.5
-STONE_CIRCLE = (18.0, 0.0)
+STONE_CIRCLE = (108.0, 0.0)
 
 GRASS_KINDS = [
     {"variant": 0, "name": "Long Grass"},

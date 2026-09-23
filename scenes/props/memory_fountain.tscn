@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/presentation/placed_entity.gd" id="1_placed"]
+[ext_resource type="PackedScene" path="res://assets/models/memory_fountain.glb" id="2_visual"]
+
+[sub_resource type="CylinderShape3D" id="FountainBasinShape"]
+height = 0.5
+radius = 2.5
+
+[sub_resource type="CylinderShape3D" id="FountainStemShape"]
+height = 2.2
+radius = 0.65
+
+[node name="MemoryFountain" type="StaticBody3D"]
+collision_mask = 0
+script = ExtResource("1_placed")
+entity_id = "entity.memory_fountain"
+definition_id = "definition.memory_fountain"
+
+[node name="Visual" parent="." instance=ExtResource("2_visual")]
+
+[node name="CradleBasin" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("FountainBasinShape")
+
+[node name="CradleStem" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("FountainStemShape")

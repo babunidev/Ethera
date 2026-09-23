@@ -363,6 +363,19 @@ static func opposite_edge(index: int) -> int:
 	return posmod(index + 3, EDGE_COUNT)
 
 
+## Authored edge whose flat the point is nearest. Uses `edge_outward`, not `plane_normal`.
+static func nearest_edge(x: float, z: float, orientation: int = Orientation.POINTY_TOP) -> int:
+	var best := 0
+	var best_proj := -INF
+	for index in EDGE_COUNT:
+		var outward: Vector2 = edge_outward(index, orientation)
+		var projection: float = x * outward.x + z * outward.y
+		if projection > best_proj:
+			best_proj = projection
+			best = index
+	return best
+
+
 ## Stable id written for later world generation. Not a paint-layer name.
 static func edge_type_id(type: int) -> String:
 	match clampi(type, 0, EdgeType.VEGETATION):

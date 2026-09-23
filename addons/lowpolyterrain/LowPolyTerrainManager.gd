@@ -442,6 +442,12 @@ func _validate_property(property: Dictionary) -> void:
 	if not hidden and not enable_collision_culling:
 		hidden = CULLING_ONLY_PROPERTIES.has(name)
 
+	if sculpt_data != null and (
+		name == "global_height_data" or name == "global_paint_data" or name == "chunk_activity_data"
+	):
+		property["usage"] = PROPERTY_USAGE_NONE
+		return
+
 	if not hidden and terrain_shape == TerrainShape.HEXAGON:
 		hidden = RECTANGLE_ONLY_PROPERTIES.has(name)
 	elif not hidden:
@@ -957,6 +963,9 @@ func set_chunk_status_in_radius(center_pos: Vector3, activate: bool) -> void:
 ## renders exactly as it did before this feature existed.
 @export_storage var global_paint_data: PackedByteArray = PackedByteArray()
 
+## External sculpt so a hex scene does not embed megabytes of height and paint.
+@export var sculpt_data: LowPolyTerrainSculpt
+
 ## Number of distinct values a paint weight can take.
 ##
 ## Not a storage concern - a byte would hold 256. It exists so the mesh decimation can compare
@@ -1058,6 +1067,7 @@ func _process(_delta: float) -> void:
 
 
 func _ready() -> void:
+	_apply_sculpt_resource()
 	# Synchronize active operational variables with serialized preview settings on load to
 	# guarantee structural persistence
 	world_chunks = preview_world_chunks
@@ -1268,6 +1278,30 @@ func ensure_paint_material() -> Material:
 ## discards every fragment costs a second pass over the whole terrain for no result.
 func get_active_paint_material() -> Material:
 	return paint_material if has_paint_data() else null
+
+
+## True when this node's tool script is actually running. An instanced child inside another
+## edited scene is a placeholder, and calling methods on it is what produces the editor error.
+static func is_live_editor_instance(object: Object) -> bool:
+	if not (object is Node):
+		return false
+	var node := object as Node
+	if not node.is_inside_tree():
+		return false
+	if not Engine.is_editor_hint():
+		return true
+	var main_loop: Object = Engine.get_main_loop()
+	var edited: Node = main_loop.get("edited_scene_root") as Node if main_loop else null
+	if edited == null:
+		return false
+	var current: Node = node
+	while current != null:
+		if current == edited:
+			return true
+		if current.scene_file_path != "" and current.owner == edited:
+			return false
+		current = current.get_parent()
+	return false
 
 
 ## The configured colour of one paint layer, 1 to 4. Falls back to white when the material does
@@ -3350,7 +3384,31 @@ func _leave_collision_group() -> void:
 
 
 ## Mirrors the node bookkeeping that a MeshInstance3D child would otherwise inherit for free.
+func persist_sculpt_resource() -> void:
+	if sculpt_data == null:
+		return
+	sculpt_data.height = global_height_data
+	sculpt_data.paint = global_paint_data
+	sculpt_data.activity = chunk_activity_data
+	var path: String = sculpt_data.resource_path
+	if path != "":
+		ResourceSaver.save(sculpt_data, path)
+
+
+func _apply_sculpt_resource() -> void:
+	if sculpt_data == null:
+		return
+	if not sculpt_data.height.is_empty():
+		global_height_data = sculpt_data.height
+	if not sculpt_data.paint.is_empty():
+		global_paint_data = sculpt_data.paint
+	if not sculpt_data.activity.is_empty():
+		chunk_activity_data = sculpt_data.activity
+
+
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_EDITOR_PRE_SAVE:
+		persist_sculpt_resource()
 	match what:
 		NOTIFICATION_TRANSFORM_CHANGED:
 			if _server_backend == null:

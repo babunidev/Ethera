@@ -34,9 +34,10 @@ const ORBIT_PITCH_MIN := -1.52
 const ORBIT_PITCH_MAX := 1.52
 const ORBIT_FLOOR := 0.12
 const ORBIT_FOCUS_HEIGHT := 1.15
-const ORBIT_COLLISION_SKIN := 0.12
+const ORBIT_CAMERA_RADIUS := 0.22
 const ORBIT_COLLISION_MIN := 0.45
 var hex_stream: EtheraHexStreamer
+var _streamed_hex_key := ""
 var holding_left := false
 var press_time_ms := 0
 var press_target_id := ""
@@ -63,7 +64,8 @@ var hover_kind := EtheraIds.HOVER_NONE
 @onready var hud: CanvasLayer = $StartupOverlay
 @onready var status_label: Label = $StartupOverlay/MarginContainer/VBoxContainer/Status
 @onready var title_label: Label = $StartupOverlay/MarginContainer/VBoxContainer/Title
-@onready var temporary_ground: Node3D = $World/TemporaryGround
+@onready var hex_host: Node3D = $World/HexHost
+var authored_views: Dictionary = {}
 
 var panel_tab := "traits"
 var panel_refreshing := false
@@ -87,18 +89,27 @@ func _ready() -> void:
 	assets.load_from_res()
 	_build_hud()
 	_configure_sun()
-	assets.try_mount_environment(world_root, temporary_ground)
+	_setup_day_night()
+	assets.try_mount_environment(world_root, hex_host)
 	_make_hex_ground()
+	_bind_authored_hex_objects()
+	_bind_world_node_occupants()
+	_bind_scenery_blockers()
+	if hex_stream != null:
+		_streamed_hex_key = hex_stream.loaded_key()
 	_rebuild_views()
+	_apply_living_stone_glow()
 	_refresh_hud()
 
 
 func _process(delta: float) -> void:
 	_advance_simulation(delta)
+	_advance_day_night(delta)
 	_apply_mouse_mode()
 	_update_hold_radial()
 	_sync_hex_stream()
 	_sync_views(delta)
+	_apply_living_stone_glow()
 	_update_camera()
 	_update_hover()
 	_update_discovery_toast(delta)
@@ -223,10 +234,15 @@ func _handle_skill_input(event: InputEvent) -> void:
 
 
 func _rebuild_views() -> void:
-	for child in views.values():
+	var stale: Array = []
+	for entity_id in views.keys():
+		if not authored_views.has(entity_id):
+			stale.append(entity_id)
+	for entity_id in stale:
+		var child: Variant = views[entity_id]
 		if child is Node:
 			(child as Node).queue_free()
-	views.clear()
+		views.erase(entity_id)
 	var snapshot: Dictionary = simulation.query_world_view()
 	for entity in snapshot.get("entities", []):
 		_ensure_view(entity)
@@ -258,16 +274,21 @@ func _sync_views(delta: float) -> void:
 		var carried: bool = not EtheraIds.is_empty_slot(holder_id) and views.has(str(holder_id))
 		var pos: Dictionary = entity.get("position", {})
 		var rest := Vector3(float(pos.get("x", 0.0)), float(pos.get("y", 0.0)), float(pos.get("z", 0.0)))
+		if authored_views.has(entity_id):
+			node.visible = bool(entity.get("manifested", false))
+			continue
 		if not carried:
 			rest.y = terrain_height(rest.x, rest.z)
 		var yaw: float = float(entity.get("yaw", 0.0))
 		var goal: Transform3D = EtheraItemHandoff.loose_transform(rest, yaw)
 		if carried:
 			var holder: Node3D = views[str(holder_id)]
+			assets.apply_carried_visual(node, true)
 			goal = assets.attach_world_transform(
 				holder,
 				by_id.get(str(holder_id), {}),
-				str(entity.get("attachment", "back"))
+				str(entity.get("attachment", "back")),
+				node
 			)
 		handoff.observe(entity_id, carried, node.global_transform)
 		if handoff.is_active(entity_id):
@@ -284,19 +305,89 @@ func _sync_views(delta: float) -> void:
 		else:
 			node.global_transform = node.global_transform.interpolate_with(goal, follow)
 	for entity_id in views.keys():
-		if not seen.has(entity_id):
-			(views[entity_id] as Node).queue_free()
-			views.erase(entity_id)
-			handoff.forget(entity_id)
+		if seen.has(entity_id) or authored_views.has(entity_id):
+			continue
+		(views[entity_id] as Node).queue_free()
+		views.erase(entity_id)
+		handoff.forget(entity_id)
 
 
 func _ensure_view(entity: Dictionary) -> void:
 	var entity_id: String = str(entity.get("id", ""))
 	if views.has(entity_id) or str(entity.get("kind", "")) == "place":
 		return
+	if authored_views.has(entity_id):
+		return
 	var body: StaticBody3D = assets.make_entity_body(entity)
 	world_root.add_child(body)
 	views[entity_id] = body
+
+
+func _bind_authored_hex_objects() -> void:
+	if hex_stream == null:
+		return
+	var placements: Array = []
+	for hex in hex_stream.loaded_hexes():
+		if not (hex is EtheraHexTile):
+			continue
+		for placed in (hex as EtheraHexTile).placed_entities():
+			if placed.entity_id == "":
+				continue
+			var first: bool = not authored_views.has(placed.entity_id)
+			views[placed.entity_id] = placed
+			authored_views[placed.entity_id] = true
+			if not first:
+				continue
+			placements.append({
+				"entity_id": placed.entity_id,
+				"x": placed.global_position.x,
+				"z": placed.global_position.z,
+				"yaw": placed.rotation.y,
+			})
+		# Hex grass and stones are editor markers. Play uses the existing grass
+		# patches and shapeable rocks spawned from landscape data.
+		for raw in (hex as EtheraHexTile).landscape_placements():
+			if str(raw.get("entity_id", "")) != "":
+				placements.append(raw)
+	if not placements.is_empty():
+		simulation.adopt_authored_placements(placements)
+
+
+func _bind_scenery_blockers() -> void:
+	if hex_stream == null:
+		return
+	var blockers: Array = []
+	for hex in hex_stream.loaded_hexes():
+		if hex is EtheraHexTile:
+			blockers.append_array((hex as EtheraHexTile).scenery_blockers())
+	simulation.adopt_scenery_blockers(blockers)
+
+
+func _bind_world_node_occupants() -> void:
+	if hex_stream == null:
+		return
+	var placements: Array = []
+	var seated: Dictionary = {}
+	for hex in hex_stream.loaded_hexes():
+		if not (hex is EtheraHexTile):
+			continue
+		for entity_id in simulation.world.entities.keys():
+			var entity: Dictionary = simulation.world.get_entity(str(entity_id))
+			var node_id: String = str(entity.get("world_node_id", ""))
+			if node_id == "" or seated.has(str(entity_id)):
+				continue
+			var marker: EtheraWorldNodeMarker = (hex as EtheraHexTile).world_node_marker(node_id)
+			if marker == null:
+				continue
+			seated[str(entity_id)] = true
+			placements.append({
+				"entity_id": str(entity_id),
+				"x": marker.global_position.x,
+				"z": marker.global_position.z,
+				"yaw": marker.rotation.y,
+			})
+	if not placements.is_empty():
+		simulation.adopt_authored_placements(placements)
 
 
 # Right-click always walks. An object click stops just before that object.
@@ -391,10 +482,30 @@ func _apply_mouse_mode() -> void:
 
 
 # Starting 256 m hex plus neighbors that exist in the layout. Simulation xz stays planar.
+# Presentation Y can sit on a town hall floor; slope checks still use the hex sculpt.
 func terrain_height(x: float, z: float) -> float:
+	var ground := 0.0
 	if hex_stream != null:
-		return hex_stream.height_at(x, z)
-	return 0.0
+		ground = hex_stream.height_at(x, z)
+	var floor_y: float = _walk_floor_height(x, z)
+	if not is_nan(floor_y):
+		return maxf(ground, floor_y)
+	return ground
+
+
+func _walk_floor_height(x: float, z: float) -> float:
+	if hex_stream == null:
+		return NAN
+	var best := NAN
+	for hex in hex_stream.loaded_hexes():
+		if not (hex is EtheraHexTile):
+			continue
+		var floor_y: float = (hex as EtheraHexTile).walk_floor_height(x, z)
+		if is_nan(floor_y):
+			continue
+		if is_nan(best) or floor_y > best:
+			best = floor_y
+	return best
 
 
 func terrain_normal(x: float, z: float) -> Vector3:
@@ -409,26 +520,22 @@ func _sync_hex_stream() -> void:
 	var actor_view: Node3D = views.get(simulation.query_inhabited_id())
 	var at: Vector3 = actor_view.global_position if actor_view else Vector3.ZERO
 	hex_stream.sync_around(Vector2(at.x, at.z))
+	var key: String = hex_stream.loaded_key()
+	if key == _streamed_hex_key:
+		return
+	_streamed_hex_key = key
+	_bind_authored_hex_objects()
+	_bind_world_node_occupants()
+	_bind_scenery_blockers()
 
 
 func _make_hex_ground() -> void:
-	if temporary_ground == null or not temporary_ground.visible:
+	if hex_host == null or not hex_host.visible:
 		return
-	var hidden: MeshInstance3D = temporary_ground.get_node_or_null("MeshInstance3D")
-	if hidden:
-		hidden.mesh = null
-		hidden.visible = false
-	var old_collider: CollisionShape3D = temporary_ground.get_node_or_null("CollisionShape3D")
-	if old_collider:
-		old_collider.queue_free()
-	for old_tile in temporary_ground.find_children("GroundTile_*", "", false, false):
-		old_tile.queue_free()
-	for old_mark in temporary_ground.find_children("GroundCorner_*", "", false, false):
-		old_mark.queue_free()
 	hex_stream = EtheraHexStreamer.new()
 	hex_stream.name = "HexStream"
-	temporary_ground.add_child(hex_stream)
-	hex_stream.setup(temporary_ground as CollisionObject3D)
+	hex_host.add_child(hex_stream)
+	hex_stream.setup(hex_host as CollisionObject3D)
 
 
 func _update_camera() -> void:
@@ -514,6 +621,15 @@ func _orbit_blockers() -> Array:
 			})
 		else:
 			volumes.append_array(mesh_volumes)
+	if hex_stream != null:
+		for hex in hex_stream.loaded_hexes():
+			if not (hex is EtheraHexTile):
+				continue
+			for child in (hex as EtheraHexTile).get_children():
+				if child is EtheraBush or child is EtheraStoneBench:
+					volumes.append_array(_orbit_volumes_from_view(child))
+				elif child is EtheraPlacedEntity and (child as EtheraPlacedEntity).definition_id == EtheraPlacedEntity.DEFINITION_CRADLE:
+					volumes.append_array(_orbit_volumes_from_view(child))
 	return volumes
 
 
@@ -541,20 +657,39 @@ func _orbit_volumes_from_view(root: Node) -> Array:
 	return volumes
 
 
-# Occupancy is a disk for walking. The camera stops on each visible solid, not a
-# column of air above a small basin or through the empty middle of a ring.
-static func orbit_ray_blocked_distance(origin: Vector3, direction: Vector3, max_distance: float, cylinders: Array, skin: float = ORBIT_COLLISION_SKIN) -> float:
+# Occupancy is a disk for walking. The camera only pulls in when it would sit
+# inside a visible solid, not because something stands between it and her, and
+# not for a column of air above a small basin or the empty middle of a ring.
+static func orbit_ray_blocked_distance(origin: Vector3, direction: Vector3, max_distance: float, cylinders: Array, skin: float = ORBIT_CAMERA_RADIUS) -> float:
 	if direction.length() < 0.0001 or max_distance <= 0.0:
 		return max_distance
 	var dir: Vector3 = direction.normalized()
+	var camera_at: Vector3 = origin + dir * max_distance
 	var best: float = max_distance
 	for raw in cylinders:
 		if typeof(raw) != TYPE_DICTIONARY:
 			continue
-		var hit: float = _vertical_cylinder_hit(origin, dir, max_distance, raw)
+		var volume: Dictionary = (raw as Dictionary).duplicate()
+		volume["radius"] = float(volume.get("radius", 0.0)) + skin
+		volume["y_min"] = float(volume.get("y_min", -2.0)) - skin
+		volume["y_max"] = float(volume.get("y_max", 4.0)) + skin
+		if not _point_in_vertical_cylinder(camera_at, volume):
+			continue
+		var hit: float = _vertical_cylinder_hit(origin, dir, max_distance, volume)
 		if hit < INF:
-			best = minf(best, hit - skin)
+			best = minf(best, hit)
 	return maxf(ORBIT_COLLISION_MIN, best)
+
+
+static func _point_in_vertical_cylinder(point: Vector3, cylinder: Dictionary) -> bool:
+	var radius: float = float(cylinder.get("radius", 0.0))
+	if radius <= 0.0:
+		return false
+	var dx: float = point.x - float(cylinder.get("x", 0.0))
+	var dz: float = point.z - float(cylinder.get("z", 0.0))
+	if dx * dx + dz * dz > radius * radius:
+		return false
+	return point.y >= float(cylinder.get("y_min", -2.0)) and point.y <= float(cylinder.get("y_max", 4.0))
 
 
 static func _vertical_cylinder_hit(origin: Vector3, dir: Vector3, max_distance: float, cylinder: Dictionary) -> float:
@@ -609,15 +744,40 @@ func _discover_target_under_mouse() -> String:
 			continue
 		if bool(entity.get("discovered_by_inhabited", false)):
 			continue
-		var position: Dictionary = entity.get("position", {})
-		var world_at := Vector3(float(position.get("x", 0.0)), 1.46, float(position.get("z", 0.0)))
+		var world_at: Vector3 = _discovery_aim_point(str(entity.get("id", "")), entity)
 		if camera.is_position_behind(world_at):
 			continue
 		var distance: float = camera.unproject_position(world_at).distance_to(mouse)
-		if distance < best_distance:
-			best_distance = distance
-			best_id = str(entity.get("id", ""))
+		if distance >= best_distance:
+			continue
+		if not _has_line_of_sight(camera.global_position, world_at, str(entity.get("id", ""))):
+			continue
+		best_distance = distance
+		best_id = str(entity.get("id", ""))
 	return best_id
+
+
+func _discovery_aim_point(entity_id: String, entity: Dictionary) -> Vector3:
+	var node: Node3D = views.get(entity_id) as Node3D
+	if node != null and node.is_inside_tree():
+		return node.global_position + Vector3(0.0, 1.46, 0.0)
+	var position: Dictionary = entity.get("position", {})
+	var x: float = float(position.get("x", 0.0))
+	var z: float = float(position.get("z", 0.0))
+	return Vector3(x, terrain_height(x, z) + 1.46, z)
+
+
+func _has_line_of_sight(from: Vector3, to: Vector3, allow_id: String = "") -> bool:
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(from, to)
+	query.hit_from_inside = true
+	var hit: Dictionary = space.intersect_ray(query)
+	if hit.is_empty():
+		return true
+	var entity_id: String = _entity_id_from_collider(hit.get("collider"))
+	if entity_id != "" and (allow_id == "" or entity_id == allow_id):
+		return true
+	return from.distance_to(hit.get("position", from)) + 0.2 >= from.distance_to(to)
 
 
 func walk_pick_from_hits(hits: Array) -> Dictionary:
@@ -807,12 +967,33 @@ func _configure_sun() -> void:
 	var world_env: WorldEnvironment = get_node_or_null("WorldEnvironment") as WorldEnvironment
 	if world_env != null and world_env.environment != null:
 		var env: Environment = world_env.environment
-		env.background_mode = Environment.BG_COLOR
-		env.background_color = Color(0.46, 0.62, 0.78)
 		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-		env.ambient_light_color = Color(0.82, 0.74, 0.62)
-		env.ambient_light_energy = 0.42
-		env.fog_enabled = false
+		env.fog_enabled = true
+
+
+func _setup_day_night() -> void:
+	var cycle: EtheraDayNight = get_node_or_null("DayNight") as EtheraDayNight
+	if cycle == null:
+		cycle = EtheraDayNight.new()
+		cycle.name = "DayNight"
+		add_child(cycle)
+	cycle.setup(
+		get_node_or_null("Sun") as DirectionalLight3D,
+		get_node_or_null("WorldEnvironment") as WorldEnvironment,
+		camera
+	)
+
+
+func _advance_day_night(delta: float) -> void:
+	var cycle: EtheraDayNight = get_node_or_null("DayNight") as EtheraDayNight
+	if cycle != null:
+		cycle.advance(delta)
+
+
+func _apply_living_stone_glow() -> void:
+	var cycle: EtheraDayNight = get_node_or_null("DayNight") as EtheraDayNight
+	if cycle != null:
+		cycle.apply_living_stone_glow()
 
 
 func _sync_discovery_aura(node: Node, discovered: bool) -> void:

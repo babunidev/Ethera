@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/presentation/placed_entity.gd" id="1_placed"]
+[ext_resource type="PackedScene" uid="uid://w060iw0g0hnp" path="res://assets/ech_cradle.glb" id="2_visual"]
+
+[sub_resource type="CylinderShape3D" id="CradleBasinShape"]
+height = 0.38
+radius = 0.55
+
+[sub_resource type="CylinderShape3D" id="CradleStemShape"]
+height = 1.1
+radius = 0.22
+
+[node name="EchoCradle" type="StaticBody3D"]
+collision_mask = 0
+script = ExtResource("1_placed")
+definition_id = "definition.echo_cradle"
+
+[node name="Visual" parent="." instance=ExtResource("2_visual")]
+
+[node name="CradleBasin" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19, 0)
+shape = SubResource("CradleBasinShape")
+
+[node name="CradleStem" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("CradleStemShape")

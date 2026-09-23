@@ -54,12 +54,12 @@ These were open questions. They are now implemented and covered by tests.
 
 ## Engine work still open
 
-- Pathing across irregular environment meshes. Occupancy-disk A* already routes around the Fountain, the rock, containers, landmarks and other characters. Grass patches occupy nothing. Ground steeper than 50° is a wall on the shared height sampler. Environment GLBs get mesh collision for picking. Temporary ground is a streamed 256 m hex; simulation `y` stays 0. Growing the map is more authored hexes in the layout, not a second loaded scene.
+- Pathing across irregular environment meshes. Occupancy-disk A* already routes around the Fountain, the rock, containers, landmarks, other characters, and authored hex scenery (bushes, benches, Echo Cradles). Grass patches occupy nothing. Ground steeper than 50° is a wall on the current slope sampler. Environment GLBs get mesh collision for picking. The starting hex is the authored 256 m tile; simulation `y` stays 0. Growing the map is more authored hexes in the layout, not a second loaded scene. Binding walkable slope to the authored sculpt is later work.
 - Dedicated Shape Weapon and Echo Imprint animations. Idle and Walk already play from the Mixamo-rigged sculpt.
 - Final camera limits after the real silhouette is in
 - Hold/drag/click disambiguation polish
 - Replacing primitive meshes with GLBs
-- Terrain authoring plugin / sculpted hex interiors. The starting hex is a subdivided generated mesh with locked flat edges.
+- Additional authored hexes and destiny-driven hex spawning. The starting hex is already the sculpted Low Poly tile with locked flat edges.
 
 ## Implementation definitions already chosen
 

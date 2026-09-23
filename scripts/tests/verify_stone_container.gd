@@ -35,6 +35,8 @@ func run() -> void:
 	var closed: Quaternion = pivot.quaternion
 	var rest_position: Vector3 = pivot.position
 	check(not lid_open(scene.simulation), "Container begins closed")
+	var container_at: Vector3 = scene.simulation.world.position_of(scene.simulation.world.get_entity("entity.container"))
+	scene.simulation.world.set_position("entity.khar_morr", container_at + Vector3(2.5, 0.0, 0.0))
 	scene.simulation.apply({"type":"open_container", "target_id":"entity.container"})
 	for i in range(500):
 		scene.simulation.apply({"type":"tick"})
