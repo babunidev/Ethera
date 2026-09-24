@@ -7,8 +7,6 @@ var assets: Dictionary = {}
 var environment_asset_id: String = "asset.village_center"
 
 const FALLBACK_ASSETS_PATH := "res://data/presentation/assets.json"
-const PLANT_SCENE := "res://glTF/Plant_1.gltf"
-const PLANT_BIG_SCENE := "res://glTF/Plant_1_Big.gltf"
 const PEBBLE_FOOTPRINT := 0.5
 const MEDIUM_ROCK_SCENES: Array[String] = [
 	"res://glTF/Rock_Medium_1.gltf",
@@ -409,14 +407,6 @@ func _make_grass(entity: Dictionary) -> Node3D:
 	var variant: int = int(presentation.get("variant", 0))
 	if not bundled:
 		root.name = "GrassPatch"
-	var plant_path: String = PLANT_SCENE if (bundled or posmod(variant, 2) == 0) else PLANT_BIG_SCENE
-	var plant: Node3D = _instance_model(plant_path)
-	if plant != null:
-		root.add_child(plant)
-		if bundled:
-			root.scale = Vector3(0.34, 0.34, 0.34)
-		_seat_item_on_ground(root)
-		return root
 	var blades: int = 5 if bundled else clampi(int(presentation.get("blade_count", 18)), 15, 30)
 	var palette: Array[Color] = [
 		Color(0.32, 0.50, 0.21),
@@ -426,15 +416,15 @@ func _make_grass(entity: Dictionary) -> Node3D:
 		Color(0.40, 0.56, 0.26),
 	]
 	var heights: Array[Vector2] = [
-		Vector2(0.18, 0.32),
-		Vector2(0.12, 0.22),
-		Vector2(0.22, 0.38),
-		Vector2(0.16, 0.28),
-		Vector2(0.20, 0.36),
+		Vector2(0.14, 0.26),
+		Vector2(0.10, 0.18),
+		Vector2(0.18, 0.30),
+		Vector2(0.13, 0.22),
+		Vector2(0.16, 0.29),
 	]
 	var height_range: Vector2 = heights[variant % heights.size()]
 	if bundled:
-		height_range = Vector2(0.14, 0.22)
+		height_range = Vector2(0.11, 0.18)
 	for i in range(blades):
 		var height: float = lerpf(height_range.x, height_range.y, float((i * 17) % 10) / 9.0)
 		var base: float = lerpf(0.028, 0.055, float((i * 13) % 8) / 7.0)
@@ -444,9 +434,9 @@ func _make_grass(entity: Dictionary) -> Node3D:
 		var angle: float = TAU * float(i) / float(maxi(blades, 1)) + 0.37 * float(i)
 		var radius: float
 		if bundled:
-			radius = 0.008 + 0.016 * sqrt(float((i * 11) % blades) / float(maxi(blades, 1)))
+			radius = 0.006 + 0.013 * sqrt(float((i * 11) % blades) / float(maxi(blades, 1)))
 		else:
-			radius = 0.04 + 0.22 * sqrt(float((i * 11) % blades) / float(maxi(blades, 1)))
+			radius = 0.03 + 0.18 * sqrt(float((i * 11) % blades) / float(maxi(blades, 1)))
 		blade.position = Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
 		blade.rotation = Vector3(
 			deg_to_rad((-8.0 if bundled else -12.0) - float((i * 7) % 18)),

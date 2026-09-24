@@ -16,6 +16,12 @@
       "attach_nodes": { "back": "back" }
     },
     {
+      "id": "asset.trakia_vorr",
+      "path": "res://assets/models/trakia_vorr.glb",
+      "kind": "character",
+      "attach_nodes": { "back": "back" }
+    },
+    {
       "id": "asset.memory_fountain",
       "path": "res://assets/models/memory_fountain.glb",
       "kind": "memory_fountain"

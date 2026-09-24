@@ -108,6 +108,10 @@ func _validate_one(entry: Dictionary, actor_id: String, target_id: String, selec
 		EtheraIds.RESULT_CONSUME_EQUIPPED_ITEM:
 			var slot_id: String = str(entry.get("slot_id", ""))
 			return "" if world.equipped_item_id(world.get_entity(subject_id), slot_id) != "" else "missing_equipped_item"
+		EtheraIds.RESULT_GREET:
+			return "" if str(entry.get("text", "")) != "" else "malformed_result"
+		EtheraIds.RESULT_REVEAL_CONTAINER:
+			return "" if not bool(world.get_entity(subject_id).get("opened", false)) else "already_open"
 		_:
 			return "unknown_result_type"
 
@@ -131,6 +135,10 @@ func _apply_one(entry: Dictionary, actor_id: String, target_id: String, selected
 			return _change_state(entry, subject_id, false)
 		EtheraIds.RESULT_CONSUME_EQUIPPED_ITEM:
 			return _consume_equipped_item(entry, subject_id)
+		EtheraIds.RESULT_GREET:
+			return _greet(entry, actor_id, target_id)
+		EtheraIds.RESULT_REVEAL_CONTAINER:
+			return _reveal_container(subject_id, actor_id)
 		_:
 			return {"ok": false, "reason": "unknown_result_type"}
 
@@ -291,6 +299,94 @@ func _consume_equipped_item(entry: Dictionary, holder_id: String) -> Dictionary:
 		],
 		"result_ids": [item_id],
 	}
+
+
+func _reveal_container(container_id: String, actor_id: String) -> Dictionary:
+	var container: Dictionary = world.get_entity(container_id)
+	if container.is_empty():
+		return {"ok": false, "reason": "missing_entity"}
+	if bool(container.get("opened", false)):
+		return {"ok": false, "reason": "already_open"}
+	container["opened"] = true
+	world.bump(container_id, EtheraIds.CHANGE_MANIFESTATION)
+	var events: Array[Dictionary] = []
+	var origin: Vector3 = world.position_of(container)
+	var drop_offset: Vector3 = _reveal_offset(actor_id, container)
+	for item_id in container.get("contained_item_ids", []):
+		var item: Dictionary = world.get_entity(str(item_id))
+		if item.is_empty():
+			continue
+		item["manifested"] = true
+		item["container_id"] = null
+		item["holder_id"] = null
+		item["position"] = EtheraWorld.quantized_point(origin + drop_offset)
+		world.bump(str(item_id), EtheraIds.CHANGE_MANIFESTATION)
+		events.append(_event(EtheraIds.EVENT_MANIFESTATION, {"entity_id": str(item_id), "manifested": true}))
+	events.append(_log("container_opened", "Opened %s" % container.get("name", container_id), {"target_id": container_id}))
+	return {"ok": true, "events": events, "result_ids": [EtheraIds.RESULT_DISCOVERED]}
+
+
+func _reveal_offset(actor_id: String, container: Dictionary) -> Vector3:
+	var origin: Vector3 = world.position_of(container)
+	var look: Vector3 = origin - world.position_of(world.get_entity(actor_id))
+	look.y = 0.0
+	if look.length() < 0.001:
+		look = Vector3(1.0, 0.0, 0.0)
+	look = look.normalized()
+	var right := Vector3(-look.z, 0.0, look.x)
+	var distance: float = maxf(world.occupancy_radius(container) + 0.65, 0.9)
+	var ignore: Array = [str(container.get("id", ""))]
+	if _point_hits_occupancy(origin + right * distance, ignore):
+		return -right * distance
+	return right * distance
+
+
+func _point_hits_occupancy(point: Vector3, ignore_ids: Array) -> bool:
+	for blocker in world.blockers_near(ignore_ids):
+		var dx: float = point.x - float(blocker.get("x", 0.0))
+		var dz: float = point.z - float(blocker.get("z", 0.0))
+		var radius: float = float(blocker.get("radius", 0.0)) + 0.12
+		if dx * dx + dz * dz < radius * radius:
+			return true
+	return false
+
+
+func _greet(entry: Dictionary, actor_id: String, target_id: String) -> Dictionary:
+	var speaker_id: String = _id_for(str(entry.get("entity", EtheraIds.ROLE_ACTOR)), actor_id, target_id)
+	var speaker: Dictionary = world.get_entity(speaker_id)
+	if speaker.is_empty():
+		return {"ok": false, "reason": "missing_entity"}
+	var text: String = str(entry.get("text", "Hi"))
+	var duration_ms: int = maxi(1, int(entry.get("duration_ms", 2200)))
+	var now: int = world.world_time_ms
+	_set_speech(speaker_id, text, now, now + duration_ms)
+	var reply_text: String = str(entry.get("reply_text", ""))
+	var reply_after_ms: int = maxi(0, int(entry.get("reply_after_ms", 0)))
+	var reply_duration_ms: int = maxi(1, int(entry.get("reply_duration_ms", duration_ms)))
+	var until_ms: int = now + duration_ms
+	if reply_text != "" and reply_after_ms > 0:
+		var reply_id: String = target_id if speaker_id == actor_id else actor_id
+		_set_speech(reply_id, reply_text, now + reply_after_ms, now + reply_after_ms + reply_duration_ms)
+		until_ms = now + reply_after_ms + reply_duration_ms
+	var actor: Dictionary = world.get_entity(actor_id)
+	actor["greeting_focus"] = {
+		"target_id": target_id,
+		"started_ms": now,
+		"until_ms": until_ms,
+	}
+	world.bump(actor_id, EtheraIds.CHANGE_STATES)
+	return {
+		"ok": true,
+		"events": [_log("greeting", "%s says %s" % [speaker.get("name", speaker_id), text], {"entity_id": speaker_id, "text": text})],
+	}
+
+
+func _set_speech(entity_id: String, text: String, from_ms: int, until_ms: int) -> void:
+	var entity: Dictionary = world.get_entity(entity_id)
+	if entity.is_empty():
+		return
+	entity["speech"] = {"text": text, "from_ms": from_ms, "until_ms": until_ms}
+	world.bump(entity_id, EtheraIds.CHANGE_STATES)
 
 
 # Exactly one Shard per successful action, written after the final world result.

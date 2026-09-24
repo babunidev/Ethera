@@ -126,6 +126,12 @@ func _matches_condition(actor: Dictionary, target: Dictionary, subject: Dictiona
 			return trait_id == "" or world.has_trait(world.get_entity(item_id), trait_id)
 		"knows_discovery_of_target":
 			return not _place_undiscovered_by(actor, target)
+		"different_entity":
+			return str(actor.get("id", "")) != str(target.get("id", ""))
+		"kind":
+			return str(subject.get("kind", "")) == str(condition.get("kind", ""))
+		"opened":
+			return bool(subject.get("opened", false)) == bool(condition.get("opened", false))
 		_:
 			return false
 

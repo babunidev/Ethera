@@ -6,6 +6,9 @@ class_name EtheraHexTile
 # ground. The generated grassland mesh is only a fallback for empty tiles.
 
 const SUBDIV := 48
+# Ground, shadows, and a click all sit inside this distance of her. Chunks and
+# scenery outside it stay in the scene for height and occupancy, but do not draw.
+const VIEW_RING_RADIUS := 64.0
 
 var tile_id: String = "hex.grassland.a"
 var terrain: MeshInstance3D
@@ -58,7 +61,6 @@ func build_terrain() -> Mesh:
 func attach_host_collision(host: CollisionObject3D) -> void:
 	var manager: LowPolyTerrainManager = terrain_manager()
 	if manager != null:
-		manager.enable_collision_culling = false
 		if manager.has_method("_bake_live_collisions_as_child"):
 			manager.call("_bake_live_collisions_as_child")
 		seat_scenery()
@@ -157,6 +159,61 @@ func _append_scenery_disk(found: Array, kind: String, node: Node3D, radius: floa
 		"z": node.global_position.z,
 		"radius": radius,
 	})
+
+
+func follow_actor(actor: Node3D) -> void:
+	var manager: LowPolyTerrainManager = terrain_manager()
+	if manager == null or actor == null:
+		return
+	manager.enable_collision_culling = true
+	if manager.collision_cull_radius < VIEW_RING_RADIUS:
+		manager.collision_cull_radius = VIEW_RING_RADIUS
+	manager.add_culling_target(actor)
+
+
+func sync_view_ring(actor_xz: Vector2) -> void:
+	if Engine.is_editor_hint():
+		return
+	var manager: LowPolyTerrainManager = terrain_manager()
+	if manager != null:
+		var meters: float = float(manager.chunk_size) * manager.cell_size
+		for coord in manager.chunks_dict.keys():
+			var chunk: Node3D = manager.chunks_dict[coord] as Node3D
+			if chunk == null:
+				continue
+			var show: bool = _chunk_intersects_ring(chunk, actor_xz, meters, VIEW_RING_RADIUS)
+			if chunk.visible != show:
+				chunk.visible = show
+	var radius_sq: float = VIEW_RING_RADIUS * VIEW_RING_RADIUS
+	for child in get_children():
+		if not (child is Node3D) or child == manager:
+			continue
+		if str(child.name).ends_with("_Collisions") or child.name == "WorldNodes":
+			continue
+		if child is EtheraGrassClump or child is EtheraScatterStone or child is EtheraWorldNodeMarker:
+			continue
+		var node := child as Node3D
+		var dx: float = node.global_position.x - actor_xz.x
+		var dz: float = node.global_position.z - actor_xz.y
+		var near: bool = dx * dx + dz * dz <= radius_sq
+		if child is EtheraPlacedEntity:
+			if not near:
+				node.visible = false
+			continue
+		if node.visible != near:
+			node.visible = near
+
+
+func _chunk_intersects_ring(chunk: Node3D, actor_xz: Vector2, meters: float, radius: float) -> bool:
+	var local: Vector3 = chunk.global_transform.affine_inverse() * Vector3(actor_xz.x, chunk.global_position.y, actor_xz.y)
+	var nearest: Vector3 = chunk.global_transform * Vector3(
+		clampf(local.x, 0.0, meters),
+		0.0,
+		clampf(local.z, -meters, 0.0)
+	)
+	var dx: float = nearest.x - actor_xz.x
+	var dz: float = nearest.z - actor_xz.y
+	return dx * dx + dz * dz <= radius * radius
 
 
 func seat_scenery() -> void:

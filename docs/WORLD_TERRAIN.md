@@ -20,6 +20,8 @@ World data (entities, places)
 
 `EtheraHexStreamer` loads `data/world/hex_layout.json` against `data/world/hex_library.json`. It instantiates the player’s current hex plus ring 1, and only those hexes that exist in the layout. Distant hexes unload. Authoritative state does not depend on whether a hex scene is loaded.
 
+Inside a loaded hex the height grid stays resident, so ground height works anywhere on that tile. Chunk meshes, chunk colliders, and scenery draw only inside 64 m of her. Walking occupancy for bushes and benches is taken once when the hex loads and is not dropped with the mesh.
+
 ## Edges
 
 Each library tile stores six edge types, clockwise from east. Rotation is a 60° step. Neighbor placement must match the touching edge; that check is for when a second hex is authored.
@@ -64,4 +66,4 @@ A World Node is an authored location on a hex, not a RealmNode and not a spawn p
 
 ## Shadows
 
-Directional shadows use PSSM splits. `max_distance` follows the orbit camera, not the hex diameter. Local omni and spot lamps keep the shadow setting you author. Many shadowed lamps will cost the frame.
+Directional shadows use four PSSM splits. `max_distance` follows the orbit camera, not the hex diameter. The sun shadow atlas is 4096. Village omni lamps light the stonework and do not cast shadows.

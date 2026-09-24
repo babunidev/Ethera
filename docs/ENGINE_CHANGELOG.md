@@ -4,6 +4,22 @@ Implementation log for **Ethera: The Stonewrought**. This is the game-repo recor
 
 Concept, lore and design rulings stay in the Morkahja concept changelog (`Morkahja-Live-RPG/99_Development/Changelog.md`). Do not copy those entries here.
 
+## 2026-09-25
+
+- A loaded hex keeps its height grid, and only the chunks, colliders, and scenery within 64 m of her are drawn. Walking occupancy is unchanged.
+- The sun shadow map is 4096 with four splits. The 29 village omni lamps still glow and no longer cast shadows.
+- The camera starts all the way out, up and behind the character, about 55 degrees, with a narrower view and the path ahead in frame. Drag only turns it. The wheel sets the distance, and that distance sets the angle: scrolling closer lowers the view a little and brings her to the middle.
+- Walk speed is 2.016, five percent faster than 1.92. Run speed is unchanged.
+- The Interactions tab shows a short description for each known action, with its requirements.
+- Offering Herb is the small triangle grass again, a little smaller than the first tufts. The plant models are no longer used for it.
+- Picking Offering Herb uses Material Selection (Trickery, Survival Craft): touch the blades, then confirm. Greeting uses Call and Response (Social, Resonance): match the other Grimnir's mark before either of them says Hi.
+- A greeting holds her on the other Grimnir. That Grimnir answers Hi a second later. Until the answer ends she cannot walk or turn the view, a ring closes on the cursor, and the camera angle stays where it was.
+
+## 2026-09-24
+
+- Trakia-Vorr the Path Maker stands in the village as a second Grimnir, with the same character structure as Khar-Morr. Switching between them is not in yet. She does not have Weapon Shaping or Echo Imprint. Her own walk, run, and idle clips are used. She already faces +Z.
+- Greet is a radial interaction between two manifested Grimnir. It has no skill phase. The speaker shows a short “Hi” above her head, and both of them keep the event record.
+
 ## 2026-09-23
 
 - Shape Weapon leaves the rock in place and gives it Shaped for one minute. That state disables Shapeable, so the same rock cannot be shaped again until it ends.

@@ -53,6 +53,7 @@ func run() -> int:
 	_test_radial_selection()
 	_test_event_envelope_and_logs()
 	_test_stone_weapon_need()
+	_test_trakia_vorr_and_greeting()
 	var total: int = _passed + _failed.size()
 	if total < MINIMUM_ASSERTIONS:
 		_failed.append("only %d assertions ran; expected at least %d, so something aborted early" % [total, MINIMUM_ASSERTIONS])
@@ -189,6 +190,8 @@ func _test_landscape_and_herb() -> void:
 	_eq("a grass patch is not a pickup", sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_HERB), "")
 	sim.apply({"type": EtheraIds.CMD_OPEN_CONTAINER, "target_id": "entity.grass.1"})
 	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
+	_eq("picking grass uses Material Selection", str(sim.query_skill().get("skill_phase_id", "")), EtheraIds.SKILL_MATERIAL_SELECTION)
+	_finish_trace(sim)
 	var grass_open_at: Vector3 = sim.world.position_of(sim.world.get_entity("entity.grass.1"))
 	_true(
 		"opening a grass patch still uses stand-off",
@@ -767,6 +770,7 @@ func _test_shape_trace_timeout_and_success() -> void:
 	var discovered: Array = sim.query_panel().get("known_interactions", [])
 	_eq("using shape weapon records it", discovered.size(), 1)
 	_eq("the record names shape weapon", str((discovered[0] as Dictionary).get("name", "")), "Shape Weapon")
+	_eq("the record describes shape weapon", str((discovered[0] as Dictionary).get("description", "")), "Shape a suitable rock into a stone club and take it in hand.")
 	var requirements: Array = (discovered[0] as Dictionary).get("requirements", [])
 	_true("the record requires weapon shaping", requirements.has("Weapon Shaping"))
 	_true("the record requires shapeable", requirements.has("Shapeable"))
@@ -937,6 +941,7 @@ func _test_make_offering() -> void:
 	_eq("Make Offering is hidden without a grass bundle", sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_STONE_CIRCLE).size(), 0)
 	sim.apply({"type": EtheraIds.CMD_OPEN_CONTAINER, "target_id": "entity.grass.1"})
 	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
+	_finish_trace(sim)
 	sim.apply({"type": EtheraIds.CMD_PICKUP_ITEM, "item_id": "entity.grass.bundle.1"})
 	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
 	_eq("the herb is equipped before the offering", sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_HERB), "entity.grass.bundle.1")
@@ -1382,6 +1387,29 @@ func _complete_echo_imprint(sim: EtheraSimulation) -> void:
 	_eq("imprint skill ended", sim.query_skill().is_empty(), true)
 
 
+func _finish_trace(sim: EtheraSimulation) -> void:
+	for checkpoint in sim.query_skill().get("phase", {}).get("checkpoints", []):
+		sim.apply({"type": EtheraIds.CMD_SKILL_POINTER, "x": float(checkpoint.get("x", 0.0)), "y": float(checkpoint.get("y", 0.0))})
+	sim.apply({"type": EtheraIds.CMD_SKILL_CLICK})
+	_eq("trace skill ended", sim.query_skill().is_empty(), true)
+
+
+func _finish_alignment(sim: EtheraSimulation) -> void:
+	sim.apply({"type": EtheraIds.CMD_SKILL_POINTER, "x": 0.5, "y": 0.5})
+	var aligned := false
+	for _i in range(_seconds(2.0)):
+		_tick(sim, 1)
+		if sim.query_skill().is_empty():
+			break
+		if absf(float(sim.query_skill().get("rotation_degrees", 99.0))) <= 24.0:
+			aligned = true
+			break
+	_true("alignment was reached", aligned)
+	if not sim.query_skill().is_empty():
+		sim.apply({"type": EtheraIds.CMD_SKILL_CLICK})
+	_eq("alignment skill ended", sim.query_skill().is_empty(), true)
+
+
 func _complete_shard_fit(sim: EtheraSimulation) -> void:
 	sim.apply({"type": EtheraIds.CMD_SKILL_POINTER, "x": 0.5, "y": 0.5})
 	var aligned := false
@@ -1584,6 +1612,70 @@ func _assert_revealed_beside(sim: EtheraSimulation, container_id: String, item_i
 func _place_beside(sim: EtheraSimulation, entity_id: String, offset: Vector3 = Vector3(2.5, 0.0, 0.0)) -> void:
 	var at: Vector3 = sim.world.position_of(sim.world.get_entity(entity_id))
 	sim.world.set_position(EtheraIds.ENTITY_KHAR_MORR, at + offset)
+
+
+func _test_trakia_vorr_and_greeting() -> void:
+	var sim := _new_sim()
+	var trakia: Dictionary = sim.world.get_entity(EtheraIds.ENTITY_TRAKIA_VORR)
+	_eq("Trakia-Vorr is named", str(trakia.get("name", "")), "Trakia-Vorr the Path Maker")
+	_true("Trakia-Vorr is manifested", sim.world.is_manifested(trakia))
+	_true("Trakia-Vorr is inhabitable", bool(trakia.get("inhabitable", false)))
+	_eq("play still inhabits Khar-Morr", sim.world.inhabited_entity_id, EtheraIds.ENTITY_KHAR_MORR)
+	_true("Trakia-Vorr is Grimnir", sim.world.has_trait(trakia, EtheraIds.TRAIT_GRIMNIR))
+	_true("Trakia-Vorr is Female", sim.world.has_trait(trakia, EtheraIds.TRAIT_FEMALE))
+	_true("Trakia-Vorr holds shards", sim.world.has_trait(trakia, EtheraIds.TRAIT_SHARD_HOLDER))
+	_true("Trakia-Vorr does not shape weapons", not sim.world.has_trait(trakia, EtheraIds.TRAIT_WEAPON_SHAPING))
+	_eq("Trakia-Vorr uses her own model", str(trakia.get("presentation", {}).get("asset_id", "")), "asset.trakia_vorr")
+	var on_her: Array = _ids(sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_TRAKIA_VORR))
+	_true("Khar-Morr can greet Trakia-Vorr", on_her.has(EtheraIds.INTERACTION_GREET))
+	var the_other_way: Array = _ids(sim.query_available_interactions(EtheraIds.ENTITY_TRAKIA_VORR, EtheraIds.ENTITY_KHAR_MORR))
+	_true("Trakia-Vorr can greet Khar-Morr", the_other_way.has(EtheraIds.INTERACTION_GREET))
+	var on_self: Array = _ids(sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_KHAR_MORR))
+	_true("a Grimnir does not greet herself", not on_self.has(EtheraIds.INTERACTION_GREET))
+	var on_fountain: Array = _ids(sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_FOUNTAIN))
+	_true("the Fountain is not greeted", not on_fountain.has(EtheraIds.INTERACTION_GREET))
+	sim.apply({
+		"type": EtheraIds.CMD_BEGIN_INTERACTION,
+		"target_id": EtheraIds.ENTITY_TRAKIA_VORR,
+		"interaction_id": EtheraIds.INTERACTION_GREET,
+	})
+	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
+	_eq("greeting uses Call and Response", str(sim.query_skill().get("skill_phase_id", "")), EtheraIds.SKILL_CALL_AND_RESPONSE)
+	_eq("the hello waits for the skill", _speech_text(sim, EtheraIds.ENTITY_KHAR_MORR), "")
+	_finish_alignment(sim)
+	_eq("the speaker says Hi", _speech_text(sim, EtheraIds.ENTITY_KHAR_MORR), "Hi")
+	_eq("the answer waits a second", _speech_text(sim, EtheraIds.ENTITY_TRAKIA_VORR), "")
+	_true("the greeting holds her focus", _greeting_focus_target(sim) == EtheraIds.ENTITY_TRAKIA_VORR)
+	sim.apply({"type": EtheraIds.CMD_SET_WALK_DESTINATION, "x": 0.0, "y": 0.0, "z": 0.0})
+	_true("she cannot walk away during the greeting", not sim.world.walk_motor.has(EtheraIds.ENTITY_KHAR_MORR))
+	_tick(sim, _seconds(1.0))
+	_eq("the target answers Hi", _speech_text(sim, EtheraIds.ENTITY_TRAKIA_VORR), "Hi")
+	_eq("the speaker is still saying Hi", _speech_text(sim, EtheraIds.ENTITY_KHAR_MORR), "Hi")
+	_eq("one greeting record", sim.world.shards.size(), 1)
+	var shard: Dictionary = sim.world.shards.values()[0]
+	_eq("the record is the greeting", str(shard.get("action_id", "")), EtheraIds.INTERACTION_GREET)
+	_true("Khar-Morr knows the greeting", sim.world.known_shards(sim.world.get_entity(EtheraIds.ENTITY_KHAR_MORR)).size() == 1)
+	_true("Trakia-Vorr knows the greeting", sim.world.known_shards(sim.world.get_entity(EtheraIds.ENTITY_TRAKIA_VORR)).size() == 1)
+	var known: Array = _ids(sim.query_panel().get("known_interactions", []))
+	_true("Greet is recorded once she has used it", known.has(EtheraIds.INTERACTION_GREET))
+	_tick(sim, _seconds(2.2))
+	_eq("the greeting fades", _speech_text(sim, EtheraIds.ENTITY_KHAR_MORR), "")
+	_eq("the answer has faded", _speech_text(sim, EtheraIds.ENTITY_TRAKIA_VORR), "")
+	_eq("focus releases when the answer ends", _greeting_focus_target(sim), "")
+
+
+func _greeting_focus_target(sim: EtheraSimulation) -> String:
+	for entity in sim.query_world_view().get("entities", []):
+		if str(entity.get("id", "")) == EtheraIds.ENTITY_KHAR_MORR:
+			return str(entity.get("greeting_focus_target_id", ""))
+	return ""
+
+
+func _speech_text(sim: EtheraSimulation, entity_id: String) -> String:
+	for entity in sim.query_world_view().get("entities", []):
+		if str(entity.get("id", "")) == entity_id:
+			return str(entity.get("speech_text", ""))
+	return ""
 
 
 func _arrive(sim: EtheraSimulation, entity_id: String) -> void:

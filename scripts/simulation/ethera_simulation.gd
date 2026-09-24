@@ -268,6 +268,8 @@ func _tick(ticks: int) -> Array[Dictionary]:
 
 func _set_walk_destination(command: Dictionary) -> Array[Dictionary]:
 	var entity_id: String = str(command.get("entity_id", world.inhabited_entity_id))
+	if _greeting_locked(entity_id):
+		return [_log_event("blocked", "The greeting still holds her focus")]
 	var events: Array[Dictionary] = []
 	if _owns_movement(entity_id):
 		# A running skill phase keeps movement; an approach can still be abandoned.
@@ -447,7 +449,7 @@ func _tick_walking() -> Array[Dictionary]:
 		var arrive_at: float = float(world.tuning.get("stop_distance", 0.18))
 		if str(motor.get("reason", "")) == "approach":
 			arrive_at = float(world.tuning.get("interaction_arrive_distance", 0.22))
-		var walk_speed: float = float(world.tuning.get("walk_speed", 1.92))
+		var walk_speed: float = float(world.tuning.get("walk_speed", 2.016))
 		var max_speed: float = walk_speed
 		if str(motor.get("gait", "walk")) == "run":
 			max_speed = float(world.tuning.get("run_speed", 4.16))
@@ -530,6 +532,8 @@ func _begin_interaction(command: Dictionary) -> Array[Dictionary]:
 	var actor_id: String = str(command.get("actor_id", world.inhabited_entity_id))
 	var target_id: String = str(command.get("target_id", ""))
 	var interaction_id: String = str(command.get("interaction_id", ""))
+	if _greeting_locked(actor_id):
+		return [_log_event("blocked", "The greeting still holds her focus")]
 	if not world.active_round.is_empty():
 		return [_log_event("blocked", "An interaction is already in progress")]
 	if not evaluator.is_available(actor_id, target_id, interaction_id):
@@ -704,6 +708,8 @@ func _fail_skill(reason: String) -> Array[Dictionary]:
 
 
 func _pickup_item(actor_id: String, item_id: String) -> Array[Dictionary]:
+	if _greeting_locked(actor_id):
+		return [_log_event("blocked", "The greeting still holds her focus")]
 	if not world.active_round.is_empty():
 		return [_log_event("blocked", "Cannot pick up during an interaction")]
 	var hover: Dictionary = evaluator.hover_for(actor_id, item_id)
@@ -787,11 +793,19 @@ func _take_item(actor_id: String, item_id: String, slot_id: String) -> Array[Dic
 
 
 func _open_container(actor_id: String, target_id: String) -> Array[Dictionary]:
+	if _greeting_locked(actor_id):
+		return [_log_event("blocked", "The greeting still holds her focus")]
 	if not world.active_round.is_empty():
 		return [_log_event("blocked", "Cannot open a container during an interaction")]
 	var hover: Dictionary = evaluator.hover_for(actor_id, target_id)
 	if str(hover.get("kind", EtheraIds.HOVER_NONE)) != EtheraIds.HOVER_OPEN:
 		return [_log_event("blocked", "That is not an unlocked closed container", {"target_id": target_id})]
+	if str(world.get_entity(target_id).get("kind", "")) == EtheraIds.KIND_GRASS:
+		return _begin_interaction({
+			"actor_id": actor_id,
+			"target_id": target_id,
+			"interaction_id": EtheraIds.INTERACTION_PICK_HERB,
+		})
 	var actor_position: Vector3 = world.position_of(world.get_entity(actor_id))
 	var target: Dictionary = world.get_entity(target_id)
 	var target_position: Vector3 = world.position_of(target)
@@ -1072,7 +1086,35 @@ func _presentation_entity(entity: Dictionary) -> Dictionary:
 		"container_lid_open": str(entity.get("kind", "")) == EtheraIds.KIND_CONTAINER and bool(entity.get("opened", false)) and not (entity.get("contained_item_ids", []) as Array).is_empty(),
 		"presentation": entity.get("presentation", {}),
 		"traits": entity.get("traits", []),
+		"speech_text": _speech_text(entity),
+		"greeting_focus_target_id": _greeting_focus_field(entity, "target_id"),
+		"greeting_focus_started_ms": int(_greeting_focus_field(entity, "started_ms")),
+		"greeting_focus_until_ms": int(_greeting_focus_field(entity, "until_ms")),
 	}
+
+
+func _greeting_focus_field(entity: Dictionary, field: String) -> Variant:
+	var focus: Variant = entity.get("greeting_focus", {})
+	if typeof(focus) != TYPE_DICTIONARY:
+		return "" if field == "target_id" else 0
+	if int((focus as Dictionary).get("until_ms", 0)) <= world.world_time_ms:
+		return "" if field == "target_id" else 0
+	return (focus as Dictionary).get(field, "" if field == "target_id" else 0)
+
+
+func _greeting_locked(entity_id: String) -> bool:
+	return str(_greeting_focus_field(world.get_entity(entity_id), "target_id")) != ""
+
+
+func _speech_text(entity: Dictionary) -> String:
+	var speech: Variant = entity.get("speech", {})
+	if typeof(speech) != TYPE_DICTIONARY:
+		return ""
+	if int((speech as Dictionary).get("from_ms", 0)) > world.world_time_ms:
+		return ""
+	if int((speech as Dictionary).get("until_ms", 0)) <= world.world_time_ms:
+		return ""
+	return str((speech as Dictionary).get("text", ""))
 
 
 func _interaction_records(ids: Variant) -> Array[Dictionary]:
@@ -1084,6 +1126,7 @@ func _interaction_records(ids: Variant) -> Array[Dictionary]:
 		result.append({
 			"id": str(item_id),
 			"name": str(definition.get("name", item_id)),
+			"description": str(definition.get("description", "")),
 			"requirements": _requirement_phrases(definition),
 		})
 	return result

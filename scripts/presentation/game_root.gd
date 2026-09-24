@@ -24,18 +24,22 @@ var tick_accumulator_ms: float = 0.0
 var assets: EtheraAssetLibrary
 var handoff: EtheraItemHandoff
 var views: Dictionary = {}
-var orbit_yaw: float = 0.6
-var orbit_pitch: float = 0.55
-var orbit_distance: float = 6.5
-var dragging_orbit := false
-const ORBIT_NEAR := 1.15
-const ORBIT_FAR := 22.0
-const ORBIT_PITCH_MIN := -1.52
-const ORBIT_PITCH_MAX := 1.52
+const ORBIT_NEAR := 8.0
+const ORBIT_FAR := 18.0
+const ORBIT_PITCH_FAR := 0.96
+const ORBIT_PITCH_NEAR := 0.78
+const ORBIT_FOV := 48.0
+const ORBIT_LOOK_AHEAD_FAR := 2.4
+const ORBIT_LOOK_AHEAD_NEAR := 0.0
 const ORBIT_FLOOR := 0.12
 const ORBIT_FOCUS_HEIGHT := 1.15
 const ORBIT_CAMERA_RADIUS := 0.22
 const ORBIT_COLLISION_MIN := 0.45
+var orbit_yaw: float = 0.6
+# Pitch comes only from zoom. Far is raised; scrolling close lowers it so she sits in the middle.
+var orbit_distance: float = ORBIT_FAR
+var dragging_orbit := false
+var greeting_lock: Dictionary = {}
 var hex_stream: EtheraHexStreamer
 var _streamed_hex_key := ""
 var holding_left := false
@@ -109,6 +113,7 @@ func _ready() -> void:
 	if hex_stream != null:
 		_streamed_hex_key = hex_stream.loaded_key()
 	_rebuild_views()
+	_bind_terrain_follow()
 	_apply_living_stone_glow()
 	var orientation = (preload("res://scripts/presentation/divine_orientation.gd") as GDScript).new()
 	orientation.name = "DivineOrientation"
@@ -124,6 +129,8 @@ func _process(delta: float) -> void:
 	_update_hold_radial()
 	_sync_hex_stream()
 	_sync_views(delta)
+	_sync_view_ring()
+	_refresh_greeting_lock()
 	_apply_living_stone_glow()
 	_update_camera()
 	_update_hover()
@@ -151,6 +158,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		_set_orbit_dragging(false)
 		_handle_skill_input(event)
 		return
+	if not greeting_lock.is_empty() and (event is InputEventMouseButton or event is InputEventMouseMotion):
+		_set_orbit_dragging(false)
+		holding_left = false
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
 		orbit_distance = clampf(orbit_distance - 0.7, ORBIT_NEAR, ORBIT_FAR)
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
@@ -163,7 +175,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_left_mouse(event)
 	elif event is InputEventMouseMotion and dragging_orbit:
 		orbit_yaw -= event.relative.x * 0.007
-		orbit_pitch = clampf(orbit_pitch + event.relative.y * 0.007, ORBIT_PITCH_MIN, ORBIT_PITCH_MAX)
 
 
 func _handle_left_mouse(event: InputEventMouseButton) -> void:
@@ -289,6 +300,7 @@ func _sync_views(delta: float) -> void:
 		if authored_views.has(entity_id):
 			node.visible = bool(entity.get("manifested", false))
 			_sync_grass_sink(node, entity, delta)
+			_sync_speech(node, entity)
 			continue
 		if not carried:
 			rest.y = terrain_height(rest.x, rest.z)
@@ -308,14 +320,17 @@ func _sync_views(delta: float) -> void:
 			node.global_transform = handoff.step(entity_id, delta, goal)
 			assets.apply_carried_visual(node, carried or handoff.is_airborne(entity_id))
 			_sync_grass_sink(node, entity, delta)
+			_sync_speech(node, entity)
 			continue
 		if carried:
 			node.global_transform = goal
 			assets.apply_carried_visual(node, true)
 			_sync_grass_sink(node, entity, delta)
+			_sync_speech(node, entity)
 			continue
 		assets.apply_carried_visual(node, false)
 		_sync_grass_sink(node, entity, delta)
+		_sync_speech(node, entity)
 		if node.global_position.distance_to(rest) > VIEW_SNAP_DISTANCE:
 			node.global_transform = goal
 		else:
@@ -335,6 +350,29 @@ func _sync_grass_sink(node: Node, entity: Dictionary, delta: float) -> void:
 	if sink == null:
 		return
 	sink.sync_sink(bool(entity.get("container_opened", false)), delta)
+
+
+func _sync_speech(node: Node3D, entity: Dictionary) -> void:
+	var text: String = str(entity.get("speech_text", ""))
+	var label: Label3D = node.get_node_or_null("Speech") as Label3D
+	if text == "":
+		if label != null:
+			label.visible = false
+		return
+	if label == null:
+		label = Label3D.new()
+		label.name = "Speech"
+		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		label.font_size = 48
+		label.pixel_size = 0.004
+		label.outline_size = 16
+		label.modulate = Color(0.16, 0.12, 0.08)
+		label.outline_modulate = Color(0.96, 0.93, 0.84)
+		label.position = Vector3(0.0, 2.05, 0.0)
+		node.add_child(label)
+	label.text = text
+	label.visible = true
+	label.position = Vector3(0.0, 2.05, 0.0)
 
 
 func _ensure_view(entity: Dictionary) -> void:
@@ -552,6 +590,42 @@ func _sync_hex_stream() -> void:
 	_bind_authored_hex_objects()
 	_bind_world_node_occupants()
 	_bind_scenery_blockers()
+	_bind_terrain_follow()
+
+
+func _bind_terrain_follow() -> void:
+	if hex_stream == null:
+		return
+	var actor: Node3D = views.get(simulation.query_inhabited_id()) as Node3D
+	if actor == null:
+		return
+	for hex in hex_stream.loaded_hexes():
+		if hex is EtheraHexTile:
+			(hex as EtheraHexTile).follow_actor(actor)
+
+
+func _sync_view_ring() -> void:
+	if hex_stream == null:
+		return
+	var inhabited_id: String = simulation.query_inhabited_id()
+	var actor: Node3D = views.get(inhabited_id) as Node3D
+	if actor == null:
+		return
+	var xz := Vector2(actor.global_position.x, actor.global_position.z)
+	for hex in hex_stream.loaded_hexes():
+		if hex is EtheraHexTile:
+			(hex as EtheraHexTile).sync_view_ring(xz)
+	var radius_sq: float = EtheraHexTile.VIEW_RING_RADIUS * EtheraHexTile.VIEW_RING_RADIUS
+	for entity_id in views.keys():
+		if str(entity_id) == inhabited_id:
+			continue
+		var node: Node3D = views[entity_id] as Node3D
+		if node == null:
+			continue
+		var dx: float = node.global_position.x - xz.x
+		var dz: float = node.global_position.z - xz.y
+		if dx * dx + dz * dz > radius_sq:
+			node.visible = false
 
 
 func _make_hex_ground() -> void:
@@ -568,7 +642,11 @@ func _update_camera() -> void:
 	var actor_view: Node3D = views.get(simulation.query_inhabited_id())
 	if actor_view == null:
 		return
-	var focus: Vector3 = actor_view.global_position + Vector3(0.0, ORBIT_FOCUS_HEIGHT, 0.0)
+	var close: float = clampf(inverse_lerp(ORBIT_FAR, ORBIT_NEAR, orbit_distance), 0.0, 1.0)
+	var orbit_pitch: float = lerpf(ORBIT_PITCH_FAR, ORBIT_PITCH_NEAR, close)
+	var look_ahead: float = lerpf(ORBIT_LOOK_AHEAD_FAR, ORBIT_LOOK_AHEAD_NEAR, close)
+	var ahead := Vector3(-sin(orbit_yaw), 0.0, -cos(orbit_yaw)) * look_ahead
+	var focus: Vector3 = actor_view.global_position + Vector3(0.0, ORBIT_FOCUS_HEIGHT, 0.0) + ahead
 	var heading := Vector3(
 		sin(orbit_yaw) * cos(orbit_pitch),
 		sin(orbit_pitch),
@@ -584,6 +662,7 @@ func _update_camera() -> void:
 		used = orbit_used_distance(orbit_pitch, used, focus.y, ground_y)
 		used = orbit_ray_blocked_distance(focus, heading, used, _orbit_blockers())
 		candidate = focus + heading * used
+	camera.fov = ORBIT_FOV
 	camera.near = 0.05
 	camera.global_position = candidate
 	camera.look_at(focus)
@@ -634,6 +713,8 @@ func _orbit_blockers() -> Array:
 		if float(entity.get("occupancy_radius", 0.0)) <= 0.0:
 			continue
 		var node: Node3D = views.get(entity_id) as Node3D
+		if node != null and not node.visible:
+			continue
 		var mesh_volumes: Array = _orbit_volumes_from_view(node)
 		if mesh_volumes.is_empty():
 			var position: Dictionary = entity.get("position", {})
@@ -651,6 +732,8 @@ func _orbit_blockers() -> Array:
 			if not (hex is EtheraHexTile):
 				continue
 			for child in (hex as EtheraHexTile).get_children():
+				if not (child is Node3D) or not (child as Node3D).visible:
+					continue
 				if child is EtheraBush or child is EtheraStoneBench:
 					volumes.append_array(_orbit_volumes_from_view(child))
 				elif child is EtheraPlacedEntity and (child as EtheraPlacedEntity).definition_id == EtheraPlacedEntity.DEFINITION_CRADLE:
@@ -1434,7 +1517,7 @@ func _fill_panel_list(entries: Array, empty_text: String, title_fn: Callable, de
 	for entry in entries:
 		panel_shards.add_item(str(title_fn.call(entry)))
 		if typeof(entry) == TYPE_DICTIONARY:
-			var tip: String = _requirement_tooltip(entry.get("requirements", []))
+			var tip: String = _interaction_tooltip(entry)
 			if tip != "":
 				panel_shards.set_item_tooltip(panel_shards.item_count - 1, tip)
 	selected = clampi(selected, 0, entries.size() - 1)
@@ -1470,7 +1553,12 @@ func _interaction_title(entry: Variant) -> String:
 
 func _interaction_detail(entry: Variant) -> String:
 	var data: Dictionary = entry if typeof(entry) == TYPE_DICTIONARY else {}
-	var lines: PackedStringArray = PackedStringArray([str(data.get("name", "")), "", "Requires"])
+	var lines: PackedStringArray = PackedStringArray([str(data.get("name", ""))])
+	var description: String = str(data.get("description", ""))
+	if description != "":
+		lines.append(description)
+	lines.append("")
+	lines.append("Requires")
 	var requirements: Array = data.get("requirements", [])
 	if requirements.is_empty():
 		lines.append("none")
@@ -1478,6 +1566,16 @@ func _interaction_detail(entry: Variant) -> String:
 		for phrase in requirements:
 			lines.append(str(phrase))
 	return "\n".join(lines)
+
+
+func _interaction_tooltip(entry: Dictionary) -> String:
+	var description: String = str(entry.get("description", ""))
+	var requires: String = _requirement_tooltip(entry.get("requirements", []))
+	if description == "":
+		return requires
+	if requires == "":
+		return description
+	return "%s\n%s" % [description, requires]
 
 
 func _requirement_tooltip(requirements: Variant) -> String:
@@ -1568,11 +1666,45 @@ func _skill_pointer_from_screen() -> Vector2:
 	)
 
 
+func _refresh_greeting_lock() -> void:
+	greeting_lock = {}
+	var snapshot: Dictionary = simulation.query_world_view()
+	var now_ms: int = int(snapshot.get("world_time_ms", 0))
+	var inhabited_id: String = str(snapshot.get("inhabited_entity_id", ""))
+	for entity in snapshot.get("entities", []):
+		if str(entity.get("id", "")) != inhabited_id:
+			continue
+		var until_ms: int = int(entity.get("greeting_focus_until_ms", 0))
+		if until_ms <= now_ms:
+			return
+		greeting_lock = {
+			"target_id": str(entity.get("greeting_focus_target_id", "")),
+			"started_ms": int(entity.get("greeting_focus_started_ms", now_ms)),
+			"until_ms": until_ms,
+			"now_ms": now_ms,
+		}
+		return
+
+
 func _draw_overlay() -> void:
+	_draw_greeting_ring()
 	if not panel_visible:
 		_draw_hover_cursor()
 		_draw_radial()
 	_draw_skill()
+
+
+func _draw_greeting_ring() -> void:
+	if greeting_lock.is_empty():
+		return
+	var started_ms: int = int(greeting_lock.get("started_ms", 0))
+	var until_ms: int = int(greeting_lock.get("until_ms", started_ms + 1))
+	var span: float = maxf(1.0, float(until_ms - started_ms))
+	var closed: float = clampf(float(int(greeting_lock.get("now_ms", started_ms)) - started_ms) / span, 0.0, 1.0)
+	var mouse: Vector2 = get_viewport().get_mouse_position()
+	var gold := Color(0.86, 0.72, 0.32, 0.95)
+	overlay.draw_arc(mouse, lerpf(28.0, 4.0, closed), 0.0, TAU, 40, gold, 2.5)
+	overlay.draw_arc(mouse, 28.0, -PI * 0.5, -PI * 0.5 + TAU * (1.0 - closed), 40, Color(0.96, 0.93, 0.84, 0.7), 1.5)
 
 
 func _draw_hover_cursor() -> void:

@@ -5,6 +5,7 @@
     {
       "id": "interaction.shape_weapon",
       "name": "Shape Weapon",
+      "description": "Shape a suitable rock into a stone club and take it in hand.",
       "category": "combat",
       "subcategory": "weapon_craft",
       "skill_phase_id": "skill_phase.shape_trace",
@@ -45,6 +46,7 @@
     {
       "id": "interaction.echo_imprint",
       "name": "Echo Imprint",
+      "description": "Leave one memory the Fountain does not yet hold.",
       "category": "social",
       "subcategory": "knowledge",
       "skill_phase_id": "skill_phase.shard_fit",
@@ -81,6 +83,7 @@
     {
       "id": "interaction.make_offering",
       "name": "Make Offering",
+      "description": "Offer a gathered herb at a known offering place. Swiftness follows.",
       "category": "social",
       "subcategory": "rite",
       "skill_phase_id": "skill_phase.shard_fit",
@@ -108,6 +111,71 @@
       "record": {
         "reaction_ids": ["reaction.none"],
         "known_by": ["actor"]
+      }
+    },
+    {
+      "id": "interaction.pick_herb",
+      "name": "Pick",
+      "description": "Gather Offering Herb from a living patch.",
+      "category": "trickery",
+      "subcategory": "survival_craft",
+      "skill_phase_id": "skill_phase.material_selection",
+      "approach": {
+        "distance": 0.8,
+        "face_target": true
+      },
+      "requirement_groups": [
+        {
+          "id": "group.default",
+          "actor": [
+            { "type": "manifested", "manifested": true }
+          ],
+          "target": [
+            { "type": "kind", "kind": "grass" },
+            { "type": "manifested", "manifested": true },
+            { "type": "opened", "opened": false }
+          ]
+        }
+      ],
+      "results": [
+        { "type": "reveal_container", "entity": "target" }
+      ],
+      "record": {
+        "reaction_ids": ["reaction.none"],
+        "known_by": ["actor"]
+      }
+    },
+    {
+      "id": "interaction.greet",
+      "name": "Greet",
+      "description": "A short hello between Grimnir. The other answers in kind.",
+      "category": "social",
+      "subcategory": "resonance",
+      "skill_phase_id": "skill_phase.call_and_response",
+      "approach": {
+        "distance": 1.6,
+        "face_target": true
+      },
+      "requirement_groups": [
+        {
+          "id": "group.default",
+          "actor": [
+            { "type": "has_trait", "trait_id": "trait.grimnir" },
+            { "type": "manifested", "manifested": true }
+          ],
+          "target": [
+            { "type": "has_trait", "trait_id": "trait.grimnir" },
+            { "type": "manifested", "manifested": true },
+            { "type": "different_entity" }
+          ]
+        }
+      ],
+      "results": [
+        { "type": "greet", "entity": "actor", "text": "Hi", "duration_ms": 2200, "reply_text": "Hi", "reply_after_ms": 1000, "reply_duration_ms": 2200 }
+      ],
+      "record": {
+        "reaction_ids": ["reaction.none"],
+        "known_by": ["actor", "target"]
       }
     }
   ]

@@ -4,7 +4,7 @@
   "place_id": "place.village_center",
   "inhabited_entity_id": "entity.khar_morr",
   "tuning": {
-    "walk_speed": 1.92,
+    "walk_speed": 2.016,
     "run_speed": 4.16,
     "walk_acceleration": 5.5,
     "walk_deceleration": 6.0,
@@ -77,6 +77,59 @@
       "inhabitable": true,
       "presentation": {
         "asset_id": "asset.khar_morr",
+        "attach_points": {
+          "back": {
+            "x": 0.16,
+            "y": 1.12,
+            "z": -0.28,
+            "sheath": {
+              "x": -0.1,
+              "y": 0.09,
+              "z": 0.24,
+              "diagonal_degrees": 46
+            }
+          },
+          "hip": {
+            "x": 0.16,
+            "y": 0.94,
+            "z": 0.04,
+            "lean_degrees": 42
+          }
+        }
+      }
+    },
+    {
+      "id": "entity.trakia_vorr",
+      "kind": "character",
+      "name": "Trakia-Vorr the Path Maker",
+      "people": "grimnir",
+      "sex": "female",
+      "place_id": "place.village_center",
+      "traits": [
+        "trait.grimnir",
+        "trait.female",
+        "trait.shard_holder"
+      ],
+      "body_regions": {
+        "body.head": "healthy",
+        "body.torso": "healthy",
+        "body.arms": "healthy",
+        "body.legs": "healthy"
+      },
+      "states": [],
+      "known_shard_ids": [],
+      "needed_shard_ids": [],
+      "known_interaction_ids": [],
+      "equipment": {
+        "slot.small_weapon": null,
+        "slot.herb": null
+      },
+      "position": { "x": 14.0, "y": 0.0, "z": 10.0 },
+      "yaw": -2.327,
+      "manifested": true,
+      "inhabitable": true,
+      "presentation": {
+        "asset_id": "asset.trakia_vorr",
         "attach_points": {
           "back": {
             "x": 0.16,

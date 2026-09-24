@@ -33,9 +33,13 @@ const BODY_LEGS := "body.legs"
 const INTERACTION_SHAPE_WEAPON := "interaction.shape_weapon"
 const INTERACTION_ECHO_IMPRINT := "interaction.echo_imprint"
 const INTERACTION_MAKE_OFFERING := "interaction.make_offering"
+const INTERACTION_GREET := "interaction.greet"
+const INTERACTION_PICK_HERB := "interaction.pick_herb"
 
 const SKILL_SHAPE_TRACE := "skill_phase.shape_trace"
 const SKILL_SHARD_FIT := "skill_phase.shard_fit"
+const SKILL_MATERIAL_SELECTION := "skill_phase.material_selection"
+const SKILL_CALL_AND_RESPONSE := "skill_phase.call_and_response"
 
 # Skill phases declare their challenge in data. The runtime dispatches on the challenge,
 # never on a phase id, so a new phase of an existing kind needs no code.
@@ -51,6 +55,8 @@ const RESULT_SET_BODY_REGION := "set_body_region"
 const RESULT_ADD_STATE := "add_state"
 const RESULT_REMOVE_STATE := "remove_state"
 const RESULT_CONSUME_EQUIPPED_ITEM := "consume_equipped_item"
+const RESULT_GREET := "greet"
+const RESULT_REVEAL_CONTAINER := "reveal_container"
 
 const SELECT_FIRST_ELIGIBLE_SHARD := "first_eligible_shard"
 
@@ -63,6 +69,7 @@ const TEMPLATE_STONE_CLUB := "template.stone_club"
 const TEMPLATE_GRASS_LEAF := "template.grass_leaf"
 
 const ENTITY_KHAR_MORR := "entity.khar_morr"
+const ENTITY_TRAKIA_VORR := "entity.trakia_vorr"
 const ENTITY_FOUNTAIN := "entity.memory_fountain"
 const ENTITY_ROCK := "entity.shapeable_rock"
 const ENTITY_CLUB_UMBER := "entity.club.umber"
