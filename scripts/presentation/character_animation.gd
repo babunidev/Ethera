@@ -14,6 +14,7 @@ var _pickup: StringName = &""
 var _pickup_until_ms := 0
 var _pickup_anchor := Vector3.ZERO
 const _PICKUP_KEYS := "res://data/presentation/unarmed_pickup.json"
+const _PICKUP_KEYS_TRAKIA := "res://data/presentation/unarmed_pickup_trakia.json"
 const _PICKUP_SPEED := 0.8
 
 
@@ -111,9 +112,10 @@ func play_pickup() -> void:
 
 func _install_pickup() -> void:
 	var target: Skeleton3D = _skeleton()
-	if target == null or not FileAccess.file_exists(_PICKUP_KEYS):
+	var keys_path := _PICKUP_KEYS_TRAKIA if str(_body.name).contains("trakia") else _PICKUP_KEYS
+	if target == null or not FileAccess.file_exists(keys_path):
 		return
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(_PICKUP_KEYS))
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(keys_path))
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return
 	var baked := Animation.new()
