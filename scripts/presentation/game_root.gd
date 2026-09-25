@@ -27,7 +27,7 @@ var views: Dictionary = {}
 const ORBIT_NEAR := 8.0
 const ORBIT_FAR := 18.0
 const ORBIT_PITCH_FAR := 0.96
-const ORBIT_PITCH_NEAR := 0.78
+const ORBIT_PITCH_NEAR := 0.68
 const ORBIT_FOV := 48.0
 const ORBIT_LOOK_AHEAD_FAR := 2.4
 const ORBIT_LOOK_AHEAD_NEAR := 0.0
@@ -52,6 +52,10 @@ var log_open := true
 var title_chrome: PanelContainer
 var log_chrome: PanelContainer
 var panel_chrome: PanelContainer
+var store_chrome: PanelContainer
+var store_list: ItemList
+var store_wants := false
+var store_item_ids: Array[String] = []
 var title_content: Control
 var title_toggle: Button
 var log_toggle: Button
@@ -96,6 +100,10 @@ var overlay: Control
 var toast_label: Label
 var toast_until_ms := 0
 var toast_seen_ms := -1
+var _seen_holders: Dictionary = {}
+var _holders_primed := false
+var _equipped_weapon := ""
+var _equipped_herb := ""
 
 func _ready() -> void:
 	simulation = EtheraSimulation.new()
@@ -120,6 +128,7 @@ func _ready() -> void:
 	orientation.game = self
 	world_root.add_child(orientation)
 	_refresh_hud()
+	_build_store_panel()
 
 
 func _process(delta: float) -> void:
@@ -133,6 +142,7 @@ func _process(delta: float) -> void:
 	_refresh_greeting_lock()
 	_apply_living_stone_glow()
 	_update_camera()
+	_sync_store_panel()
 	_update_hover()
 	_update_discovery_toast(delta)
 	_refresh_hud()
@@ -150,6 +160,14 @@ func _advance_simulation(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_destiny"):
+		if panel_visible and destiny_open:
+			panel_visible = false
+		else:
+			panel_visible = true
+			destiny_open = true
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("toggle_character_panel"):
 		panel_visible = not panel_visible
 		get_viewport().set_input_as_handled()
@@ -209,6 +227,8 @@ func _handle_left_mouse(event: InputEventMouseButton) -> void:
 			get_viewport().set_input_as_handled()
 		elif str(hover.get("kind", "")) == EtheraIds.HOVER_OPEN:
 			simulation.apply({"type": EtheraIds.CMD_OPEN_CONTAINER, "target_id": target_id})
+			store_wants = true
+			_open_store_if_ready(target_id)
 			get_viewport().set_input_as_handled()
 
 
@@ -294,6 +314,7 @@ func _sync_views(delta: float) -> void:
 			lid.sync_lid(bool(entity.get("container_lid_open", false)), delta)
 		_sync_discovery_aura(node, bool(entity.get("discovered_by_inhabited", false)))
 		var holder_id: Variant = entity.get("holder_id", null)
+		_note_pickup(entity_id, holder_id)
 		var carried: bool = not EtheraIds.is_empty_slot(holder_id) and views.has(str(holder_id))
 		var pos: Dictionary = entity.get("position", {})
 		var rest := Vector3(float(pos.get("x", 0.0)), float(pos.get("y", 0.0)), float(pos.get("z", 0.0)))
@@ -341,6 +362,8 @@ func _sync_views(delta: float) -> void:
 		(views[entity_id] as Node).queue_free()
 		views.erase(entity_id)
 		handoff.forget(entity_id)
+	_note_equipped_pickup()
+	_holders_primed = true
 
 
 # Carried-item layout turns every collision shape back on. The harvested plant
@@ -350,6 +373,38 @@ func _sync_grass_sink(node: Node, entity: Dictionary, delta: float) -> void:
 	if sink == null:
 		return
 	sink.sync_sink(bool(entity.get("container_opened", false)), delta)
+
+
+func _note_equipped_pickup() -> void:
+	var inhabited_id: String = simulation.query_inhabited_id()
+	var actor: Dictionary = simulation.world.get_entity(inhabited_id)
+	if actor.is_empty():
+		return
+	var weapon: String = simulation.world.equipped_item_id(actor, EtheraIds.SLOT_SMALL_WEAPON)
+	var herb: String = simulation.world.equipped_item_id(actor, EtheraIds.SLOT_HERB)
+	var gained_weapon: bool = weapon != "" and weapon != _equipped_weapon
+	var gained_herb: bool = herb != "" and herb != _equipped_herb
+	if _holders_primed and (gained_weapon or gained_herb):
+		var body: Node = views.get(inhabited_id)
+		var animator: Node = body.get_node_or_null("CharacterAnimation") if body != null else null
+		if animator != null and animator.has_method("play_pickup"):
+			animator.play_pickup()
+	_equipped_weapon = weapon
+	_equipped_herb = herb
+
+
+func _note_pickup(entity_id: String, holder_id: Variant) -> void:
+	var holder := "" if EtheraIds.is_empty_slot(holder_id) else str(holder_id)
+	var inhabited_id: String = simulation.query_inhabited_id()
+	var previous := str(_seen_holders.get(entity_id, ""))
+	var known: bool = _seen_holders.has(entity_id)
+	var taken: bool = holder == inhabited_id and holder != ""
+	if _holders_primed and taken and ((known and previous != inhabited_id) or not known):
+		var body: Node = views.get(inhabited_id)
+		var animator: Node = body.get_node_or_null("CharacterAnimation") if body != null else null
+		if animator != null and animator.has_method("play_pickup"):
+			animator.play_pickup()
+	_seen_holders[entity_id] = holder
 
 
 func _sync_speech(node: Node3D, entity: Dictionary) -> void:
@@ -393,6 +448,10 @@ func _bind_authored_hex_objects() -> void:
 	for hex in hex_stream.loaded_hexes():
 		if not (hex is EtheraHexTile):
 			continue
+		for hall in (hex as EtheraHexTile).find_children("*", "EtheraTownHall", true, false):
+			if hall is EtheraTownHall:
+				views[EtheraIds.ENTITY_TOWN_HALL] = hall
+				authored_views[EtheraIds.ENTITY_TOWN_HALL] = true
 		for placed in (hex as EtheraHexTile).placed_entities():
 			if placed.entity_id == "":
 				continue
@@ -635,6 +694,96 @@ func _make_hex_ground() -> void:
 	hex_stream.name = "HexStream"
 	hex_host.add_child(hex_stream)
 	hex_stream.setup(hex_host as CollisionObject3D)
+
+
+func _build_store_panel() -> void:
+	store_chrome = _make_chrome_panel()
+	store_chrome.anchor_left = 0.5
+	store_chrome.anchor_top = 0.5
+	store_chrome.anchor_right = 0.5
+	store_chrome.anchor_bottom = 0.5
+	store_chrome.offset_left = -180
+	store_chrome.offset_top = -220
+	store_chrome.offset_right = 180
+	store_chrome.offset_bottom = 220
+	store_chrome.visible = false
+	var box := VBoxContainer.new()
+	box.set_anchors_preset(Control.PRESET_FULL_RECT)
+	box.offset_left = 12
+	box.offset_top = 12
+	box.offset_right = -12
+	box.offset_bottom = -12
+	store_chrome.add_child(box)
+	var title := Label.new()
+	title.text = "Town Hall"
+	box.add_child(title)
+	store_list = ItemList.new()
+	store_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	store_list.item_selected.connect(_on_store_item_selected)
+	box.add_child(store_list)
+	var place_weapon := Button.new()
+	place_weapon.text = "Place stone weapon"
+	place_weapon.pressed.connect(func() -> void: _deposit_slot(EtheraIds.SLOT_SMALL_WEAPON))
+	box.add_child(place_weapon)
+	var place_herb := Button.new()
+	place_herb.text = "Place offering herb"
+	place_herb.pressed.connect(func() -> void: _deposit_slot(EtheraIds.SLOT_HERB))
+	box.add_child(place_herb)
+	var close := Button.new()
+	close.text = "Close"
+	close.pressed.connect(func() -> void:
+		store_wants = false
+		store_chrome.visible = false
+	)
+	box.add_child(close)
+	hud.add_child(store_chrome)
+
+
+func _open_store_if_ready(target_id: String) -> void:
+	if target_id != EtheraIds.ENTITY_TOWN_HALL:
+		return
+	var store: Dictionary = simulation.query_store(target_id)
+	if not bool(store.get("ui_store", false)):
+		return
+	for entity in simulation.query_world_view().get("entities", []):
+		if str(entity.get("id", "")) == target_id and bool(entity.get("container_opened", entity.get("opened", false))):
+			store_wants = true
+
+
+func _sync_store_panel() -> void:
+	if store_chrome == null:
+		return
+	var opened := false
+	for entity in simulation.query_world_view().get("entities", []):
+		if str(entity.get("id", "")) == EtheraIds.ENTITY_TOWN_HALL:
+			opened = bool(entity.get("container_opened", false))
+	var store: Dictionary = simulation.query_store()
+	store_chrome.visible = store_wants and opened and bool(store.get("in_reach", false))
+	if not store_chrome.visible:
+		return
+	var next_ids: Array[String] = []
+	for item in store.get("items", []):
+		next_ids.append(str(item.get("id", "")))
+	if next_ids == store_item_ids:
+		return
+	store_item_ids = next_ids
+	store_list.clear()
+	for item in store.get("items", []):
+		store_list.add_item(str(item.get("name", "item")))
+
+
+func _on_store_item_selected(index: int) -> void:
+	if index < 0 or index >= store_item_ids.size():
+		return
+	simulation.apply({"type": EtheraIds.CMD_TAKE_STORED, "item_id": store_item_ids[index]})
+
+
+func _deposit_slot(slot_id: String) -> void:
+	simulation.apply({
+		"type": EtheraIds.CMD_DEPOSIT_EQUIPPED,
+		"slot_id": slot_id,
+		"target_id": EtheraIds.ENTITY_TOWN_HALL,
+	})
 
 
 func _update_camera() -> void:
@@ -1139,13 +1288,17 @@ func _update_discovery_toast(_delta: float) -> void:
 	if toast_label == null:
 		return
 	for entry in simulation.query_dev_log(8):
-		if str(entry.get("kind", "")) != "place_discovered":
+		var kind: String = str(entry.get("kind", ""))
+		if kind != "place_discovered" and kind != "task_taken":
 			continue
 		var when: int = int(entry.get("world_time", 0))
 		if when <= toast_seen_ms:
 			continue
 		toast_seen_ms = when
-		toast_label.text = "Discovered\n%s" % str(entry.get("place_name", entry.get("text", "")))
+		if kind == "task_taken":
+			toast_label.text = "Task\n%s" % str(entry.get("task_name", entry.get("text", "")))
+		else:
+			toast_label.text = "Discovered\n%s" % str(entry.get("place_name", entry.get("text", "")))
 		toast_until_ms = Time.get_ticks_msec() + 3200
 	toast_label.visible = Time.get_ticks_msec() < toast_until_ms
 
@@ -1174,7 +1327,7 @@ func _make_chrome_button() -> Button:
 
 func _refresh_hud() -> void:
 	var using_models: bool = assets.has_model("asset.khar_morr") or assets.has_model("asset.memory_fountain") or assets.has_model("asset.village_center") or assets.has_model("asset.stone_club")
-	status_label.text = "Local simulation running\n%s\nC toggles the character panel" % ("Models loaded from assets/models" if using_models else "Placeholder meshes; drop GLBs into assets/models")
+	status_label.text = "Local simulation running\n%s\nC toggles the character panel\nJ opens Destiny" % ("Models loaded from assets/models" if using_models else "Placeholder meshes; drop GLBs into assets/models")
 	title_chrome.visible = not panel_visible
 	log_chrome.visible = true
 	title_content.visible = title_open

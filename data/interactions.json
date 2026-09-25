@@ -46,7 +46,7 @@
     {
       "id": "interaction.echo_imprint",
       "name": "Echo Imprint",
-      "description": "Leave one memory the Fountain does not yet hold.",
+      "description": "Leave every memory the Fountain does not yet hold.",
       "category": "social",
       "subcategory": "knowledge",
       "skill_phase_id": "skill_phase.shard_fit",
@@ -73,7 +73,7 @@
         "against": "target"
       },
       "results": [
-        { "type": "share_eligible_shards", "entity": "target", "limit": 3 }
+        { "type": "share_eligible_shards", "entity": "target", "limit": 0, "focus_ms": 5000 }
       ],
       "record": {
         "reaction_ids": ["reaction.none"],
@@ -111,6 +111,40 @@
       "record": {
         "reaction_ids": ["reaction.none"],
         "known_by": ["actor"]
+      }
+    },
+    {
+      "id": "interaction.echo_attunement",
+      "name": "Echo Attunement",
+      "description": "Ask the Fountain for one thing the village still lacks. It gives a single delivery.",
+      "category": "social",
+      "subcategory": "knowledge",
+      "skill_phase_id": "skill_phase.shard_fit",
+      "approach": {
+        "distance": 3.2,
+        "face_target": true
+      },
+      "requirement_groups": [
+        {
+          "id": "group.default",
+          "actor": [
+            { "type": "has_trait", "trait_id": "trait.grimnir" },
+            { "type": "manifested", "manifested": true },
+            { "type": "no_common_tasks" },
+            { "type": "village_delivery_available" }
+          ],
+          "target": [
+            { "type": "has_trait", "trait_id": "trait.echo" },
+            { "type": "manifested", "manifested": true }
+          ]
+        }
+      ],
+      "results": [
+        { "type": "grant_village_task", "entity": "actor" }
+      ],
+      "record": {
+        "reaction_ids": ["reaction.none"],
+        "known_by": ["actor", "target"]
       }
     },
     {

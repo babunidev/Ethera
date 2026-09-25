@@ -6,16 +6,16 @@ const _SHADE_SHADER := preload("res://scripts/presentation/orientation_shade.gds
 
 # Intermittent ground signs toward the active objective. One cue about every
 # ten seconds, either a wind-shade or a glint. Not a path, arrow, or marker.
-# The shade is draped on the terrain, five meters to one side, and slides
-# parallel to the bearing. The glint is a one-meter omni light farther ahead.
+# The shade is draped on the terrain, just beside her, and slides
+# parallel to the bearing. The glint is a one-meter omni light a step ahead.
 
-const WIND_LENGTH := 10.0
-const WIND_BREADTH := 3.6
+const WIND_LENGTH := 4.0
+const WIND_BREADTH := 2.0
 const WIND_ALONG := 12
 const WIND_ACROSS := 5
 const WIND_LIFT := 0.16
-const GLINT_ENERGY := 18.0
-const GLINT_RANGE := 1.0
+const GLINT_ENERGY := 6.0
+const GLINT_RANGE := 0.33
 const GLINT_HEIGHT := 0.28
 
 var game: Node = null
@@ -70,8 +70,8 @@ func _spawn(guide: Dictionary, kind: String) -> void:
 		_cue_to = _cue_from + direction * travel
 		var spark := MeshInstance3D.new()
 		var sphere := SphereMesh.new()
-		sphere.radius = 0.06
-		sphere.height = 0.12
+		sphere.radius = 0.02
+		sphere.height = 0.04
 		spark.mesh = sphere
 		spark.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		var material := StandardMaterial3D.new()

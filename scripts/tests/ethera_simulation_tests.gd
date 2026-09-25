@@ -54,6 +54,7 @@ func run() -> int:
 	_test_event_envelope_and_logs()
 	_test_stone_weapon_need()
 	_test_trakia_vorr_and_greeting()
+	_test_village_delivery()
 	var total: int = _passed + _failed.size()
 	if total < MINIMUM_ASSERTIONS:
 		_failed.append("only %d assertions ran; expected at least %d, so something aborted early" % [total, MINIMUM_ASSERTIONS])
@@ -70,8 +71,8 @@ func _test_starting_data() -> void:
 	_eq("start people", panel.get("people"), "grimnir")
 	_eq("start sex", panel.get("sex"), "female")
 	_eq("start shards empty", (panel.get("known_shards", []) as Array).size(), 0)
-	_eq("start need is stone weapon", str((panel.get("needs", []) as Array)[0].get("id", "")), EtheraIds.NEED_STONE_WEAPON)
-	_true("start need is important", bool((panel.get("needs", []) as Array)[0].get("important", false)))
+	_eq("start has no automatic need", (panel.get("needs", []) as Array).size(), 0)
+	_eq("start has no automatic task", str(panel.get("active_task_id", "")), "")
 	_eq("start small weapon empty", bool(panel.get("equipment", {}).get(EtheraIds.SLOT_SMALL_WEAPON, {}).get("empty", false)), true)
 	_eq("start herb empty", bool(panel.get("equipment", {}).get(EtheraIds.SLOT_HERB, {}).get("empty", false)), true)
 	var regions: Dictionary = panel.get("body_regions", {})
@@ -1140,7 +1141,12 @@ func _test_echo_imprint_shares_up_to_three() -> void:
 	for shard_id in eligible:
 		_true("the Fountain gained %s" % shard_id, sim.world.knows_shard(fountain, shard_id))
 	_eq("one imprint still writes one event Shard", sim.world.shards.size(), eligible.size() + 1)
-	_eq("no eligible record remains after a three-shard imprint", sim.evaluator.first_eligible_shard(sim.world.inhabiting(), fountain), "")
+	_eq("no eligible record remains after the imprint", sim.evaluator.first_eligible_shard(sim.world.inhabiting(), fountain), "")
+	_eq("imprint holds her on the Fountain", _greeting_focus_target(sim), EtheraIds.ENTITY_FOUNTAIN)
+	sim.apply({"type": EtheraIds.CMD_SET_WALK_DESTINATION, "x": 0.0, "y": 0.0, "z": 0.0})
+	_true("she cannot walk away during the imprint", not sim.world.walk_motor.has(EtheraIds.ENTITY_KHAR_MORR))
+	_tick(sim, _seconds(5.0))
+	_eq("the imprint releases her after five seconds", _greeting_focus_target(sim), "")
 	var counted := false
 	for entry in sim.query_dev_log():
 		if str(entry.get("text", "")).find("Echo Imprint transferred 3 Shards") >= 0:
@@ -1263,7 +1269,9 @@ func _test_availability_and_historical_resolution() -> void:
 	var sim := _new_sim()
 	_complete_shape_weapon(sim)
 	_complete_echo_imprint(sim)
-	_eq("imprint unavailable when fountain has every known shard", sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_FOUNTAIN).size(), 0)
+	var after_imprint: Array = _ids(sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_FOUNTAIN))
+	_true("imprint is unavailable when the fountain has every known shard", not after_imprint.has(EtheraIds.INTERACTION_ECHO_IMPRINT))
+	_true("with no common task the fountain offers a village delivery", after_imprint.has(EtheraIds.INTERACTION_ECHO_ATTUNEMENT))
 	var extra: Dictionary = sim.world.create_shard({
 		"actor_ids": [EtheraIds.ENTITY_KHAR_MORR],
 		"target_ids": [EtheraIds.ENTITY_ROCK],
@@ -1423,9 +1431,19 @@ func _complete_shard_fit(sim: EtheraSimulation) -> void:
 	_eq("shard fit ended", sim.query_skill().is_empty(), true)
 
 
+func _grant_stone_weapon_need(sim: EtheraSimulation) -> void:
+	var actor: Dictionary = sim.world.get_entity(EtheraIds.ENTITY_KHAR_MORR)
+	actor["granted_need_ids"] = [EtheraIds.NEED_STONE_WEAPON]
+	sim.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+
+
 func _test_stone_weapon_need() -> void:
 	var sim := _new_sim()
 	var other := _new_sim()
+	_eq("lacking a weapon does not create the need", (sim.query_panel().get("needs", []) as Array).size(), 0)
+	_eq("lacking a weapon does not create a task", str(sim.query_panel().get("active_task_id", "")), "")
+	_grant_stone_weapon_need(sim)
+	_grant_stone_weapon_need(other)
 	var panel: Dictionary = sim.query_panel()
 	_eq("the sole task is active without a click", str(panel.get("active_task_id", "")), EtheraIds.TASK_ACQUIRE_STONE_WEAPON)
 	_true("the log records the need appearing", _log_has(sim, "Need appeared: Stone Weapon"))
@@ -1445,9 +1463,9 @@ func _test_stone_weapon_need() -> void:
 	_true("guidance is active for the inhabited character", bool(guide.get("active", false)))
 	_eq("guidance names the reserved rock", str(guide.get("entity_id", "")), reserved)
 	_eq("cue interval is ten seconds", int(guide.get("cue_interval_ms", 0)), 10000)
-	_eq("the wind shade sits five meters aside", float(guide.get("wave_aside", 0.0)), 5.0)
-	_eq("the glint appears fourteen meters out", float(guide.get("glint_ahead", 0.0)), 14.0)
-	_eq("the glint travels a few meters", float(guide.get("glint_travel", 0.0)), 3.0)
+	_eq("the wind shade sits beside her", float(guide.get("wave_aside", 0.0)), 1.5)
+	_eq("the glint appears just ahead", float(guide.get("glint_ahead", 0.0)), 2.5)
+	_eq("the glint travels a short way", float(guide.get("glint_travel", 0.0)), 1.5)
 	_true("another character is not given her bearing", not bool(sim.query_orientation(EtheraIds.ENTITY_FOUNTAIN).get("active", true)))
 	var kinds: Dictionary = {}
 	for index in 8:
@@ -1491,6 +1509,7 @@ func _test_stone_weapon_need() -> void:
 	_eq("placement creates no shard", sim.world.shards.size(), shards_before)
 
 	var bare := _new_sim()
+	_grant_stone_weapon_need(bare)
 	var actor: Dictionary = bare.world.get_entity(EtheraIds.ENTITY_KHAR_MORR)
 	var traits: Array = (actor.get("traits", []) as Array).duplicate()
 	traits.erase(EtheraIds.TRAIT_WEAPON_SHAPING)
@@ -1505,6 +1524,7 @@ func _test_stone_weapon_need() -> void:
 	_true("losing the capability is not fulfillment", not _log_has(bare, "Task fulfilled:"))
 
 	var pickup := _new_sim()
+	_grant_stone_weapon_need(pickup)
 	var marked: String = str(pickup.query_panel().get("reserved_objective_id", ""))
 	pickup.apply({"type": EtheraIds.CMD_PICKUP_ITEM, "item_id": EtheraIds.ENTITY_CLUB_UMBER})
 	_arrive(pickup, EtheraIds.ENTITY_KHAR_MORR)
@@ -1520,6 +1540,7 @@ func _test_stone_weapon_need() -> void:
 	_true("a development note stays in the log", _log_has(pickup, "Divine Orientation: Ground Glint"))
 
 	var blocked := _new_sim()
+	_grant_stone_weapon_need(blocked)
 	blocked.catalog.needs["need.test_block"] = {
 		"id": "need.test_block",
 		"name": "Test Block",
@@ -1612,6 +1633,98 @@ func _assert_revealed_beside(sim: EtheraSimulation, container_id: String, item_i
 func _place_beside(sim: EtheraSimulation, entity_id: String, offset: Vector3 = Vector3(2.5, 0.0, 0.0)) -> void:
 	var at: Vector3 = sim.world.position_of(sim.world.get_entity(entity_id))
 	sim.world.set_position(EtheraIds.ENTITY_KHAR_MORR, at + offset)
+
+
+func _test_village_delivery() -> void:
+	var sim := _new_sim()
+	_true("with no task the fountain can give one", _ids(sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_FOUNTAIN)).has(EtheraIds.INTERACTION_ECHO_ATTUNEMENT))
+	_complete_shape_weapon(sim)
+	_eq("two villagers need two weapons", sim.world.villager_count(), 2)
+	_eq("the hall is empty of weapons", sim.world.store_count(EtheraIds.TRAIT_STONE_WEAPON), 0)
+	sim.apply({
+		"type": EtheraIds.CMD_BEGIN_INTERACTION,
+		"target_id": EtheraIds.ENTITY_FOUNTAIN,
+		"interaction_id": EtheraIds.INTERACTION_ECHO_ATTUNEMENT,
+	})
+	_arrive(sim, EtheraIds.ENTITY_KHAR_MORR)
+	_complete_shard_fit(sim)
+	_eq("one attunement gives the weapon delivery", str(sim.query_panel().get("active_task_id", "")), EtheraIds.TASK_DELIVER_STONE_WEAPON)
+	_true("taking the task is announced like a discovery", _log_has(sim, "Deliver a Stone Weapon"))
+	_eq("carrying the weapon points her at the hall", str(sim.query_orientation().get("entity_id", "")), EtheraIds.ENTITY_TOWN_HALL)
+	var equipped: String = sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_SMALL_WEAPON)
+	sim.apply({
+		"type": EtheraIds.CMD_DEPOSIT_EQUIPPED,
+		"slot_id": EtheraIds.SLOT_SMALL_WEAPON,
+		"target_id": EtheraIds.ENTITY_TOWN_HALL,
+	})
+	_eq("the hall holds the weapon", sim.world.store_count(EtheraIds.TRAIT_STONE_WEAPON), 1)
+	_eq("delivering does not create the stone weapon need", (sim.query_panel().get("needs", []) as Array).size(), 0)
+	_true("she can ask the fountain for the next delivery", _ids(sim.query_available_interactions(EtheraIds.ENTITY_KHAR_MORR, EtheraIds.ENTITY_FOUNTAIN)).has(EtheraIds.INTERACTION_ECHO_ATTUNEMENT))
+	_eq("the weapon is no longer equipped", sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_SMALL_WEAPON), "")
+	_true("one delivery ends that task", str(sim.query_panel().get("active_task_id", "")) != EtheraIds.TASK_DELIVER_STONE_WEAPON)
+	_eq("the stored weapon can be taken back", equipped != "", true)
+	sim.apply({"type": EtheraIds.CMD_TAKE_STORED, "item_id": equipped})
+	_eq("taking it equips it again", sim.world.equipped_item_id(sim.world.inhabiting(), EtheraIds.SLOT_SMALL_WEAPON), equipped)
+	_eq("the hall is empty again", sim.world.store_count(EtheraIds.TRAIT_STONE_WEAPON), 0)
+	var seek := _new_sim()
+	_place_beside(seek, EtheraIds.ENTITY_FOUNTAIN)
+	seek.apply({
+		"type": EtheraIds.CMD_BEGIN_INTERACTION,
+		"target_id": EtheraIds.ENTITY_FOUNTAIN,
+		"interaction_id": EtheraIds.INTERACTION_ECHO_ATTUNEMENT,
+	})
+	_arrive(seek, EtheraIds.ENTITY_KHAR_MORR)
+	_complete_shard_fit(seek)
+	var pointed: String = str(seek.query_orientation().get("entity_id", ""))
+	var rock: Dictionary = seek.world.get_entity(pointed)
+	_true("without a weapon the delivery points at a shapeable rock", seek.world.is_manifested(rock) and seek.world.has_trait(rock, EtheraIds.TRAIT_ROCK) and seek.world.has_trait(rock, EtheraIds.TRAIT_SHAPEABLE))
+	rock["states"] = [EtheraIds.STATE_SHAPED]
+	seek.apply({"type": EtheraIds.CMD_TICK, "ticks": 1})
+	var later: String = str(seek.query_orientation().get("entity_id", ""))
+	var later_rock: Dictionary = seek.world.get_entity(later)
+	_true("a rock on cooldown is not the objective", later != pointed and not (later_rock.get("states", []) as Array).has(EtheraIds.STATE_SHAPED))
+	var herb := _new_sim()
+	var open_patch := ""
+	for entity_id in herb.world.entities.keys():
+		var patch: Dictionary = herb.world.get_entity(str(entity_id))
+		if str(patch.get("kind", "")) != EtheraIds.KIND_GRASS:
+			continue
+		if open_patch == "":
+			open_patch = str(entity_id)
+			patch["opened"] = false
+		else:
+			patch["opened"] = true
+	var hall: Dictionary = herb.world.get_entity(EtheraIds.ENTITY_TOWN_HALL)
+	var stored: Array = hall.get("contained_item_ids", [])
+	for index in herb.world.villager_count():
+		var club_id := "entity.test_club.%d" % index
+		herb.world.add_entity({
+			"id": club_id,
+			"kind": "item",
+			"name": "Stone Club",
+			"traits": [EtheraIds.TRAIT_STONE_WEAPON],
+			"manifested": false,
+			"container_id": EtheraIds.ENTITY_TOWN_HALL,
+		})
+		stored.append(club_id)
+	hall["contained_item_ids"] = stored
+	_place_beside(herb, EtheraIds.ENTITY_FOUNTAIN)
+	herb.apply({
+		"type": EtheraIds.CMD_BEGIN_INTERACTION,
+		"target_id": EtheraIds.ENTITY_FOUNTAIN,
+		"interaction_id": EtheraIds.INTERACTION_ECHO_ATTUNEMENT,
+	})
+	_arrive(herb, EtheraIds.ENTITY_KHAR_MORR)
+	_complete_shard_fit(herb)
+	_eq("a harvested patch is not the herb objective", str(herb.query_orientation().get("entity_id", "")), open_patch)
+	seek.world.set_position(EtheraIds.ENTITY_KHAR_MORR, seek.world.position_of(seek.world.get_entity(EtheraIds.ENTITY_TOWN_HALL)) + Vector3(20.0, 0.0, 0.0))
+	_true("the hall stays closed from far away", not bool(seek.query_store().get("in_reach", true)))
+	seek.apply({"type": EtheraIds.CMD_OPEN_CONTAINER, "target_id": EtheraIds.ENTITY_TOWN_HALL})
+	_eq("she walks to the hall before it opens", _motor_reason(seek), "open")
+	_true("the hall is not open while she is still walking", not bool(seek.world.get_entity(EtheraIds.ENTITY_TOWN_HALL).get("opened", false)))
+	_arrive(seek, EtheraIds.ENTITY_KHAR_MORR)
+	_true("arriving beside the hall opens it", bool(seek.world.get_entity(EtheraIds.ENTITY_TOWN_HALL).get("opened", false)))
+	_true("the store is in reach once she arrives", bool(seek.query_store().get("in_reach", false)))
 
 
 func _test_trakia_vorr_and_greeting() -> void:

@@ -25,6 +25,7 @@ var _floor_ready := false
 
 func _ready() -> void:
 	super._ready()
+	set_meta("entity_id", EtheraIds.ENTITY_TOWN_HALL)
 	_prepare_interior()
 
 

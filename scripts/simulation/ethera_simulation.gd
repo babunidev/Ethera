@@ -23,6 +23,7 @@ func _init(loaded_catalog: EtheraCatalog = null) -> void:
 	evaluator = EtheraEvaluator.new(world)
 	results = EtheraResults.new(world, catalog, evaluator)
 	tasks = _Tasks.new(world, catalog)
+	results.tasks = tasks
 	_emit_boot_log()
 	tasks.refresh(world.inhabited_entity_id)
 
@@ -103,6 +104,10 @@ func apply(command: Dictionary) -> Array[Dictionary]:
 			tasks.select_need(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("need_id", "")))
 		EtheraIds.CMD_ACTIVATE_TASK:
 			tasks.activate_task(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("task_id", "")))
+		EtheraIds.CMD_TAKE_STORED:
+			events.append_array(_take_stored(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("item_id", ""))))
+		EtheraIds.CMD_DEPOSIT_EQUIPPED:
+			events.append_array(_deposit_equipped(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("slot_id", "")), str(command.get("target_id", EtheraIds.ENTITY_TOWN_HALL))))
 		_:
 			events.append(_log_event("error", "Unknown command %s" % command_type, {"command": command_type}))
 	tasks.refresh(world.inhabited_entity_id)
@@ -810,6 +815,10 @@ func _open_container(actor_id: String, target_id: String) -> Array[Dictionary]:
 	var target: Dictionary = world.get_entity(target_id)
 	var target_position: Vector3 = world.position_of(target)
 	var distance: float = _planar_distance(actor_position, target_position)
+	if bool(target.get("ui_store", false)):
+		if distance > _store_open_reach():
+			return _walk_to_open(actor_id, target_id)
+		return _reveal_container(actor_id, target_id)
 	var stand: float = _interact_stand_off(target)
 	if distance > _interact_reach(target) or distance + 0.05 < stand:
 		return _walk_to_open(actor_id, target_id)
@@ -843,6 +852,13 @@ func _open_container_on_arrival(actor_id: String, target_id: String) -> Array[Di
 
 func _reveal_container(actor_id: String, target_id: String) -> Array[Dictionary]:
 	var container: Dictionary = world.get_entity(target_id)
+	if bool(container.get("ui_store", false)):
+		container["opened"] = true
+		world.bump(target_id, EtheraIds.CHANGE_MANIFESTATION)
+		return [
+			_log_event("container_opened", "Opened %s" % container.get("name", target_id), {"target_id": target_id}),
+			_event(EtheraIds.EVENT_MANIFESTATION, {"entity_id": target_id, "store_ui": true}),
+		]
 	container["opened"] = true
 	world.bump(target_id, EtheraIds.CHANGE_MANIFESTATION)
 	var events: Array[Dictionary] = []
@@ -862,6 +878,85 @@ func _reveal_container(actor_id: String, target_id: String) -> Array[Dictionary]
 	events.append_array(_record_inherent_shard(actor_id, target_id, EtheraIds.ACTION_DISCOVERY, EtheraIds.RESULT_DISCOVERED))
 	events.append_array(_clear_walk(actor_id, "open"))
 	return events
+
+
+func query_store(target_id: String = EtheraIds.ENTITY_TOWN_HALL) -> Dictionary:
+	var container: Dictionary = world.get_entity(target_id)
+	var items: Array[Dictionary] = []
+	for item_id in container.get("contained_item_ids", []):
+		var item: Dictionary = world.get_entity(str(item_id))
+		if item.is_empty():
+			continue
+		items.append({
+			"id": str(item_id),
+			"name": str(item.get("name", item_id)),
+			"slot_id": str(item.get("equipment_slot_id", "")),
+		})
+	return {
+		"id": target_id,
+		"name": str(container.get("name", target_id)),
+		"ui_store": bool(container.get("ui_store", false)),
+		"in_reach": _store_in_reach(target_id),
+		"items": items,
+	}
+
+
+func _take_stored(actor_id: String, item_id: String) -> Array[Dictionary]:
+	var item: Dictionary = world.get_entity(item_id)
+	var container_id: String = str(item.get("container_id", ""))
+	var container: Dictionary = world.get_entity(container_id)
+	if item.is_empty() or not bool(container.get("ui_store", false)):
+		return [_log_event("blocked", "That is not in the town hall", {"item_id": item_id})]
+	var slot_id: String = str(item.get("equipment_slot_id", EtheraIds.SLOT_SMALL_WEAPON))
+	var actor: Dictionary = world.get_entity(actor_id)
+	var previous_id: String = world.equipped_item_id(actor, slot_id)
+	_unlink_contained(container, item_id)
+	if previous_id != "":
+		_park_in_store(container, previous_id)
+	item["manifested"] = true
+	item["container_id"] = null
+	item["holder_id"] = actor_id
+	item["equipped_slot_id"] = slot_id
+	world.set_equipped(actor_id, slot_id, item_id)
+	world.bump(item_id, EtheraIds.CHANGE_INVENTORY)
+	world.bump(actor_id, EtheraIds.CHANGE_INVENTORY)
+	return [_log_event("equipment_changed", "Took %s from the town hall" % item.get("name", item_id), {"item_id": item_id})]
+
+
+func _deposit_equipped(actor_id: String, slot_id: String, target_id: String) -> Array[Dictionary]:
+	var container: Dictionary = world.get_entity(target_id)
+	if not bool(container.get("ui_store", false)):
+		return [_log_event("blocked", "That is not the town hall", {"target_id": target_id})]
+	var actor: Dictionary = world.get_entity(actor_id)
+	var item_id: String = world.equipped_item_id(actor, slot_id)
+	if item_id == "":
+		return [_log_event("blocked", "That slot is empty", {"slot_id": slot_id})]
+	var item: Dictionary = world.get_entity(item_id)
+	world.set_equipped(actor_id, slot_id, null)
+	_park_in_store(container, item_id)
+	world.bump(actor_id, EtheraIds.CHANGE_INVENTORY)
+	return [_log_event("equipment_changed", "Left %s in the town hall" % item.get("name", item_id), {"item_id": item_id, "target_id": target_id})]
+
+
+func _unlink_contained(container: Dictionary, item_id: String) -> void:
+	var kept: Array = []
+	for stored_id in container.get("contained_item_ids", []):
+		if str(stored_id) != item_id:
+			kept.append(str(stored_id))
+	container["contained_item_ids"] = kept
+
+
+func _park_in_store(container: Dictionary, item_id: String) -> void:
+	var item: Dictionary = world.get_entity(item_id)
+	item["manifested"] = false
+	item["holder_id"] = null
+	item["equipped_slot_id"] = null
+	item["container_id"] = str(container.get("id", ""))
+	var contents: Array = container.get("contained_item_ids", [])
+	if not contents.has(item_id):
+		contents.append(item_id)
+	container["contained_item_ids"] = contents
+	world.bump(item_id, EtheraIds.CHANGE_MANIFESTATION)
 
 
 func _tick_states() -> Array[Dictionary]:
@@ -998,10 +1093,24 @@ func _is_aligned(phase: Dictionary) -> bool:
 
 
 func _interact_stand_off(target: Dictionary) -> float:
+	if bool(target.get("ui_store", false)):
+		return 6.5
 	var occupancy: float = world.occupancy_radius(target)
 	if occupancy <= 0.0:
 		return float(world.tuning.get("pickup_approach_distance", 0.8))
 	return occupancy + float(world.tuning.get("object_stand_off", 0.35))
+
+
+func _store_open_reach() -> float:
+	return 6.5 + float(world.tuning.get("pickup_reach", 1.1))
+
+
+func _store_in_reach(target_id: String) -> bool:
+	var actor: Dictionary = world.inhabiting()
+	var target: Dictionary = world.get_entity(target_id)
+	if actor.is_empty() or target.is_empty():
+		return false
+	return _planar_distance(world.position_of(actor), world.position_of(target)) <= _store_open_reach()
 
 
 func _interact_reach(target: Dictionary) -> float:

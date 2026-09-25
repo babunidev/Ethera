@@ -60,7 +60,7 @@ func eligible_shards(actor: Dictionary, target: Dictionary, limit: int = 1) -> A
 		if world.knows_shard(target, shard_id):
 			continue
 		found.append(str(shard_id))
-		if found.size() >= max(limit, 0):
+		if limit > 0 and found.size() >= limit:
 			break
 	return found
 
@@ -132,6 +132,10 @@ func _matches_condition(actor: Dictionary, target: Dictionary, subject: Dictiona
 			return str(subject.get("kind", "")) == str(condition.get("kind", ""))
 		"opened":
 			return bool(subject.get("opened", false)) == bool(condition.get("opened", false))
+		"no_common_tasks":
+			return typeof(actor.get("task_ids", [])) != TYPE_ARRAY or (actor.get("task_ids", []) as Array).is_empty()
+		"village_delivery_available":
+			return world.next_village_task() != ""
 		_:
 			return false
 
@@ -192,7 +196,7 @@ func _is_closed_container(target: Dictionary) -> bool:
 		return false
 	if not world.is_manifested(target):
 		return false
-	if bool(target.get("opened", false)):
+	if bool(target.get("opened", false)) and not bool(target.get("ui_store", false)):
 		return false
 	return world.has_trait(target, EtheraIds.TRAIT_CONTAINER)
 

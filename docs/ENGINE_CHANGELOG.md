@@ -6,11 +6,18 @@ Concept, lore and design rulings stay in the Morkahja concept changelog (`Morkah
 
 ## 2026-09-25
 
+- Picking an item up plays the Explosive `UnarmedPickup` clip, retargeted onto the Mixamo body. The take itself still commits as soon as she is in reach.
 - A loaded hex keeps its height grid, and only the chunks, colliders, and scenery within 64 m of her are drawn. Walking occupancy is unchanged.
 - The sun shadow map is 4096 with four splits. The 29 village omni lamps still glow and no longer cast shadows.
-- The camera starts all the way out, up and behind the character, about 55 degrees, with a narrower view and the path ahead in frame. Drag only turns it. The wheel sets the distance, and that distance sets the angle: scrolling closer lowers the view a little and brings her to the middle.
+- The camera starts all the way out, up and behind the character, about 55 degrees, with a narrower view and the path ahead in frame. Drag only turns it. The wheel sets the distance, and that distance sets the angle: scrolling closer lowers the view to about 39 degrees and brings her to the middle.
 - Walk speed is 2.016, five percent faster than 1.92. Run speed is unchanged.
 - The Interactions tab shows a short description for each known action, with its requirements.
+- Taking a task shows its title at the top of the screen, in the same line as a discovered place.
+- Echo Imprint leaves every memory the Fountain does not yet hold, and holds her for five seconds the same way a greeting does.
+- J opens Destiny. The Ground Glint is about a third of its former size. A harvested herb patch and a rock still marked Shaped are not chosen as objectives.
+- The town hall opens only after she walks up to it, the same as any other container. Divine Orientation stays beside her: the wind-wave about 1.5 m to one side, the glint about 2.5 m ahead. A delivery points at a shapeable rock or a herb patch until she is carrying the item, then at the town hall.
+- Stone Weapon no longer appears just because she is unarmed. A Need comes from a granted task, a later destiny quest, or a state. Common tasks otherwise come from the Fountain through Echo Attunement. She stops outside the town hall instead of pathing into its walls.
+- When she has no common task, Echo Attunement at the Fountain gives one village delivery: a stone weapon first, then an Offering Herb, one for each Grimnir. She leaves them in the town hall. Opening the hall lists what is stored; clicking an item takes it, and the place buttons put the equipped weapon or herb inside.
 - Offering Herb is the small triangle grass again, a little smaller than the first tufts. The plant models are no longer used for it.
 - Picking Offering Herb uses Material Selection (Trickery, Survival Craft): touch the blades, then confirm. Greeting uses Call and Response (Social, Resonance): match the other Grimnir's mark before either of them says Hi.
 - A greeting holds her on the other Grimnir. That Grimnir answers Hi a second later. Until the answer ends she cannot walk or turn the view, a ring closes on the cursor, and the camera angle stays where it was.

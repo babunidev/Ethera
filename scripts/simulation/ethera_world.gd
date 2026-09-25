@@ -1041,6 +1041,34 @@ static func canonical_encoding(value: Variant) -> String:
 			return str(value)
 
 
+func villager_count() -> int:
+	var count := 0
+	for entity_id in entities.keys():
+		var entity: Dictionary = get_entity(str(entity_id))
+		if str(entity.get("kind", "")) == "character" and is_manifested(entity) and has_trait(entity, EtheraIds.TRAIT_GRIMNIR):
+			count += 1
+	return count
+
+
+func store_count(trait_id: String) -> int:
+	var hall: Dictionary = get_entity(EtheraIds.ENTITY_TOWN_HALL)
+	var count := 0
+	for item_id in hall.get("contained_item_ids", []):
+		if has_trait(get_entity(str(item_id)), trait_id):
+			count += 1
+	return count
+
+
+# Weapon deliveries come first, then herbs. One shortfall is one task.
+func next_village_task() -> String:
+	var villagers: int = villager_count()
+	if store_count(EtheraIds.TRAIT_STONE_WEAPON) < villagers:
+		return EtheraIds.TASK_DELIVER_STONE_WEAPON
+	if store_count(EtheraIds.TRAIT_HERB) < villagers:
+		return EtheraIds.TASK_DELIVER_OFFERING_HERB
+	return ""
+
+
 func _normalize_entity(entity: Dictionary) -> Dictionary:
 	entity["traits"] = _string_array(entity.get("traits", []))
 	entity["states"] = _string_array(entity.get("states", []))

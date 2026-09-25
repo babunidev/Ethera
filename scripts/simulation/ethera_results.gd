@@ -13,6 +13,7 @@ class_name EtheraResults
 var world: EtheraWorld
 var catalog: EtheraCatalog
 var evaluator: EtheraEvaluator
+var tasks: EtheraTasks
 
 func _init(target_world: EtheraWorld, target_catalog: EtheraCatalog, target_evaluator: EtheraEvaluator) -> void:
 	world = target_world
@@ -112,6 +113,8 @@ func _validate_one(entry: Dictionary, actor_id: String, target_id: String, selec
 			return "" if str(entry.get("text", "")) != "" else "malformed_result"
 		EtheraIds.RESULT_REVEAL_CONTAINER:
 			return "" if not bool(world.get_entity(subject_id).get("opened", false)) else "already_open"
+		EtheraIds.RESULT_GRANT_VILLAGE_TASK:
+			return "" if world.next_village_task() != "" else "village_supplied"
 		_:
 			return "unknown_result_type"
 
@@ -139,6 +142,8 @@ func _apply_one(entry: Dictionary, actor_id: String, target_id: String, selected
 			return _greet(entry, actor_id, target_id)
 		EtheraIds.RESULT_REVEAL_CONTAINER:
 			return _reveal_container(subject_id, actor_id)
+		EtheraIds.RESULT_GRANT_VILLAGE_TASK:
+			return _grant_village_task(subject_id)
 		_:
 			return {"ok": false, "reason": "unknown_result_type"}
 
@@ -199,7 +204,7 @@ func _equip_spawned_item(entry: Dictionary, holder_id: String, actor_id: String,
 
 
 func _share_eligible_shards(entry: Dictionary, actor_id: String, recipient_id: String, selected_shard_id: String) -> Dictionary:
-	var limit: int = maxi(1, int(entry.get("limit", 1)))
+	var limit: int = int(entry.get("limit", 1))
 	var shard_ids: Array[String] = evaluator.eligible_shards(
 		world.get_entity(actor_id),
 		world.get_entity(recipient_id),
@@ -225,6 +230,16 @@ func _share_eligible_shards(entry: Dictionary, actor_id: String, recipient_id: S
 		"" if count == 1 else "s",
 		recipient.get("name", recipient_id),
 	], {"count": count, "shard_ids": result_ids, "entity_id": recipient_id}))
+	var focus_ms: int = int(entry.get("focus_ms", 0))
+	if focus_ms > 0:
+		var actor: Dictionary = world.get_entity(actor_id)
+		var now: int = world.world_time_ms
+		actor["greeting_focus"] = {
+			"target_id": recipient_id,
+			"started_ms": now,
+			"until_ms": now + focus_ms,
+		}
+		world.bump(actor_id, EtheraIds.CHANGE_STATES)
 	return {"ok": true, "events": events, "result_ids": result_ids}
 
 
@@ -298,6 +313,20 @@ func _consume_equipped_item(entry: Dictionary, holder_id: String) -> Dictionary:
 			_log("item_consumed", "%s was offered and is gone" % item.get("name", item_id), {"item_id": item_id, "slot_id": slot_id}),
 		],
 		"result_ids": [item_id],
+	}
+
+
+func _grant_village_task(actor_id: String) -> Dictionary:
+	if tasks == null:
+		return {"ok": false, "reason": "village_supplied"}
+	var task_id: String = tasks.grant_village_task(actor_id)
+	if task_id == "":
+		return {"ok": false, "reason": "village_supplied"}
+	var task: Dictionary = catalog.tasks.get(task_id, {})
+	return {
+		"ok": true,
+		"events": [_log("task_granted", "The Fountain asks her to %s" % str(task.get("name", task_id)), {"task_id": task_id})],
+		"result_ids": [task_id],
 	}
 
 

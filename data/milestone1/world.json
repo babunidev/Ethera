@@ -24,10 +24,10 @@
     "walkable_slope_degrees": 50,
     "shaping_drop_offset": { "x": 0.55, "y": 0.0, "z": 0.0 },
     "orientation_cue_interval_ms": 10000,
-    "orientation_wave_aside": 5.0,
-    "orientation_wave_travel": 5.0,
-    "orientation_glint_ahead": 14.0,
-    "orientation_glint_travel": 3.0,
+    "orientation_wave_aside": 1.5,
+    "orientation_wave_travel": 2.0,
+    "orientation_glint_ahead": 2.5,
+    "orientation_glint_travel": 1.5,
     "orientation_cue_life_ms": 1600
   },
   "places": [
@@ -247,6 +247,24 @@
       "manifested": false,
       "presentation": {
         "asset_id": "asset.stone_club_b"
+      }
+    },
+    {
+      "id": "entity.town_hall",
+      "kind": "container",
+      "name": "Town Hall",
+      "place_id": "place.village_center",
+      "traits": ["trait.container"],
+      "opened": false,
+      "ui_store": true,
+      "contained_item_ids": [],
+      "states": [],
+      "position": { "x": -22.33, "y": 0.0, "z": -10.04 },
+      "yaw": 0.35,
+      "manifested": true,
+      "occupancy": { "radius": 0.0 },
+      "presentation": {
+        "asset_id": ""
       }
     },
     {

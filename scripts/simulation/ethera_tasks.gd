@@ -22,6 +22,7 @@ func refresh(actor_id: String) -> void:
 	if actor.is_empty() or str(actor.get("kind", "")) != "character":
 		return
 	_ensure_task_fields(actor)
+	_drop_fulfilled_grants(actor)
 	var before: String = "%s|%s|%s|%s" % [
 		str(actor.get("needs", [])),
 		str(actor.get("task_ids", [])),
@@ -190,6 +191,11 @@ func _switch_to(actor: Dictionary, task_id: String) -> void:
 
 func _ensure_reservation(actor: Dictionary, task_id: String) -> void:
 	var task: Dictionary = catalog.tasks.get(task_id, {})
+	if str(task.get("source", "")) == "attunement":
+		var objectives: Dictionary = actor.get("task_objectives", {})
+		objectives[task_id] = _delivery_objective(actor, task)
+		actor["task_objectives"] = objectives
+		return
 	if str(task.get("hidden_solution", {}).get("type", "")) != "manifested_traits":
 		_release(actor, task_id)
 		return
@@ -257,6 +263,8 @@ func _solution_valid(entity: Dictionary, task: Dictionary) -> bool:
 	for trait_id in _string_list(solution.get("trait_ids", [])):
 		if not world.has_trait(entity, trait_id):
 			return false
+	if _string_list(entity.get("states", [])).has(EtheraIds.STATE_SHAPED):
+		return false
 	return true
 
 
@@ -374,6 +382,17 @@ func _clear_mark(entity_id: String, trait_id: String) -> void:
 	world.bump(entity_id, EtheraIds.CHANGE_TRAITS)
 
 
+func _drop_fulfilled_grants(actor: Dictionary) -> void:
+	var kept: Array[String] = []
+	for need_id in _string_list(actor.get("granted_need_ids", [])):
+		var need: Dictionary = catalog.needs.get(need_id, {})
+		var task: Dictionary = catalog.tasks.get(str(need.get("task_id", "")), {})
+		if not task.is_empty() and _task_complete(actor, task):
+			continue
+		kept.append(need_id)
+	actor["granted_need_ids"] = kept
+
+
 func _present_needs(actor: Dictionary) -> Array[String]:
 	var present: Dictionary = {}
 	for need_id in catalog.needs.keys():
@@ -406,7 +425,44 @@ func _eligible_tasks(actor: Dictionary, need_ids: Array[String]) -> Array[String
 		if _task_complete(actor, task):
 			continue
 		ids.append(str(task_id))
+	for task_id in _string_list(actor.get("task_ids", [])):
+		var held: Dictionary = catalog.tasks.get(task_id, {})
+		if str(held.get("source", "")) != "attunement":
+			continue
+		if _delivery_done(actor, held):
+			continue
+		if not ids.has(task_id):
+			ids.append(task_id)
 	return ids
+
+
+func grant_village_task(actor_id: String) -> String:
+	var actor: Dictionary = world.get_entity(actor_id)
+	var task_id: String = world.next_village_task()
+	if actor.is_empty() or task_id == "":
+		return ""
+	var held: Array[String] = _string_list(actor.get("task_ids", []))
+	if not held.has(task_id):
+		held.append(task_id)
+	actor["task_ids"] = held
+	var baselines: Dictionary = actor.get("task_baselines", {})
+	var task: Dictionary = catalog.tasks.get(task_id, {})
+	baselines[task_id] = world.store_count(str(task.get("store_trait_id", "")))
+	actor["task_baselines"] = baselines
+	if str(actor.get("active_task_id", "")) == "":
+		actor["active_task_id"] = task_id
+	_ensure_reservation(actor, task_id)
+	world.bump(actor_id, EtheraIds.CHANGE_NEEDS)
+	world.add_log("task_taken", _task_name(task_id), {"task_id": task_id, "task_name": _task_name(task_id)})
+	return task_id
+
+
+func _delivery_done(actor: Dictionary, task: Dictionary) -> bool:
+	var task_id: String = str(task.get("id", ""))
+	var baselines: Dictionary = actor.get("task_baselines", {})
+	if not baselines.has(task_id):
+		return false
+	return world.store_count(str(task.get("store_trait_id", ""))) > int(baselines.get(task_id, 0))
 
 
 func _need_present(actor: Dictionary, need: Dictionary) -> bool:
@@ -414,6 +470,8 @@ func _need_present(actor: Dictionary, need: Dictionary) -> bool:
 	match str(condition.get("type", "")):
 		"lacks_possessed_item_trait":
 			return not _possesses_trait(str(actor.get("id", "")), str(condition.get("trait_id", "")))
+		"granted":
+			return _string_list(actor.get("granted_need_ids", [])).has(str(need.get("id", "")))
 		_:
 			return false
 
@@ -481,6 +539,33 @@ func _checklist(actor: Dictionary, task_id: String) -> Dictionary:
 		"goal": str(task.get("goal", task.get("name", ""))),
 		"requirements": known,
 	}
+
+
+func _delivery_objective(actor: Dictionary, task: Dictionary) -> String:
+	var trait_id: String = str(task.get("store_trait_id", ""))
+	if trait_id != "" and _possesses_trait(str(actor.get("id", "")), trait_id):
+		return EtheraIds.ENTITY_TOWN_HALL
+	var best_id: String = ""
+	var best_distance: float = INF
+	var actor_at: Vector3 = world.position_of(actor)
+	for entity_id in world.entities.keys():
+		var entity: Dictionary = world.get_entity(str(entity_id))
+		if not world.is_manifested(entity):
+			continue
+		var matches := false
+		if trait_id == EtheraIds.TRAIT_HERB:
+			matches = str(entity.get("kind", "")) == EtheraIds.KIND_GRASS and not bool(entity.get("opened", false))
+		else:
+			matches = world.has_trait(entity, EtheraIds.TRAIT_SHAPEABLE) and world.has_trait(entity, EtheraIds.TRAIT_ROCK) and not _string_list(entity.get("states", [])).has(EtheraIds.STATE_SHAPED)
+		if not matches:
+			continue
+		var distance: float = world.position_of(entity).distance_to(actor_at)
+		if distance < best_distance:
+			best_distance = distance
+			best_id = str(entity_id)
+	if best_id != "":
+		return best_id
+	return EtheraIds.ENTITY_TOWN_HALL
 
 
 func _objective_point(entity_id: String) -> Vector3:

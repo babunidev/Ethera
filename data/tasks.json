@@ -30,6 +30,26 @@
         "asset_id": "asset.shapeable_rock",
         "occupancy_radius": 0.55
       }
+    },
+    {
+      "id": "task.deliver_stone_weapon",
+      "name": "Deliver a Stone Weapon",
+      "description": "The village is short a stone weapon. Carry one to the town hall.",
+      "kind": "common",
+      "source": "attunement",
+      "store_trait_id": "trait.stone_weapon",
+      "slot_id": "slot.small_weapon",
+      "goal": "Deliver a Stone Weapon to the town hall"
+    },
+    {
+      "id": "task.deliver_offering_herb",
+      "name": "Deliver Offering Herb",
+      "description": "The village is short an Offering Herb. Carry one to the town hall.",
+      "kind": "common",
+      "source": "attunement",
+      "store_trait_id": "trait.herb",
+      "slot_id": "slot.herb",
+      "goal": "Deliver an Offering Herb to the town hall"
     }
   ]
 }
