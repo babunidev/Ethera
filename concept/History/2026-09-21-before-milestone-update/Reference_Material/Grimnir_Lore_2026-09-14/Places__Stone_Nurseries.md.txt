@@ -1,0 +1,18 @@
+# Stone Nurseries
+
+**Type:** Grimnir communal life-site  
+**Associated people:** [Grimnir](../Races/Grimnir.md)  
+**Parent location:** [Grimnir Skylands](Grimnir_Skylands.md)
+
+Stone nurseries are communal Grimnir sites where parents nurture new life in sheltered stone chambers containing mineral-rich resonance baths. Two parents contribute fragments of their geomantic identity to a forming essence, which develops outside their bodies as a small crystalline growth in the water. Carefully maintained vibrations gather dissolved minerals into its developing body.
+
+Both parents supply sustaining resonance, nourishing minerals, and attentive care while the child gradually develops an individual awareness and the ability to maintain their own form. The nursery offers communal support for this intimate work. Birth is recognized when the child no longer requires continuous parental resonance to remain stable, though nourishment and care continue throughout childhood.
+
+These are not simply places of protection. They are places of shaping, where young Grimnir learn coherence, identity, and the language of craft.
+
+## Lore Hooks
+
+- Stone nurseries may be among the most sacred civic spaces in a Skyland.
+- Different Skylands may have distinct nursery methods, producing subtle cultural or physical variation.
+- Damage to a stone nursery would be both a personal tragedy and a structural wound to the community.
+

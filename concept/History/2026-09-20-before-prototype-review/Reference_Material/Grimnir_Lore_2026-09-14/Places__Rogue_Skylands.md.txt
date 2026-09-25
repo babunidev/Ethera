@@ -1,0 +1,16 @@
+# Rogue Skylands
+
+**Type:** Severed floating constructs  
+**Associated people:** [Grimnir](../Races/Grimnir.md)  
+**Parent location:** [Grimnir Skylands](Grimnir_Skylands.md)
+
+Rogue Skylands are rare Skylands that have severed from the Grimnir resonance network. They drift beyond coordinated control, becoming isolated worlds of stone and memory, neither fully lost nor fully alive in the Grimnir sense.
+
+These places are dangerous not merely because they are remote, but because they represent a break in coherence: a living construct cut away from the shared rhythm that gives Grimnir civilization its stability.
+
+## Lore Hooks
+
+- A rogue Skyland may preserve forbidden, unstable, or forgotten histories.
+- Grimnir may attempt recovery, mourning, quarantine, or avoidance depending on the cause of severance.
+- Such places could attract explorers, exiles, or entities tied to deep-core instability.
+

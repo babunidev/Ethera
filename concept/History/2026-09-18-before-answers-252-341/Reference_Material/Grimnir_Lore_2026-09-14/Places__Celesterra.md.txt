@@ -1,0 +1,35 @@
+# Celesterra
+
+**Type:** Subterranean sky-city and Aevis heartland  
+**Associated peoples:** [Aevis](../Races/Aevis.md), [Grimnir](../Races/Grimnir.md)  
+**Known features:** Artificial sky vaults, resonance towers, pressure channels, crystal spires, airflow highways, lower atmospheric domains
+
+Celesterra is the oldest and largest of the Aevis subterranean sky-cities. Far beneath the southwestern mountain ranges of Morkahja, it stretches across immense cavern systems large enough to imitate open landscapes.
+
+Artificial skies of luminous crystal formations hang overhead, slowly shifting brightness and pattern to mirror astronomical cycles long removed from direct observation. Vast spires rise from cavern floors like frozen cyclones, connected by suspended bridges, vertical pathways, and resonance platforms held aloft through controlled airflow.
+
+Celesterra is not merely a city. It is an atmosphere engineered into civilization.
+
+Every district maintains carefully calibrated pressure, humidity, airflow velocity, and resonance frequency. Enormous ventilation networks carved into the mountainsides move invisible currents through the city, carrying warmth, information, and life itself.
+
+Above Celesterra and its mountain systems drift many Grimnir Skylands. The Aevis shape atmospheric currents below, while the Grimnir structure stability above, creating a quiet vertical equilibrium between air and stone.
+
+## Known Structures
+
+- Artificial Sky Vaults.
+- Resonance Archives.
+- Breath Towers.
+- Hall of Still Currents.
+- Resonance lift platforms.
+- Airflow highways.
+- Vertical spiral corridors.
+- Atmospheric gates.
+
+## Lore Hooks
+
+- Celesterra was born after the Era of Collapse Winds drove proto-Aevis into mountain systems.
+- To walk through Celesterra is to move through memory itself.
+- Airflow collapse events, resonance instability zones, pressure fractures, atmospheric contamination, and cavern breaches are existential threats.
+- The city preserves ancient atmospheric patterns through Skymemory Nights and crystal archives.
+- A vertical diplomacy exists between the Aevis below and the Grimnir Skylands above.
+

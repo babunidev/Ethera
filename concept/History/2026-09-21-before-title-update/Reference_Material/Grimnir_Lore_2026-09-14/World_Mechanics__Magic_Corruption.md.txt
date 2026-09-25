@@ -1,0 +1,28 @@
+# Magic Corruption
+
+Magic in Morkahja later became corrupted, dividing into benevolent and malevolent aspects. The exact cause of this rupture remains open for development, but its effects are known across the created peoples.
+
+In terms of the [Elemental Foundation](Elemental_Foundation.md), corruption is not a new element. It is a disruption of relationship: harmony turned into imbalance, memory turned into obsession, growth turned into parasitism, structure turned into collapse, or motion turned into dissonance.
+
+The corruption can twist the original divine pattern of a race into a malevolent echo. These corrupted forms are not simply enemies or monsters; they are distorted reflections of the elemental harmony that once defined Morkahja.
+
+## Corrupted Race Forms
+
+| Original race | Corrupted form | Working theme |
+| --- | --- | --- |
+| Rokur | Ashen Revenants | Fire, Light, and Chaos reduced to ash, hunger, failed illumination, and lingering wrath |
+| Verdani | Blightwraiths | Water, Growth, and Spirit turned toward decay, sickness, poisoned memory, and parasitic renewal |
+| Aevis | Tempestwailers | Air, Aether, and Order twisted into storm, grief, broken pattern, and dissonant resonance |
+| Grimnir | Crumblegheists | Earth, Metal, and Darkness broken into collapse, erosion, haunted instability, and buried dread |
+
+## Ancient Forces
+
+Some dangerous phenomena do not appear to be simple expressions of corruption. The [Urcogor Ravage](../World_Events/Urcogor_Ravage.md), for example, may represent an older force pressing into the current world-order rather than a corrupted version of one of the Pantheon-created races.
+
+## Lore Hooks
+
+- The corruption may have split magic into benevolent and malevolent currents.
+- Corrupted races may remember fragments of their original divine purpose.
+- Cleansing corruption might require tribunal-aligned rites, relics, or acts of restoration.
+- Crumblegheists may be especially feared by the Grimnir because they embody loss of coherence and structural identity.
+- The Ravage may be mistaken for corruption because both disturb elemental relationship, but their origins may be very different.

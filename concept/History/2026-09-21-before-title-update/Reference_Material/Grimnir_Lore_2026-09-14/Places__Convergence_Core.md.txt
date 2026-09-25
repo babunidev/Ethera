@@ -1,0 +1,16 @@
+# Convergence Core
+
+**Type:** Grimnir Skyland center  
+**Associated people:** [Grimnir](../Races/Grimnir.md)  
+**Parent location:** [Grimnir Skylands](Grimnir_Skylands.md)
+
+The Convergence Core is an innovative center within Grimnir civilization, where Skyland development accelerates into forms that sometimes resemble living machines of stone and light.
+
+It appears to be a place of heightened experimentation, dynamic architecture, and advanced resonance craft. Whether it is a single Skyland, a recurring alignment of multiple Skylands, or a permanent political-cultural center remains open for development.
+
+## Lore Hooks
+
+- A home for Expansionist philosophy and experimental architecture.
+- A site where Skylands may gather for major decisions, trade, or technological advancement.
+- A possible source of unstable innovation or living stone-machine constructs.
+

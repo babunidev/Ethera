@@ -1,0 +1,77 @@
+# Character Creation
+
+Player avatars begin by choosing a race and a role. These choices establish a character's cultural origin, elemental tendencies, and preferred approaches to encounters without limiting the character to a single play style.
+
+## Playable Races
+
+The four playable races are the Pantheon-created peoples of Morkahja:
+
+| Race | Tribunal | Core identity |
+| --- | --- | --- |
+| Grimnir | Terran Assembly | Earth, Metal, Darkness, craft, endurance, and hidden structure |
+| Verdani | Abyssal Conclave | Water, Growth, Spirit, healing, memory, and renewal |
+| Aevis | Celestial Convocation | Air, Aether, Order, thought, resonance, and possibility |
+| Rokur | Ignis Council | Fire, Light, Chaos, discipline, transformation, and will |
+
+Full cultural and historical entries are available for the [Grimnir](../Races/Grimnir.md), [Verdani](../Races/Verdani.md), [Aevis](../Races/Aevis.md), and [Rokur](../Races/Rokur.md).
+
+## Roles
+
+Roles describe a character's preferred method of solving problems. They are flexible gameplay identities, not exclusive professions within the world. Each role is associated with an elemental quality, but the role does not require the character to cast or control that element directly.
+
+| Role | Elemental quality | Primary race association | Core approach |
+| --- | --- | --- | --- |
+| Berserker | Fire | Rokur | Ferocity, passion, momentum, and decisive aggression |
+| Trickster | Air | Aevis | Agility, cunning, mobility, and unpredictability |
+| Guardian | Water | Verdani | Protection, adaptation, support, and recovery |
+| Warrior | Earth | Grimnir | Strength, resilience, endurance, and direct action |
+| Sorcerer | Aether | All races | Arcane power, synthesis, and connection between elements |
+
+### Berserker
+
+The Berserker embodies Fire through passion, force, courage, and transformation. Berserkers are associated with the Rokur, but any race may follow the path. Their strength is not limited to uncontrolled rage; it can also mean decisive action, protective intensity, or the will to keep moving through impossible pressure.
+
+### Trickster
+
+The Trickster embodies Air through movement, freedom, perception, and changing direction. Tricksters rely on timing, mobility, misdirection, and clever use of openings. Their association with the Aevis reflects a shared quality of possibility rather than a requirement for air magic.
+
+### Guardian
+
+The Guardian embodies Water through adaptation, protection, patience, and recovery. Guardians preserve what matters while changing shape around danger. Their association with the Verdani reflects the Conclave's emphasis on healing, connection, and continuity.
+
+### Warrior
+
+The Warrior embodies Earth through stability, resilience, endurance, and grounded force. Warriors hold a position, protect others, and turn pressure into advantage. Their association with the Grimnir reflects the Terran Assembly's principles of foundation and persistence.
+
+### Sorcerer
+
+The Sorcerer works directly with Aether, the quintessence that connects the four material elements. Sorcerers are associated with arcane power, elemental synthesis, and the transformation of relationships between forces. They are not limited to a single race or tribunal.
+
+Roles do not override racial identity. A Grimnir Sorcerer may use crystal resonance and hidden structure. A Verdani Warrior may defend an oasis through water, growth, and communal healing. An Aevis Trickster may use airflow and silence to cross a guarded archive. A Rokur Guardian may protect a forge-hall through disciplined fire and communal loyalty.
+
+## Role Synergies
+
+The primary elemental relationships between roles are:
+
+- **Berserker and Trickster:** Fire and Air reinforce momentum, movement, aggression, and unpredictability.
+- **Warrior and Guardian:** Earth and Water complement one another through stability, nourishment, protection, and renewal.
+- **Berserker and Guardian:** Fire and Water oppose one another through transformation versus continuity, creating tension as well as powerful contrast.
+- **Warrior and Trickster:** Earth and Air oppose one another through grounded structure versus mobility and freedom.
+- **Sorcerer and every role:** Aether enhances and connects Fire, Air, Water, and Earth rather than belonging to a single opposition.
+
+## Avatar Creation Order
+
+The recommended avatar creation sequence is:
+
+1. Choose a race.
+2. Choose a role.
+3. Select starting skills, items, or other options provided by the chosen combination.
+4. Define the character's relationship to their people, home, and the wider world.
+
+The available race order is Grimnir, Verdani, Aevis, and Rokur. The available role order is Berserker, Trickster, Guardian, Warrior, and Sorcerer. These are presentation and selection orders, not rankings.
+
+## Encounter Interaction
+
+Race and role choices influence which encounter solutions are naturally available, but no encounter should depend on only one correct combination. A solution may be opened by a skill, an item, knowledge, social relationship, or an alternative approach supported by the location.
+
+This keeps avatar identity meaningful while allowing the world to remain responsive to different kinds of characters.

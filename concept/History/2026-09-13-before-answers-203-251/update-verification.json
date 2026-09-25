@@ -1,0 +1,14 @@
+{
+  "cutoff_answer": 251,
+  "unanswered_question": 252,
+  "new_answers_and_turns": 49,
+  "total_source_turns": 262,
+  "concept_documents": 40,
+  "zip_entries": 43,
+  "local_links_checked": 1468,
+  "link_errors": 0,
+  "old_source_body_preserved": true,
+  "all_new_messages_preserved": true,
+  "all_new_answers_have_topic_evidence": true,
+  "zip_payload_verified": true
+}

@@ -1,0 +1,27 @@
+# Grimnir Skylands
+
+**Type:** Engineered floating city-worlds  
+**Associated people:** [Grimnir](../Races/Grimnir.md)  
+**Known features:** Sky-core anchors, resonance crystals, living architecture, drifting cities
+
+The Grimnir Skylands are vast engineered constructs that serve as homes, cities, workshops, and moving nations. They are not natural islands, but deliberately shaped worlds of stone and metal suspended through geomantic resonance and crystalline stabilization.
+
+Some Skylands remain in semi-stationary orbit above Celesterra, while others drift along aerial currents and resonance pathways. Together they form moving constellations of civilization, each one a layered record of those who shaped it before.
+
+Skylands are treated as living constructs with inertia and identity. To guide one is not to command a machine, but to negotiate with something already moving, already becoming.
+
+## Key Structures
+
+- Sky-core anchors.
+- Resonance crystals.
+- Sky-crystal lattices.
+- Memory stones.
+- Stone nurseries.
+- Bridges of stone and light during convergence events.
+
+## Lore Hooks
+
+- A Skyland that ceases to move becomes a grave of stillness.
+- Skylands carry ancestral memory in walls, cores, and anchor crystals.
+- During major convergence events, multiple Skylands can form a temporary continent in the sky.
+- Rogue Skylands may drift outside the resonance network, neither fully lost nor fully alive.

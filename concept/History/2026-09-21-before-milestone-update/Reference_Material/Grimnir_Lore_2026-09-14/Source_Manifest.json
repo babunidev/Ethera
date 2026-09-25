@@ -1,0 +1,74 @@
+[
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Races\\Grimnir.md",
+    "snapshot": "Races__Grimnir.md.txt",
+    "sha256": "1c38ef7390c0099e9e2dd146502f388cde06670d94d542dbfe64abe73c792534",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Places\\Grimnir_Skylands.md",
+    "snapshot": "Places__Grimnir_Skylands.md.txt",
+    "sha256": "0773dae1e5ddfb201852257232e50faea71c77ffb620be37f85720dca2cdad56",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Places\\Stone_Nurseries.md",
+    "snapshot": "Places__Stone_Nurseries.md.txt",
+    "sha256": "191fc8b95f94e681ae49b6baf9600af15e146af06165aaa0a6432da6a26ef0c6",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Places\\Convergence_Core.md",
+    "snapshot": "Places__Convergence_Core.md.txt",
+    "sha256": "bed387ce8bc1f4b3e70f40a507ef4a07d22c61313dd331f36cc0fd3864ce95f4",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Places\\Northern_Skyland_Clusters.md",
+    "snapshot": "Places__Northern_Skyland_Clusters.md.txt",
+    "sha256": "fbfa61652fcba02f6d581b0b4347275241ee68f476141853eab9455995b1da3c",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Places\\Rogue_Skylands.md",
+    "snapshot": "Places__Rogue_Skylands.md.txt",
+    "sha256": "e647194687bebb948e3952b0381f2311096edece052c43a612f4da2d96f1b39f",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Places\\Aetherion.md",
+    "snapshot": "Places__Aetherion.md.txt",
+    "sha256": "848519c587fd5a5cac6ac824a8ae06544447dae4e104d41dcef7a83a0038f60e",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Places\\Celesterra.md",
+    "snapshot": "Places__Celesterra.md.txt",
+    "sha256": "c1206b4bf5eb9047ee2aa7c621a6f2635343ae46e970dc1de4e2dfeb8c768a81",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\World_Mechanics\\Elemental_Foundation.md",
+    "snapshot": "World_Mechanics__Elemental_Foundation.md.txt",
+    "sha256": "e38a364451346eb725e3a7d274bce99a917ac18ee71acdf5879fa9e5277798e8",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\World_Mechanics\\Magic_Corruption.md",
+    "snapshot": "World_Mechanics__Magic_Corruption.md.txt",
+    "sha256": "b9579970350df866450cfc9a414a4745d968cc173e1216c894fd4caa48f18f54",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\World_Mechanics\\Character_Creation.md",
+    "snapshot": "World_Mechanics__Character_Creation.md.txt",
+    "sha256": "2df66c2af3a1af94e547394a1da0427827217fe0aaafca492a6105b56b5f50db",
+    "mirror_identical": true
+  },
+  {
+    "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWorldBuilding\\Lore\\Pantheon\\Elemental_Pantheon.md",
+    "snapshot": "Pantheon__Elemental_Pantheon.md.txt",
+    "sha256": "37dfcf0fa9d8fb22fa168af55a24c89993613185ea19c6f58a137214cc3cc685",
+    "mirror_identical": true
+  }
+]

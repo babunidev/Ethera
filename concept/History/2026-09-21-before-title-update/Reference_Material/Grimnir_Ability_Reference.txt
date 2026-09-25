@@ -1,0 +1,105 @@
+I checked all **247 solutions** in the database. **Twelve abilities belong to the Grimnir group**, sharing `mSolutionRewardType: 43` with Lavastone Culinary. Those twelve entries are identical in the server, client, and standalone copies.
+
+I’m treating “early development” as **the early period of Grimnir civilization**, and “innate” as the ordinary capabilities a Grimnir develops while growing up, before personal Traits, professions, or specialist training.
+
+**First: all twelve Grimnir abilities**
+
+These are their exact database names and descriptions. The group includes cultural and learned skills, so membership alone doesn’t establish that an ability is innate. [Solutions database](C:/Users/Babun/Documents/Morkahja/MorkahjaWebApp/server/game/solutiondata.json)
+
+| ID | Ability | Existing description |
+|---|---|---|
+| 10045 | **Mountain Strike** | Summoning the unyielding might of Grimnir ancestors, this blow mimics the crushing weight of rocks falling from the sky. |
+| 10046 | **Ancestors Muse** | Summoning the age-old wisdom of Grimnir forebears, this skill ignites passion and vision as vast as their Skylands. |
+| 10047 | **Gem Seeker Instinct** | Echoing the depths of Grimnir mines, this instinct magnifies the presence of hidden treasures or ancient passageways. |
+| 10048 | **Stone Whisperers Touch** | Listening to the silent murmurs of locks, Grimnir hands unlock secrets as if conversing with the mechanism itself. |
+| 10101 | **Orator of Bedrock** | Words resonate like the deep rumblings of rocks, allowing Grimnir to influence and move hearts like shifting tectonic plates. |
+| 10174 | **Lustrous Gaze** | With eyes reflecting the glint of gems, Grimnir track prey, ensuring they can't escape the hunter's reach. |
+| 10175 | **Heartstone Purification** | Grimnir channel the purity of crystal, negative energies dissipate, returning one to their natural balance. |
+| 10178 | **Cliffhanger's Grasp** | Mimicking the steadfast grip of age-old roots in rocky crevices, Grimnir scale sheer faces with an innate stone-born mastery. |
+| 10179 | **Mineral Mend** | Grimnir infuse wounds with the healing energy of the minerals, the flesh binds and rejuvenates with the resilience of bedrock. |
+| 10180 | **Lavastone Culinary** | Cooking with geothermal warmth and precious Skyland spices, Grimnir dishes invigorate, tasting like the very heart of the earth. |
+| 10181 | **Shadowstone Blend** | Channeling the silent nature of the earth, the Grimnir become as undetectable as minerals. |
+| 10182 | **Grimnirs Aid** | Drawing upon the unity and kinship deeply embedded in Grimnir culture, one calls forth assistance, ensuring no ally stands alone in their time of need. |
+
+The database also contains Grimnir equipment, including weapons and an Anchorstone Keystone. Those are objects rather than additional innate abilities.
+
+**Which fit early Grimnir development?**
+
+Almost all have a place in an early society, but several should begin as modest capabilities that later become the named skills above.
+
+| Ability | Place in early Grimnir life | My recommendation |
+|---|---|---|
+| **Mountain Strike** | Physical defense, breaking obstacles, forceful work. | Innate strength and bodily reinforcement; a powerful, controlled strike requires practice. |
+| **Ancestors Muse** | Shared experience, remembrance, inspiration. | An early cultural practice once ancestors and traditions exist. Accessing ancestral wisdom should not be automatic knowledge. |
+| **Gem Seeker Instinct** | Finding useful minerals and sensing cavities or fractures. | Strong innate foundation. They sense material properties, rather than knowing that something is “treasure.” |
+| **Stone Whisperers Touch** | Feeling the internal structure of stone or metal objects. | Innate sensitivity can come early. Understanding and opening locks is a learned application. |
+| **Orator of Bedrock** | Storytelling, reassurance, coordinating communal work. | A naturally resonant voice fits; persuasive mastery develops through experience. |
+| **Lustrous Gaze** | Hunting and following movement. | Tracking is an early learned skill supported by their vibration sense. No guaranteed ability to follow any prey. |
+| **Heartstone Purification** | Settling disturbed internal rhythms and helping someone recover balance. | Basic self-regulation fits. Removing corruption or harmful magic should require specialized knowledge. |
+| **Cliffhanger’s Grasp** | Traveling rocky landscapes and reaching resources. | Strong innate foundation: sensitive grip and sure contact with rock. Difficult climbing still takes skill. |
+| **Mineral Mend** | Growth and recovery from bodily damage. | Essential innate self-repair. Healing other people is a further discipline. |
+| **Lavastone Culinary** | Preparing nourishing food and mineral mixtures. | Excellent early learned craft. Skyland spices belong to whichever period Skylands become available. |
+| **Shadowstone Blend** | Concealment among rocks. | Natural stone appearance supports camouflage. Deliberately suppressing movement or vibration is learned; complete undetectability is too broad. |
+| **Grimnirs Aid** | Mutual assistance, communal care, shared labor. | Foundational social behavior. A magical means of calling or strengthening allies would need separate definition. |
+
+**What every Grimnir should possess innately**
+
+The lore already supports mineral-based repair, vibration perception, responsive bodily reinforcement, and an affinity for shaping matter. Our recent decisions add parental resonance and clarify that surface rest is healthy. Building on those, I recommend **seven basic capacities**. The practical limits below are proposals, rather than existing game rules. [Grimnir lore](C:/Users/Babun/Documents/Morkahja/MorkahjaWorldBuilding/Lore/Races/Grimnir.md)
+
+**1. Feel vibrations through material**
+
+Through contact with stone, metal, or mineral-rich ground, a Grimnir can perceive nearby movement, strain, and differences in structure.
+
+An ordinary Grimnir might feel footsteps approaching through a rock shelf or notice that a supporting stone is cracked. Experience improves interpretation. Recognizing a particular mechanism, mapping distant tunnels, or identifying who made a vibration requires more skill.
+
+This is the common foundation beneath **Gem Seeker Instinct, Stone Whisperers Touch, and parts of Lustrous Gaze**.
+
+**2. Recognize useful minerals through contact**
+
+A Grimnir has a bodily sense for material that can support growth, repair, or rest. Touching a stone or tasting a prepared mineral ingredient gives them information about its compatibility with their body.
+
+That supports food, travel, parenting, and early gathering. It should not provide perfect geological knowledge or infallible detection of poison and corruption.
+
+**3. Shape small amounts of earth and stone**
+
+Every Grimnir should have some elementary ability to encourage nearby mineral matter to change form, especially through touch.
+
+They might smooth a sharp edge, press loose mineral grains together, or patiently shape a shallow hollow in suitable stone. Harder materials, larger changes, speed, and precision demand greater effort and training.
+
+This is the innate foundation for craftsmanship. **Building a house, forging a blade, or raising a Skyland remains an achievement.**
+
+**4. Reinforce their body and establish a firm grip**
+
+Their mineral structure naturally responds to effort and impact by bracing and becoming more resistant to deformation. Their hands and feet can make especially secure contact with rough stone.
+
+This supports carrying, climbing, and enduring knocks. It develops into **Mountain Strike** and **Cliffhanger’s Grasp**, without making every Grimnir an expert fighter or climber. Reinforcement should not create unlimited mass or make them impossible to injure.
+
+**5. Incorporate minerals and repair themselves**
+
+A Grimnir can gradually incorporate suitable minerals into their body and repair minor fractures. This works alongside nourishment, water, and rest, as we discussed.
+
+Serious damage takes time and may require help. Drawing material from a boulder replaces bodily substance; it does not replace every nutritional need.
+
+This is the basic form of **Mineral Mend**. The database’s reference to “flesh” needs clarification: it could describe an advanced skill used on other races, but it doesn’t accurately explain ordinary Grimnir self-repair.
+
+**6. Produce and respond to intentional resonance**
+
+Grimnir can create controlled vibrations within their bodies and pass them through touch or connected stone. At a basic level, these can communicate presence, a simple rhythm, or an invitation to synchronize.
+
+That gives a physical foundation to parents sustaining a developing child in its bath. It also supports reassurance, coordinated work, and helping someone settle into rest.
+
+The ability is innate; **parenting and tending a resonance bath still require care and knowledge**. Complex communication, healing, and influencing a gathering develop beyond the basic capacity.
+
+**7. Settle their own internal rhythms**
+
+A Grimnir can gradually quiet and rebalance the vibrations that sustain their body. Resting against suitable stone makes this easier; prepared resting structures make it more effective.
+
+This provides a restrained foundation for **Heartstone Purification**. It means recovering ordinary balance after exertion or distress. It does not grant universal protection against curses, corruption, or the prolonged effects of life deep underground.
+
+**The distinction I would preserve**
+
+Every Grimnir can **sense, shape, brace, replenish, and resonate** at an everyday scale. Growing up includes learning to use those capacities safely, much as someone learns coordination and speech.
+
+Personal Traits then affect aptitude, strength, sensitivity, or unusual expressions. Social roles and learned skills turn those shared capacities into cooking, healing, hunting, engineering, leadership, and other forms of mastery.
+
+That gives early Grimnir enough elemental ability to feed themselves, nurture children, make shelter, travel, and care for one another—while leaving plenty for individuals and their civilization to discover.

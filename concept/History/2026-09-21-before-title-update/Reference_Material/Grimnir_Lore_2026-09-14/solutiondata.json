@@ -1,0 +1,237 @@
+{
+  "source": "C:\\Users\\Babun\\Documents\\Morkahja\\MorkahjaWebApp\\server\\game\\solutiondata.json",
+  "source_sha256": "4323c47829555230861597af127b5355c0c8ac8fb4669dd74b544e6ce7996d6d",
+  "selection": "Grimnir anywhere in record (including asset names), or solution reward type 43; a match is not proof of Grimnir authorship",
+  "records": [
+    {
+      "mSolutionID": 10020,
+      "mSolutionIconName": "weapon_grimnir_earthshakerpickaxe",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Earthshaker Pickaxe",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "A versatile and durable Grimnir pickaxe that can be used as both a tool and a weapon.",
+      "mSolutionType": 10,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10021,
+      "mSolutionIconName": "weapon_grimnir_stonecrushermace",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Stonecrusher Mace",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "A heavy and sturdy Grimnir mace, with a head carved from solid rock.",
+      "mSolutionType": 10,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10030,
+      "mSolutionIconName": "tool_key_grimnir_trunk",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Skyforge Key",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "Crafted from finely worked metal and etched with geometric motifs, this elegant key was designed to open prized storage chests carried aboard drifting Skylands.",
+      "mSolutionType": 8,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10031,
+      "mSolutionIconName": "tool_key_grimnir_vault",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Anchorstone Keystone",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "A dense hexagonal relic carved from dark stone, bearing the symbols of ancient builders. Its form reflects the foundations, balance, and enduring craft of the Stonewrought.",
+      "mSolutionType": 8,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10045,
+      "mSolutionIconName": "skill_grimnir_combat_tackle",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Mountain Strike",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Summoning the unyielding might of Grimnir ancestors, this blow mimics the crushing weight of rocks falling from the sky.",
+      "mSolutionType": 9,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10046,
+      "mSolutionIconName": "skill_grimnir_deepdigging",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Ancestors Muse",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Summoning the age-old wisdom of Grimnir forebears, this skill ignites passion and vision as vast as their Skylands.",
+      "mSolutionType": 39,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10047,
+      "mSolutionIconName": "skill_grimnir_treasurefind",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Gem Seeker Instinct",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Echoing the depths of Grimnir mines, this instinct magnifies the presence of hidden treasures or ancient passageways.",
+      "mSolutionType": 5,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10048,
+      "mSolutionIconName": "skill_grimnir_lockpick",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Stone Whisperers Touch",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Listening to the silent murmurs of locks, Grimnir hands unlock secrets as if conversing with the mechanism itself.",
+      "mSolutionType": 7,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10088,
+      "mSolutionIconName": "weapon_grimnir_runeblade",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Grimnir Runeblade",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "A finely crafted blade, etched with powerful Grimnir runes, its edge glowing with a light that can slice through magic.",
+      "mSolutionType": 28,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10089,
+      "mSolutionIconName": "weapon_grimnir_glacierhalberd",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Glacial Halberd",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "An enchanted halberd, crafted by the skilled Rokur. The blade radiates frost magic, countering fire and capable of freezing even the most fiery of foes.",
+      "mSolutionType": 10,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10101,
+      "mSolutionIconName": "10101_bedrock",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Orator of Bedrock",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Words resonate like the deep rumblings of rocks, allowing Grimnir to influence and move hearts like shifting tectonic plates.",
+      "mSolutionType": 17,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10102,
+      "mSolutionIconName": "weapon_grimnir_boltcaster",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Grimnir Boltcaster",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "A hefty crossbow made of sturdy ironwood, with intricate carvings of boar and huntsman along its stock. The quarrel groove glows faintly, ready to launch enchanted, barbed bolts with deadly precision.",
+      "mSolutionType": 10,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10103,
+      "mSolutionIconName": "weapon_grimnir_baneglaive",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Baneglaive",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "An imposing weapon, it features a lengthy ash wood haft capped with a razor-sharp blade, shaped to mirror the ferocity of a charging boar.",
+      "mSolutionType": 10,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10104,
+      "mSolutionIconName": "weapon_grimnir_banebow",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Banebow",
+      "mSolutionRewardType": 2,
+      "mSolutionText": " Crafted from the resilient wood of the Eldertree, this elegant longbow showcases an intricate design. Its string, woven from Nagar Boar tendons, is remarkably strong, while the tips are inlaid with shimmering emeralds that capture and intensify the wielder's aim.",
+      "mSolutionType": 10,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10105,
+      "mSolutionIconName": "weapon_grimnir_net",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Sturdy Net",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "A robust, wide-spanning net made from interwoven strands of titanvine. ",
+      "mSolutionType": 30,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10108,
+      "mSolutionIconName": "weapon_grimnir_hornbane",
+      "mSolutionInventoryType": 2,
+      "mSolutionName": "Hornbane",
+      "mSolutionRewardType": 2,
+      "mSolutionText": "A compact, yet robust crossbow with shimmering steel limbs and a mahogany stock. Its quiver is filled with serrated bolts, designed to penetrate the thickest of hides.",
+      "mSolutionType": 10,
+      "mSolutionUses": 1
+    },
+    {
+      "mSolutionID": 10174,
+      "mSolutionIconName": "10174_gaze",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Lustrous Gaze",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "With eyes reflecting the glint of gems, Grimnir track prey, ensuring they can't escape the hunter's reach.",
+      "mSolutionType": 29,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10175,
+      "mSolutionIconName": "10175_purification",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Heartstone Purification",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Grimnir channel the purity of crystal, negative energies dissipate, returning one to their natural balance.",
+      "mSolutionType": 27,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10178,
+      "mSolutionIconName": "10178_grasp",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Cliffhanger's Grasp",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Mimicking the steadfast grip of age-old roots in rocky crevices, Grimnir scale sheer faces with an innate stone-born mastery.",
+      "mSolutionType": 13,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10179,
+      "mSolutionIconName": "10179_mend",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Mineral Mend",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Grimnir infuse wounds with the healing energy of the minerals, the flesh binds and rejuvenates with the resilience of bedrock.",
+      "mSolutionType": 21,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10180,
+      "mSolutionIconName": "10180_culinary",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Lavastone Culinary",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Cooking with geothermal warmth and precious Skyland spices, Grimnir dishes invigorate, tasting like the very heart of the earth.",
+      "mSolutionType": 33,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10181,
+      "mSolutionIconName": "10181_blend",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Shadowstone Blend",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Channeling the silent nature of the earth, the Grimnir become as undetectable as minerals.",
+      "mSolutionType": 35,
+      "mSolutionUses": 3
+    },
+    {
+      "mSolutionID": 10182,
+      "mSolutionIconName": "10182_aid",
+      "mSolutionInventoryType": 1,
+      "mSolutionName": "Grimnirs Aid",
+      "mSolutionRewardType": 43,
+      "mSolutionText": "Drawing upon the unity and kinship deeply embedded in Grimnir culture, one calls forth assistance, ensuring no ally stands alone in their time of need.",
+      "mSolutionType": 25,
+      "mSolutionUses": 3
+    }
+  ]
+}

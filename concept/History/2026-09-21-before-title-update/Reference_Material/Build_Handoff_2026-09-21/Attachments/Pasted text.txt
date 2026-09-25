@@ -1,0 +1,205 @@
+I found **over 100 places and location concepts** across the worldbuilding files, including regions, settlements, districts, ruins, and small landmarks.
+
+Below, **“seed” means an early idea with little established detail**. Where the geography is uncertain, I’ve said so. The main references are the [Places Index](C:/Users/Babun/Documents/Morkahja/MorkahjaWorldBuilding/Lore/Places/Places_Index.md) and [Game Database Place Map](C:/Users/Babun/Documents/Morkahja/MorkahjaWorldBuilding/Lore/Places/Game_Database_Place_Map.md), supplemented by individual place and people entries.
+
+**Central Morkahja — Ethera’s Vale**
+
+| Place | Brief description | Location |
+|---|---|---|
+| Ethera’s Vale | Grasslands, trade roads, and balanced elemental currents. | Central Morkahja |
+| Lovely Meadows | Rocky green meadows with herbs and lingering ancient magic. | Ethera’s Vale |
+| Enchanted Glades | Wooded hills, clear streams, and ancient stone pillars. | Ethera’s Vale |
+| Fae Pastures | Secluded grassy valley where hidden realms may be close. | Ethera’s Vale |
+| Mystic Grass | Enchanted rolling hills around a great stone pillar. | Ethera’s Vale |
+| Fey Greens | Peaceful wildlife sanctuary with a Verdani refuge inside a rock. | Ethera’s Vale |
+| Celestial Fields | Sunny wildflower fields with rumored buried treasures. | Ethera’s Vale |
+| Nereval’s Sanctuary | Hidden healing temple whose seal responds to healing. | Central meadows of the Vale |
+| Hearthguard Sanctuary | Fire-aligned refuge; lightly developed. | Ethera’s Vale |
+| Seraphic Plains | Plains landscape seed. | Ethera’s Vale |
+| Enigmatic Prairies | Prairie landscape seed. | Ethera’s Vale |
+| Arcane Meadows | Meadow landscape seed. | Ethera’s Vale |
+| Tranquil Wilds | Wilderness landscape seed. | Ethera’s Vale |
+| Dreamy Valley | Valley landscape seed. | Ethera’s Vale |
+| Arcadian Hills | Hilly landscape seed. | Ethera’s Vale |
+| Alluring Fens | Wetland landscape seed. | Ethera’s Vale |
+| Enchanted Gardens | Garden seed; possibly a future Verdani or city site. | Ethera’s Vale; exact placement open |
+| Mystical Vale | Smaller valley landscape seed. | Ethera’s Vale |
+| Bucolic Dale | Dale landscape seed. | Ethera’s Vale |
+| Captivating Downs | Downland landscape seed. | Ethera’s Vale |
+| Radiant Heath | Heathland landscape seed. | Ethera’s Vale |
+| Mesmerizing Hillsides | Hillside landscape seed. | Ethera’s Vale |
+| Magical Glens | Glen landscape seed. | Ethera’s Vale |
+| Ethereal Glades | Woodland clearing seed. | Ethera’s Vale |
+| Quicksilver Quagmire | Quagmire seed; elemental nature undecided. | Ethera’s Vale |
+| Celestial Cairn | Ancient landmark seed; origins undecided. | Ethera’s Vale |
+| Mysterious Cube site | Artifact encounter site, rather than a settlement. | Provisionally Ethera’s Vale |
+| Eldridia | Named place seed; settlement type unspecified. | Central Morkahja |
+| Market of Eldridia | Market seed associated with Eldridia. | Central Morkahja |
+| Temple of the Tribunal of the Sages | Named temple seed. | Central Morkahja |
+
+**Aetherion — the central city**
+
+The city and its five main districts are described in [Aetherion](C:/Users/Babun/Documents/Morkahja/MorkahjaWorldBuilding/Lore/Places/Aetherion.md).
+
+| Place | Brief description | Location |
+|---|---|---|
+| Aetherion | Major multicultural city, trade hub, and political center. | Heart of Ethera’s Vale |
+| Grand Confluence | Central district of assembly halls, markets, shrines, and archives. | Central Aetherion |
+| Ember Wards | Rokur quarter of forges, workshops, and communal fires. | Aetherion |
+| Skyspire Heights | Aevis quarter of towers, academies, and suspended bridges. | Aetherion |
+| Crystal Canals | Verdani quarter of waterways, gardens, and healing halls. | Aetherion |
+| Stonebound Terraces | Grimnir quarter of archives, vaults, and stonework. | Aetherion |
+| Market of Aetherion | Established city market encounter. | Aetherion |
+| Hidden Market | Unmarked market within the central trade network. | Aetherion; exact site open |
+| Pantheon Temple | Shared temple or shrine site. | Aetherion; exact district open |
+| The Archive of Echoes | Archive or knowledge district seed. | Aetherion |
+| Aetherion Forge | Forge or civic craft site. | Aetherion; exact district open |
+| Garden of Elements | Elemental garden or civic sanctuary. | Aetherion |
+| Harmonic Concert venue | Performance location; possibly an amphitheater. | Aetherion; venue unnamed |
+
+**Southern central Morkahja — Eldertree Forest**
+
+| Place | Brief description | Location |
+|---|---|---|
+| Eldertree Forest | Ancient woodland of enormous trees and living natural magic. | Southern central Morkahja |
+| Emerald Realm of the Liani | Hidden woodland community with shifting, protected paths. | Oldest reaches of Eldertree Forest |
+| Eldertree Grove | Quiet ancient grove for rest and seasonal gatherings. | Eldertree Forest |
+| Shadowed Hollow | Dark woodland hollow with lingering memories. | Eldertree Forest |
+| Sunlit Dell | Warm clearing with rare flowers and gentle creatures. | Eldertree Forest |
+| Firefly Brook | Stream illuminated by glowing insects at night. | Eldertree Forest |
+| Grimnir Steps | Ancient stone formations of uncertain origin. | Eldertree Forest |
+| Enchanted Hollow | Named forest sublocation; little detail. | Eldertree Forest |
+| Tranquil Glade | Named forest clearing; little detail. | Eldertree Forest |
+| Feral Hollow | Named forest sublocation; little detail. | Eldertree Forest |
+| Sylvan Sanctuary | Forest sanctuary seed. | Eldertree Forest |
+| Moonlit Oasis | Forest-water site; relationship to Evergrove undecided. | Eldertree Forest |
+
+**Keldor and its forest sites**
+
+Keldor’s exact compass placement is not firmly stated. Its **Darkwood Thicket is assigned west** in the regional notes.
+
+| Place | Brief description | Location |
+|---|---|---|
+| Keldor | Cursed, fogbound forest with unstable geography and memories. | Mountain-enclosed region; exact world position open |
+| Darkwood Thicket | Forest subregion associated with Keldor. | Western Morkahja |
+| Verdani’s Vigil | Recovery site where healers treat forest survivors. | Keldor’s border |
+| Twilight Whisper Grove | Forest subregion seed. | Keldor |
+| Enigma’s End | Deep-forest landmark seed. | Keldor |
+| Path of Despair | Deep-forest route seed. | Keldor |
+| Gloomroot Expanse | Corrupted forest region seed. | Keldor |
+| Wraithbone Pathway | Haunted route seed. | Keldor |
+| Skullstone Pass | Mountain or forest-border pass seed. | Keldor |
+| Sageglow Clearing | Clearing and possible knowledge site. | Keldor |
+| Eldritch Stronghold | Ruin or fortified site seed. | Keldor |
+| Ironclad Reliquary | Sealed ruin or relic site seed. | Keldor |
+| Luminous Enclave | Sanctuary or hidden settlement seed. | Keldor |
+| Shadowmarket | Market implied by the “Shadowmarket Mystic” encounter. | Keldor; settlement undecided |
+| Sylvan Rune Gateway | Ancient gateway or portal seed. | Keldor |
+
+**Beneath Keldor — the Blackwood Abyss**
+
+| Place | Brief description | Location |
+|---|---|---|
+| Blackwood Abyss | Living underground labyrinth, possibly an immense buried entity. | Beneath Keldor |
+| Blackwood Portal | Elusive rune-covered wooden door in a cliff. | Remote cliffs deep in Keldor |
+| Tangled Depths | Shifting maze of colossal roots, tunnels, and bridges. | Outer Blackwood Abyss |
+| The Hollow Choir | Upside-down forests with faces and haunting songs. | Blackwood Abyss |
+| The Weeping Mire | Black-water marsh with statues and false reflections. | Blackwood Abyss |
+| Blackwood Guardian’s checkpoint | Living tree barrier controlling deeper passage. | Blackwood Abyss |
+| The Forgotten Procession | Stone road traveled by endless silent hooded figures. | Deeper Blackwood Abyss |
+| The Silent Throne | Cathedral-like root chamber surrounding an occupied throne. | Center of the Blackwood Abyss |
+
+**Northern mountains and Everwinter**
+
+| Place | Brief description | Location |
+|---|---|---|
+| Fyrskar Mountains | Volcanic peaks, glaciers, and geothermal ravines; Rokur homeland. | Northern Morkahja |
+| Rokur Mountain Citadels | Cities and strongholds carved inside cliffs and mountains. | Fyrskar Mountains |
+| Rocky Tundra | Tundra landscape seed associated with Fyrskar. | West or north; border undecided |
+| Frostwind Mountains | Frozen mountain range containing Frostweaver ruins. | Northern region; exact relation to Fyrskar open |
+| Mountain Pass | Named mountain route seed. | Frostwind Mountains |
+| Frostwind Slopes | Named mountain subregion. | Frostwind Mountains |
+| Frostwind Junkyard | Salvage or trading site seed. | Frostwind Mountains |
+| Cliffs of Sarga | Mountain cliffs and predator territory. | Northeast; linked to Frostwind Mountains |
+| Everwinter Valley | Permafrost valley of ruins, spirits, and dangerous wildlife. | Frostwind Mountains |
+| Everwinter Trading Post | Traveler outpost where fresh food is valuable. | Southern edge of Everwinter Valley |
+| Skyreach Peak | Highest Frostwind summit; rumored Frostweaver relics. | Frostwind Mountains |
+| Frostfall Cascade | Frozen waterfall with a mysterious object trapped halfway up. | Everwinter Valley |
+| Everwinter Cave | Troll-guarded cave with ice statues, fossils, and treasure. | Everwinter Valley |
+| Frostforged Vault | Ancient sealed Frostweaver vault. | Everwinter Valley |
+| Frostweaver Palace Ruins | Monumental ruins preserving inscriptions and lost knowledge. | Everwinter Valley |
+| Eternal Twilight Grove | Haunted woodland whose spirits respond to music or magic. | Grouped with Everwinter; exact position open |
+| Raided Verdani Village | Settlement devastated by Ogrus and Gobbls. | Grouped with Everwinter; exact position open |
+| Deepstone Hollow | Named regional seed; physical character unspecified. | North |
+| Shattered Peaks | Mountain landscape seed. | North |
+| Emberfrost | Named regional seed; physical character unspecified. | Northeast |
+| Embermire | Named regional seed; physical character unspecified. | Northeast |
+
+**Evergrove — Verdani desert lands**
+
+[Evergrove](C:/Users/Babun/Documents/Morkahja/MorkahjaWorldBuilding/Lore/Places/Evergrove.md) is established as a desert homeland, but its compass position is not specified. A southern placement could fit, but its relationship to the Desert of Ohgar remains unestablished.
+
+| Place | Brief description | Location |
+|---|---|---|
+| Evergrove | Vast desert homeland sustained by cultivated oases and water magic. | World position undecided |
+| Evergrove Nexus | Enormous underground network of living roots and waterways. | Beneath Evergrove |
+| First Heartpool | Sacred pool believed to preserve echoes of the First Bloom. | Verdani homeland context; exact site unspecified |
+| Oasis Hearts | Sacred water-and-root centers sustaining settlements. | Across Evergrove |
+| Memory Pools | Enchanted communal pools preserving ancestral experience. | Verdani settlements |
+| Satellite oasis-gardens | Cultivated sanctuaries and settlements around Nexus offshoots. | Across Evergrove |
+| Verdani Treasury | Treasury or resource site seed. | Assigned to Evergrove; exact site open |
+| Canal and underground water routes | Travel network linking settlements and hidden Nexus passages. | Across and beneath Evergrove |
+
+**Southwestern underground lands — Celesterra**
+
+| Place | Brief description | Location |
+|---|---|---|
+| Aevis Subterranean Cities | Network of hidden cities with carefully controlled atmospheres. | Primarily beneath southwestern mountains |
+| Celesterra | Oldest and largest Aevis city beneath luminous artificial skies. | Deep beneath southwestern mountain ranges |
+| Artificial Sky Vaults | Vast luminous crystal ceilings imitating celestial motion. | Celesterra |
+| Resonance Archives | Chambers preserving atmospheric memories and history. | Celesterra |
+| Breath Towers | Ancient airflow engines maintaining the city’s atmosphere. | Celesterra |
+| Hall of Still Currents | Sacred chamber of nearly perfect atmospheric balance. | Celesterra |
+| Crystal-channel districts | Air-guided underground districts; individual names undeveloped. | Aevis cities |
+| Airflow highways and spiral corridors | Routes linking cavern districts and towers. | Celesterra and Aevis cities |
+
+**The sky — Grimnir lands**
+
+| Place | Brief description | Location |
+|---|---|---|
+| Grimnir Skylands | Engineered floating cities of stone, metal, and crystal. | Above Celesterra and northern mountains; some roam |
+| Northern Skyland Clusters | Traditional communities preserving old forging methods. | Northern aerial regions |
+| Central drift Skylands | Adaptive communities experimenting with architecture and materials. | Central Skyland network; ground position unspecified |
+| Convergence Core | Center of experimental craft and living architecture. | Grimnir Skyland network; precise form undecided |
+| Rogue Skylands | Isolated floating worlds severed from the shared network. | Drifting beyond coordinated Skyland routes |
+| Stone Nurseries | Sacred communal chambers for nurturing young Grimnir. | Within Skyland settlements |
+| Skyland trade descent sites | Places where Skylands lower for trade and exchange. | Surface locations not yet named |
+| Temporary convergence landmasses | Skylands joined by bridges into a temporary aerial continent. | Variable; during convergence events |
+
+**Other regional names awaiting development**
+
+These placements are recorded in the index, but most descriptions have not yet been written.
+
+| Place | Brief description | Location |
+|---|---|---|
+| Swamp of Karrhu | Named swamp seed. | East |
+| Aradia’s Perch | Named site seed; nature unspecified. | East |
+| Flytrap Grotto | Grotto seed. | East |
+| Rotwood | Corrupted woodland concept; possible threat to Eldertree. | Southeast |
+| Desert of Ohgar | Named desert region seed. | South |
+| Rocks of Ohgar | Rocky landmark within the desert. | South; Desert of Ohgar |
+| Sunstone Oasis | Named oasis seed. | South |
+| Stormrift | Named regional seed; nature unspecified. | Southwest |
+
+**Divine and spiritual destinations**
+
+| Place | Brief description | Location |
+|---|---|---|
+| Atranor | Parallel realm of gods, divine dragons, and departed souls. | Adjacent layer of reality |
+| Dice of Fortune platform | Circular platform where souls may receive another life. | Atranor’s black-stone plains |
+| The Aether | Elemental existence to which souls return before possible reincarnation. | Beyond ordinary geography; travel status undefined |
+| Altar of Umbrael | Shrine associated with the goddess of Darkness. | Physical location undecided |
+
+There are also **unnamed places people could visit**: Rokur hearth-halls and forge sanctums; Aevis meditation caverns and pressure sanctuaries; Verdani oasis settlements; and buried fortresses, ruins, and dormant clan chambers associated with the Urcogor Ravage.
+
+One naming point: **Nekalos is currently described as a figure or lineage, not an established city or region**, despite names such as “Kaldric of Nekalos.”

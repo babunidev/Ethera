@@ -1,0 +1,61 @@
+[
+  {
+    "name": "babuni_Digital_Art_Digital_Painting_portrait_for_RPG_game_imm_d19776c7-1db1-4c7b-8b73-e89750312dfd_1.png",
+    "source_chat": "Create Character Views",
+    "archive_file": "Attachments/babuni_Digital_Art_Digital_Painting_portrait_for_RPG_game_imm_d19776c7-1db1-4c7b-8b73-e89750312dfd_1.png",
+    "sha256": "3c0e0fc460185418bdc3ec52414d3568255f5ad290a2b80bcd6a2ac4dca30f87"
+  },
+  {
+    "name": "Pasted text.txt",
+    "source_chat": "NAMES",
+    "archive_file": "Attachments/Pasted text.txt",
+    "sha256": "89df9bf22fd0695ab4283225ee460906ca665d95a19e3ab2fd3e237f09d5daac"
+  },
+  {
+    "name": "Elemental_Pantheon.md",
+    "source_chat": "NAMES",
+    "archive_file": "Attachments/Elemental_Pantheon.md",
+    "sha256": "37dfcf0fa9d8fb22fa168af55a24c89993613185ea19c6f58a137214cc3cc685"
+  },
+  {
+    "name": "Grimnir.md",
+    "source_chat": "NAMES",
+    "archive_file": "Attachments/Grimnir.md",
+    "sha256": "1c38ef7390c0099e9e2dd146502f388cde06670d94d542dbfe64abe73c792534"
+  },
+  {
+    "name": "KarrMorrConcept",
+    "source_file": "C:\\Users\\Babun\\Pictures\\KarrMorrConcept",
+    "archive_file": "../Discussion_2026-09-21/Images/KarrMorrConcept.png",
+    "sha256": "83551d11a4599250d883408f3b7e5411a8b913ef7db7b8a6f22779c546a86517",
+    "matches_pictures_original": true
+  },
+  {
+    "name": "KarrMorrConceptLowPoly",
+    "source_file": "C:\\Users\\Babun\\Pictures\\KarrMorrConceptLowPoly",
+    "archive_file": "../Discussion_2026-09-21/Images/KarrMorrConceptLowPoly.png",
+    "sha256": "6f91c861a4969a79ca5a8a3ea28224a164fed6b27535270e5a4fb62705a19319",
+    "matches_pictures_original": true
+  },
+  {
+    "name": "KarrMorrConceptLowPolybare",
+    "source_file": "C:\\Users\\Babun\\Pictures\\KarrMorrConceptLowPolybare",
+    "archive_file": "../Discussion_2026-09-21/Images/KarrMorrConceptLowPolybare.png",
+    "sha256": "678513395ab3d68f38d824c4cee4c073c768c49499935b8a9836bede2adf35b9",
+    "matches_pictures_original": true
+  },
+  {
+    "name": "MemoryFountain",
+    "source_file": "C:\\Users\\Babun\\Pictures\\MemoryFountain",
+    "archive_file": "../Discussion_2026-09-21/Images/MemoryFountain.png",
+    "sha256": "8080437bc1720e79700343c9230329f58aacfe0f631c3d78067542e0494683a4",
+    "matches_pictures_original": true
+  },
+  {
+    "name": "memoryFountain4Blender",
+    "source_file": "C:\\Users\\Babun\\Pictures\\memoryFountain4Blender",
+    "archive_file": "../Discussion_2026-09-21/Images/memoryFountain4Blender.png",
+    "sha256": "9e3c68f00ecd965c951c981d2e09328595874f415d23e9ba822f5008192effc9",
+    "matches_pictures_original": true
+  }
+]
