@@ -19,7 +19,12 @@ owns travel. The armature is scaled to 1.7 m to match the existing picking capsu
 `back` node sits on `mixamorig_Spine2`. A `hip` node sits on `mixamorig:Hips` for a carried grass bundle.
 
 `character_animation.gd` plays Walk or Run from displayed displacement and, at rest,
-picks a random idle-like clip, then another when that clip ends. Movement, interaction
+picks a random idle-like clip, then another when that clip ends. A successful pickup
+plays `UnarmedPickup`, retargeted from the Explosive skeleton onto this Mixamo rig.
+Her heading stays the facing the game already set; the clip does not turn her.
+The hips drop with the crouch, vertically only, so her feet stay on the ground.
+The clip plays at 0.8 speed.
+The clip does not delay the take. Walking off cancels it. Movement, interaction
 approach, camera controls and authoritative timing remain owned by the existing systems.
 It never accesses simulation internals.
 
