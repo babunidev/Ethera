@@ -29,7 +29,7 @@ const ORBIT_FAR := 18.0
 const ORBIT_PITCH_FAR := 0.96
 const ORBIT_PITCH_NEAR := 0.68
 const ORBIT_FOV := 48.0
-const ORBIT_LOOK_AHEAD_FAR := 2.4
+const ORBIT_LOOK_AHEAD_FAR := 0.6
 const ORBIT_LOOK_AHEAD_NEAR := 0.0
 const ORBIT_FLOOR := 0.12
 const ORBIT_FOCUS_HEIGHT := 1.15
@@ -56,6 +56,19 @@ var store_chrome: PanelContainer
 var store_list: ItemList
 var store_wants := false
 var store_item_ids: Array[String] = []
+var pause_open := false
+var pause_layer: Control
+var pause_dim: ColorRect
+var pause_choices: VBoxContainer
+var spectate_root: Control
+var spectate_all: ItemList
+var spectate_free: ItemList
+var spectate_all_ids: Array[String] = []
+var spectate_free_ids: Array[String] = []
+var spectate_free_set: Dictionary = {}
+var spectate_focus_id := ""
+var spectate_preview := false
+var spectate_actions: HBoxContainer
 var title_content: Control
 var title_toggle: Button
 var log_toggle: Button
@@ -129,6 +142,8 @@ func _ready() -> void:
 	world_root.add_child(orientation)
 	_refresh_hud()
 	_build_store_panel()
+	_build_pause_menu()
+	_begin_spectate()
 
 
 func _process(delta: float) -> void:
@@ -160,6 +175,15 @@ func _advance_simulation(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_on_escape()
+		get_viewport().set_input_as_handled()
+		return
+	if pause_open:
+		if spectate_preview and _spectate_camera_event(event):
+			return
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("toggle_destiny"):
 		if panel_visible and destiny_open:
 			panel_visible = false
@@ -696,6 +720,222 @@ func _make_hex_ground() -> void:
 	hex_stream.setup(hex_host as CollisionObject3D)
 
 
+func _build_pause_menu() -> void:
+	pause_layer = Control.new()
+	pause_layer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	pause_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	pause_layer.visible = false
+	pause_dim = ColorRect.new()
+	pause_dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	pause_dim.color = Color(0.04, 0.03, 0.02, 0.72)
+	pause_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pause_layer.add_child(pause_dim)
+	pause_choices = VBoxContainer.new()
+	pause_choices.set_anchors_preset(Control.PRESET_CENTER)
+	pause_choices.offset_left = -120
+	pause_choices.offset_right = 120
+	pause_choices.offset_top = -50
+	pause_choices.offset_bottom = 50
+	pause_choices.add_theme_constant_override("separation", 12)
+	var spectate := Button.new()
+	spectate.text = "Spectate"
+	spectate.pressed.connect(_open_spectate)
+	pause_choices.add_child(spectate)
+	var quit := Button.new()
+	quit.text = "Quit game"
+	quit.pressed.connect(func() -> void: get_tree().quit())
+	pause_choices.add_child(quit)
+	pause_layer.add_child(pause_choices)
+	spectate_root = HBoxContainer.new()
+	spectate_root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	spectate_root.offset_left = 48
+	spectate_root.offset_top = 48
+	spectate_root.offset_right = -48
+	spectate_root.offset_bottom = -48
+	spectate_root.visible = false
+	spectate_root.add_theme_constant_override("separation", 0)
+	spectate_all = _roster_column(spectate_root, "All characters")
+	var roster_gap := Control.new()
+	roster_gap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	roster_gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spectate_root.add_child(roster_gap)
+	spectate_free = _roster_column(spectate_root, "Free characters")
+	spectate_all.item_selected.connect(_on_roster_picked.bind(false))
+	spectate_free.item_selected.connect(_on_roster_picked.bind(true))
+	pause_layer.add_child(spectate_root)
+	hud.add_child(pause_layer)
+
+
+func _roster_column(host: Control, title: String) -> ItemList:
+	var column := VBoxContainer.new()
+	column.custom_minimum_size = Vector2(280, 0)
+	column.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	var label := Label.new()
+	label.text = title
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.add_theme_color_override("font_color", Color(0.95, 0.88, 0.62))
+	label.add_theme_font_size_override("font_size", 22)
+	column.add_child(label)
+	var list := ItemList.new()
+	list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.add_child(list)
+	host.add_child(column)
+	return list
+
+
+func _on_escape() -> void:
+	if spectate_preview:
+		_show_spectate_lists()
+		return
+	if not pause_open:
+		pause_open = true
+		pause_layer.visible = true
+		pause_choices.visible = true
+		spectate_root.visible = false
+		_set_spectate_dim(false)
+		return
+	if spectate_root.visible:
+		spectate_root.visible = false
+		pause_choices.visible = true
+		return
+	pause_open = false
+	pause_layer.visible = false
+
+
+func _begin_spectate() -> void:
+	simulation.apply({"type": EtheraIds.CMD_RELEASE_INHABITATION})
+	pause_open = true
+	pause_layer.visible = true
+	_show_spectate_lists()
+
+
+func _open_spectate() -> void:
+	simulation.apply({"type": EtheraIds.CMD_RELEASE_INHABITATION})
+	_show_spectate_lists()
+
+
+func _show_spectate_lists() -> void:
+	spectate_preview = false
+	spectate_focus_id = ""
+	_park_character_panel()
+	panel_visible = false
+	destiny_open = false
+	pause_choices.visible = false
+	spectate_root.visible = true
+	_set_spectate_dim(false)
+	var roster: Dictionary = simulation.query_roster()
+	spectate_free_set.clear()
+	for record in roster.get("free", []):
+		spectate_free_set[str(record.get("id", ""))] = true
+	_fill_roster(spectate_all, roster.get("characters", []), false)
+	_fill_roster(spectate_free, roster.get("free", []), true)
+
+
+func _fill_roster(list: ItemList, records: Array, free_side: bool) -> void:
+	list.clear()
+	var ids: Array[String] = []
+	for record in records:
+		ids.append(str(record.get("id", "")))
+		list.add_item(str(record.get("name", "")))
+	if free_side:
+		spectate_free_ids = ids
+	else:
+		spectate_all_ids = ids
+
+
+func _on_roster_picked(index: int, free_side: bool) -> void:
+	var ids: Array[String] = spectate_free_ids if free_side else spectate_all_ids
+	if index < 0 or index >= ids.size():
+		return
+	_show_spectate_preview(ids[index])
+
+
+func _show_spectate_preview(entity_id: String) -> void:
+	spectate_focus_id = entity_id
+	spectate_preview = true
+	spectate_root.visible = false
+	pause_choices.visible = false
+	destiny_open = false
+	task_list_open = false
+	panel_tab = "traits"
+	panel_visible = true
+	if panel_chrome.get_parent() != pause_layer:
+		panel_chrome.reparent(pause_layer)
+	panel_chrome.visible = true
+	if spectate_actions != null:
+		spectate_actions.visible = true
+		for child in spectate_actions.get_children():
+			if child is Button and (child as Button).text == "Play":
+				(child as Button).disabled = not bool(spectate_free_set.get(entity_id, false))
+	if destiny_button != null:
+		destiny_button.visible = false
+	_set_spectate_dim(true)
+	_refresh_character_panel(_panel_query())
+
+
+func _spectate_play() -> void:
+	if spectate_focus_id == "" or not bool(spectate_free_set.get(spectate_focus_id, false)):
+		return
+	var entity_id: String = spectate_focus_id
+	simulation.apply({"type": EtheraIds.CMD_INHABIT, "entity_id": entity_id})
+	if simulation.query_inhabited_id() != entity_id:
+		return
+	spectate_preview = false
+	spectate_focus_id = ""
+	panel_visible = false
+	_park_character_panel()
+	pause_open = false
+	pause_layer.visible = false
+	spectate_root.visible = false
+
+
+func _park_character_panel() -> void:
+	if panel_chrome != null and panel_chrome.get_parent() != hud:
+		panel_chrome.reparent(hud)
+	if spectate_actions != null:
+		spectate_actions.visible = false
+	if destiny_button != null:
+		destiny_button.visible = true
+
+
+func _set_spectate_dim(preview: bool) -> void:
+	if pause_dim == null:
+		return
+	pause_dim.color = Color(0.04, 0.03, 0.02, 0.28 if preview else 0.72)
+
+
+func _spectate_camera_event(event: InputEvent) -> bool:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+		orbit_distance = clampf(orbit_distance - 0.7, ORBIT_NEAR, ORBIT_FAR)
+		return true
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+		orbit_distance = clampf(orbit_distance + 0.7, ORBIT_NEAR, ORBIT_FAR)
+		return true
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed and not _pointer_over_panel():
+			_set_orbit_dragging(true)
+		elif not event.pressed:
+			_set_orbit_dragging(false)
+		return true
+	if event is InputEventMouseMotion and dragging_orbit:
+		orbit_yaw -= event.relative.x * 0.007
+		return true
+	return false
+
+
+func _pointer_over_panel() -> bool:
+	if panel_chrome == null or not panel_chrome.visible:
+		return false
+	return panel_chrome.get_global_rect().has_point(panel_chrome.get_global_mouse_position())
+
+
+func _panel_query() -> Dictionary:
+	if spectate_preview and spectate_focus_id != "":
+		return simulation.query_panel(spectate_focus_id)
+	return simulation.query_panel()
+
+
 func _build_store_panel() -> void:
 	store_chrome = _make_chrome_panel()
 	store_chrome.anchor_left = 0.5
@@ -788,7 +1028,10 @@ func _deposit_slot(slot_id: String) -> void:
 
 func _update_camera() -> void:
 	# The camera follows the smoothed view rather than the 20 Hz authoritative pose.
-	var actor_view: Node3D = views.get(simulation.query_inhabited_id())
+	var follow_id: String = simulation.query_inhabited_id()
+	if follow_id == "" and spectate_focus_id != "":
+		follow_id = spectate_focus_id
+	var actor_view: Node3D = views.get(follow_id)
 	if actor_view == null:
 		return
 	var close: float = clampf(inverse_lerp(ORBIT_FAR, ORBIT_NEAR, orbit_distance), 0.0, 1.0)
@@ -1347,9 +1590,9 @@ func _refresh_hud() -> void:
 	if panel_visible:
 		log_chrome.move_to_front()
 	if panel_visible:
-		_refresh_character_panel(simulation.query_panel())
+		_refresh_character_panel(_panel_query())
 		if destiny_open:
-			_refresh_destiny(simulation.query_panel())
+			_refresh_destiny(_panel_query())
 	var lines: PackedStringArray = PackedStringArray()
 	for entry in simulation.query_dev_log(16):
 		lines.append(str(entry.get("text", "")))
@@ -1359,10 +1602,15 @@ func _refresh_hud() -> void:
 
 func _build_character_panel(host: PanelContainer) -> void:
 	var ink := Color(0.93, 0.90, 0.82)
+	var column := VBoxContainer.new()
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	host.add_child(column)
+	character_root = column
 	var root := HBoxContainer.new()
 	root.add_theme_constant_override("separation", 18)
-	host.add_child(root)
-	character_root = root
+	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(root)
 	var left := VBoxContainer.new()
 	left.custom_minimum_size = Vector2(280, 0)
 	left.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -1378,7 +1626,6 @@ func _build_character_panel(host: PanelContainer) -> void:
 	left.add_child(panel_identity)
 	left.add_child(panel_body)
 	left.add_child(panel_gear)
-	left.add_child(destiny_button)
 	root.add_child(left)
 	var right := VBoxContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1405,13 +1652,42 @@ func _build_character_panel(host: PanelContainer) -> void:
 	panel_shards.custom_minimum_size = Vector2(0, 220)
 	panel_shards.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	panel_shards.item_selected.connect(func(_index: int) -> void:
-		_refresh_character_panel(simulation.query_panel())
+		_refresh_character_panel(_panel_query())
 	)
 	right.add_child(panel_shards)
 	panel_shard_detail = _panel_label(ink)
 	panel_shard_detail.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right.add_child(panel_shard_detail)
 	root.add_child(right)
+	var footer := HBoxContainer.new()
+	footer.add_theme_constant_override("separation", 12)
+	var lead := Control.new()
+	lead.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	lead.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	footer.add_child(lead)
+	spectate_actions = HBoxContainer.new()
+	spectate_actions.visible = false
+	spectate_actions.add_theme_constant_override("separation", 12)
+	var play := Button.new()
+	play.text = "Play"
+	play.custom_minimum_size = Vector2(120, 0)
+	play.focus_mode = Control.FOCUS_NONE
+	play.pressed.connect(_spectate_play)
+	var back := Button.new()
+	back.text = "Back"
+	back.custom_minimum_size = Vector2(120, 0)
+	back.focus_mode = Control.FOCUS_NONE
+	back.pressed.connect(_show_spectate_lists)
+	spectate_actions.add_child(play)
+	spectate_actions.add_child(back)
+	footer.add_child(spectate_actions)
+	var trail := Control.new()
+	trail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	trail.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	footer.add_child(trail)
+	destiny_button.custom_minimum_size = Vector2(120, 0)
+	footer.add_child(destiny_button)
+	column.add_child(footer)
 	_build_destiny_screen(host)
 
 
@@ -1515,6 +1791,8 @@ func _sync_need_buttons(needs: Variant) -> void:
 
 
 func _choose_need(need_id: String) -> void:
+	if spectate_preview:
+		return
 	simulation.apply({"type": EtheraIds.CMD_SELECT_NEED, "need_id": need_id})
 	destiny_open = true
 
@@ -1581,6 +1859,8 @@ func _refresh_destiny(panel: Dictionary) -> void:
 
 
 func _choose_task(task_id: String) -> void:
+	if spectate_preview:
+		return
 	simulation.apply({"type": EtheraIds.CMD_ACTIVATE_TASK, "task_id": task_id})
 	task_list_open = false
 
@@ -1596,7 +1876,7 @@ func _panel_label(ink: Color, size: int = 16) -> Label:
 
 func _select_panel_tab(tab_id: String) -> void:
 	panel_tab = tab_id
-	_refresh_character_panel(simulation.query_panel())
+	_refresh_character_panel(_panel_query())
 
 
 func _refresh_character_panel(panel: Dictionary) -> void:

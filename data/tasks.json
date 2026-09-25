@@ -39,7 +39,47 @@
       "source": "attunement",
       "store_trait_id": "trait.stone_weapon",
       "slot_id": "slot.small_weapon",
-      "goal": "Deliver a Stone Weapon to the town hall"
+      "destination_id": "entity.town_hall",
+      "goal": "Deliver a Stone Weapon to the town hall",
+      "solutions": [
+        {
+          "requires_interaction_id": "interaction.shape_weapon",
+          "hidden_solution": {
+            "type": "manifested_traits",
+            "trait_ids": ["trait.rock", "trait.shapeable"]
+          },
+          "reject_states": ["state.shaped"],
+          "fallback": {
+            "type": "replace_world_node_occupant",
+            "node_id": "node.village_001",
+            "name": "Shapeable Rock",
+            "traits": ["trait.rock", "trait.shapeable"],
+            "yields_template_id": "template.stone_club",
+            "yields_base_color": "slate",
+            "asset_id": "asset.shapeable_rock",
+            "occupancy_radius": 0.55
+          }
+        },
+        {
+          "hidden_solution": {
+            "type": "manifested_traits",
+            "trait_ids": ["trait.stone_weapon"]
+          },
+          "exclude_destination": true,
+          "unheld": true,
+          "fallback": {
+            "type": "replace_world_node_occupant",
+            "node_id": "node.village_001",
+            "kind": "item",
+            "name": "Stone Club",
+            "traits": ["trait.stone_weapon", "trait.weapon"],
+            "equipment_slot_id": "slot.small_weapon",
+            "template_id": "template.stone_club",
+            "asset_id": "asset.stone_club",
+            "occupancy_radius": 0.0
+          }
+        }
+      ]
     },
     {
       "id": "task.deliver_offering_herb",
@@ -49,7 +89,34 @@
       "source": "attunement",
       "store_trait_id": "trait.herb",
       "slot_id": "slot.herb",
-      "goal": "Deliver an Offering Herb to the town hall"
+      "destination_id": "entity.town_hall",
+      "goal": "Deliver an Offering Herb to the town hall",
+      "solutions": [
+        {
+          "requires_interaction_id": "interaction.pick_herb",
+          "hidden_solution": { "type": "manifested_traits", "trait_ids": [] },
+          "required_kind": "grass",
+          "reject_opened": true
+        },
+        {
+          "hidden_solution": {
+            "type": "manifested_traits",
+            "trait_ids": ["trait.herb"]
+          },
+          "exclude_destination": true,
+          "unheld": true,
+          "fallback": {
+            "type": "replace_world_node_occupant",
+            "node_id": "node.village_001",
+            "kind": "item",
+            "name": "Offering Herb",
+            "traits": ["trait.herb"],
+            "equipment_slot_id": "slot.herb",
+            "asset_id": "asset.grass",
+            "occupancy_radius": 0.0
+          }
+        }
+      ]
     }
   ]
 }

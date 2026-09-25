@@ -193,8 +193,13 @@ func _ensure_reservation(actor: Dictionary, task_id: String) -> void:
 	var task: Dictionary = catalog.tasks.get(task_id, {})
 	if str(task.get("source", "")) == "attunement":
 		var objectives: Dictionary = actor.get("task_objectives", {})
-		objectives[task_id] = _delivery_objective(actor, task)
+		var chosen: String = _delivery_objective(actor, task)
+		if chosen != str(objectives.get(task_id, "")):
+			_clear_mark(str(objectives.get(task_id, "")), _actor_objective_trait(actor))
+		objectives[task_id] = chosen
 		actor["task_objectives"] = objectives
+		if chosen != "" and chosen != str(task.get("destination_id", "")):
+			_mark(chosen, _actor_objective_trait(actor))
 		return
 	if str(task.get("hidden_solution", {}).get("type", "")) != "manifested_traits":
 		_release(actor, task_id)
@@ -263,8 +268,22 @@ func _solution_valid(entity: Dictionary, task: Dictionary) -> bool:
 	for trait_id in _string_list(solution.get("trait_ids", [])):
 		if not world.has_trait(entity, trait_id):
 			return false
-	if _string_list(entity.get("states", [])).has(EtheraIds.STATE_SHAPED):
+	var required_kind: String = str(task.get("required_kind", ""))
+	if required_kind != "" and str(entity.get("kind", "")) != required_kind:
 		return false
+	if bool(task.get("reject_opened", false)) and bool(entity.get("opened", false)):
+		return false
+	for state_id in _string_list(task.get("reject_states", [])):
+		if _string_list(entity.get("states", [])).has(state_id):
+			return false
+	if _string_list(entity.get("states", [])).has(EtheraIds.STATE_SHAPED) and world.has_trait(entity, EtheraIds.TRAIT_ROCK):
+		return false
+	if bool(task.get("unheld", false)) and str(entity.get("holder_id", "")) != "":
+		return false
+	if bool(task.get("exclude_destination", false)):
+		var destination_id: String = str(task.get("destination_id", ""))
+		if destination_id != "" and (str(entity.get("id", "")) == destination_id or str(entity.get("container_id", "")) == destination_id):
+			return false
 	return true
 
 
@@ -289,11 +308,13 @@ func _place_fallback(actor: Dictionary, task: Dictionary) -> String:
 		_unmanifest_occupant(anchor)
 	else:
 		anchor["world_node_id"] = ""
-	var rock_id: String = world.make_id("entity.shapeable_rock")
+	var rock_id: String = world.make_id(str(fallback.get("id_prefix", "entity.shapeable_rock")))
 	world.add_entity({
 		"id": rock_id,
-		"kind": "world_object",
+		"kind": str(fallback.get("kind", "world_object")),
 		"name": str(fallback.get("name", "Shapeable Rock")),
+		"template_id": str(fallback.get("template_id", "")),
+		"equipment_slot_id": str(fallback.get("equipment_slot_id", "")),
 		"place_id": place_id,
 		"traits": _string_list(fallback.get("traits", [])),
 		"states": [],
@@ -542,30 +563,81 @@ func _checklist(actor: Dictionary, task_id: String) -> Dictionary:
 
 
 func _delivery_objective(actor: Dictionary, task: Dictionary) -> String:
+	var destination_id: String = str(task.get("destination_id", EtheraIds.ENTITY_TOWN_HALL))
 	var trait_id: String = str(task.get("store_trait_id", ""))
 	if trait_id != "" and _possesses_trait(str(actor.get("id", "")), trait_id):
-		return EtheraIds.ENTITY_TOWN_HALL
-	var best_id: String = ""
-	var best_distance: float = INF
-	var actor_at: Vector3 = world.position_of(actor)
-	for entity_id in world.entities.keys():
-		var entity: Dictionary = world.get_entity(str(entity_id))
-		if not world.is_manifested(entity):
+		return destination_id
+	var solution: Dictionary = _matching_solution(actor, task)
+	if solution.is_empty():
+		return ""
+	var probe: Dictionary = task.duplicate(true)
+	probe["hidden_solution"] = solution.get("hidden_solution", {})
+	probe["fallback"] = solution.get("fallback", {})
+	probe["required_kind"] = str(solution.get("required_kind", ""))
+	probe["reject_opened"] = bool(solution.get("reject_opened", false))
+	probe["reject_states"] = solution.get("reject_states", [])
+	probe["unheld"] = bool(solution.get("unheld", false))
+	probe["exclude_destination"] = bool(solution.get("exclude_destination", false))
+	probe["objective_trait_id"] = _actor_objective_trait(actor)
+	var current_id: String = str((actor.get("task_objectives", {}) as Dictionary).get(str(task.get("id", "")), ""))
+	if current_id != "" and current_id != destination_id and _solution_valid(world.get_entity(current_id), probe) and not _held_by_other_mark(world.get_entity(current_id), probe):
+		return current_id
+	return _choose_solution(actor, probe)
+
+
+func _held_by_other_mark(entity: Dictionary, task: Dictionary) -> bool:
+	var own: String = str(task.get("objective_trait_id", ""))
+	for trait_id in _string_list(entity.get("traits", [])):
+		if trait_id.begins_with(OBJECTIVE_PREFIX) and trait_id != own:
+			return true
+	return false
+
+
+func _matching_solution(actor: Dictionary, task: Dictionary) -> Dictionary:
+	for raw in task.get("solutions", []):
+		if typeof(raw) != TYPE_DICTIONARY:
 			continue
-		var matches := false
-		if trait_id == EtheraIds.TRAIT_HERB:
-			matches = str(entity.get("kind", "")) == EtheraIds.KIND_GRASS and not bool(entity.get("opened", false))
-		else:
-			matches = world.has_trait(entity, EtheraIds.TRAIT_SHAPEABLE) and world.has_trait(entity, EtheraIds.TRAIT_ROCK) and not _string_list(entity.get("states", [])).has(EtheraIds.STATE_SHAPED)
-		if not matches:
+		var solution: Dictionary = raw
+		var interaction_id: String = str(solution.get("requires_interaction_id", ""))
+		if interaction_id != "" and not _can_perform(actor, interaction_id):
 			continue
-		var distance: float = world.position_of(entity).distance_to(actor_at)
-		if distance < best_distance:
-			best_distance = distance
-			best_id = str(entity_id)
-	if best_id != "":
-		return best_id
-	return EtheraIds.ENTITY_TOWN_HALL
+		var trait_id: String = str(solution.get("requires_trait_id", ""))
+		if trait_id != "" and not world.has_trait(actor, trait_id):
+			continue
+		return solution
+	return {}
+
+
+func _can_perform(actor: Dictionary, interaction_id: String) -> bool:
+	var definition: Dictionary = catalog.interactions.get(interaction_id, {})
+	if definition.is_empty():
+		return false
+	var matched := false
+	for group in definition.get("requirement_groups", []):
+		var ok := true
+		for condition in group.get("actor", []):
+			if str(condition.get("type", "")) == "has_trait" and not world.has_trait(actor, str(condition.get("trait_id", ""))):
+				ok = false
+		if ok:
+			matched = true
+			break
+	if not matched:
+		return false
+	for state_id in _string_list(actor.get("states", [])):
+		var state: Dictionary = catalog.states.get(state_id, {})
+		if _string_list(state.get("blocked_interaction_ids", [])).has(interaction_id):
+			return false
+		for trait_id in _string_list(state.get("blocked_trait_ids", [])):
+			for group in definition.get("requirement_groups", []):
+				for condition in group.get("actor", []):
+					if str(condition.get("type", "")) == "has_trait" and str(condition.get("trait_id", "")) == trait_id:
+						return false
+	return true
+
+
+func _actor_objective_trait(actor: Dictionary) -> String:
+	var tail: String = str(actor.get("id", "")).trim_prefix("entity.").replace(".", "_")
+	return OBJECTIVE_PREFIX + tail
 
 
 func _objective_point(entity_id: String) -> Vector3:

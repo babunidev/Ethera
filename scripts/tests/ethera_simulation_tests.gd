@@ -54,6 +54,8 @@ func run() -> int:
 	_test_event_envelope_and_logs()
 	_test_stone_weapon_need()
 	_test_trakia_vorr_and_greeting()
+	_test_spectate_and_inhabit()
+	_test_delivery_objective_follows_capability()
 	_test_village_delivery()
 	var total: int = _passed + _failed.size()
 	if total < MINIMUM_ASSERTIONS:
@@ -1725,6 +1727,62 @@ func _test_village_delivery() -> void:
 	_arrive(seek, EtheraIds.ENTITY_KHAR_MORR)
 	_true("arriving beside the hall opens it", bool(seek.world.get_entity(EtheraIds.ENTITY_TOWN_HALL).get("opened", false)))
 	_true("the store is in reach once she arrives", bool(seek.query_store().get("in_reach", false)))
+
+
+func _test_delivery_objective_follows_capability() -> void:
+	var sim := _new_sim()
+	sim.apply({"type": EtheraIds.CMD_RELEASE_INHABITATION})
+	sim.apply({"type": EtheraIds.CMD_INHABIT, "entity_id": EtheraIds.ENTITY_TRAKIA_VORR})
+	var fountain_at: Vector3 = sim.world.position_of(sim.world.get_entity(EtheraIds.ENTITY_FOUNTAIN))
+	sim.world.set_position(EtheraIds.ENTITY_TRAKIA_VORR, fountain_at + Vector3(2.5, 0.0, 0.0))
+	sim.apply({
+		"type": EtheraIds.CMD_BEGIN_INTERACTION,
+		"target_id": EtheraIds.ENTITY_FOUNTAIN,
+		"interaction_id": EtheraIds.INTERACTION_ECHO_ATTUNEMENT,
+	})
+	_arrive(sim, EtheraIds.ENTITY_TRAKIA_VORR)
+	_complete_shard_fit(sim)
+	var pointed: Dictionary = sim.world.get_entity(str(sim.query_orientation().get("entity_id", "")))
+	_true("without shaping the objective is an existing stone weapon", sim.world.has_trait(pointed, EtheraIds.TRAIT_STONE_WEAPON))
+	_true("that weapon is not waiting in the town hall", str(pointed.get("container_id", "")) != EtheraIds.ENTITY_TOWN_HALL)
+	var blocked := _new_sim()
+	blocked.catalog.states["state.test_unshaped"] = {
+		"id": "state.test_unshaped",
+		"name": "Unshaped",
+		"blocked_interaction_ids": [EtheraIds.INTERACTION_SHAPE_WEAPON],
+	}
+	var actor: Dictionary = blocked.world.get_entity(EtheraIds.ENTITY_KHAR_MORR)
+	actor["states"] = ["state.test_unshaped"]
+	_place_beside(blocked, EtheraIds.ENTITY_FOUNTAIN)
+	blocked.apply({
+		"type": EtheraIds.CMD_BEGIN_INTERACTION,
+		"target_id": EtheraIds.ENTITY_FOUNTAIN,
+		"interaction_id": EtheraIds.INTERACTION_ECHO_ATTUNEMENT,
+	})
+	_arrive(blocked, EtheraIds.ENTITY_KHAR_MORR)
+	_complete_shard_fit(blocked)
+	var instead: Dictionary = blocked.world.get_entity(str(blocked.query_orientation().get("entity_id", "")))
+	_true("a state that blocks shaping points at an existing weapon", blocked.world.has_trait(instead, EtheraIds.TRAIT_STONE_WEAPON))
+
+
+func _test_spectate_and_inhabit() -> void:
+	var sim := _new_sim()
+	_eq("play starts in Khar-Morr", sim.query_inhabited_id(), EtheraIds.ENTITY_KHAR_MORR)
+	var before: Dictionary = sim.query_roster()
+	_eq("both lives are listed", (before.get("characters", []) as Array).size(), 2)
+	_eq("the inhabited life is not free", (before.get("free", []) as Array).size(), 1)
+	sim.apply({"type": EtheraIds.CMD_RELEASE_INHABITATION})
+	_eq("spectating leaves the life", sim.query_inhabited_id(), "")
+	var waiting: Dictionary = sim.query_roster()
+	_eq("both lives are free once she steps out", (waiting.get("free", []) as Array).size(), 2)
+	sim.apply({"type": EtheraIds.CMD_INHABIT, "entity_id": EtheraIds.ENTITY_TRAKIA_VORR})
+	_eq("Trakia-Vorr can be inhabited", sim.query_inhabited_id(), EtheraIds.ENTITY_TRAKIA_VORR)
+	sim.apply({"type": EtheraIds.CMD_INHABIT, "entity_id": EtheraIds.ENTITY_KHAR_MORR})
+	_eq("a second life waits until this one is left", sim.query_inhabited_id(), EtheraIds.ENTITY_TRAKIA_VORR)
+	_true("her weapon did not follow the player", sim.world.equipped_item_id(sim.world.get_entity(EtheraIds.ENTITY_KHAR_MORR), EtheraIds.SLOT_SMALL_WEAPON) == "")
+	sim.apply({"type": EtheraIds.CMD_RELEASE_INHABITATION})
+	sim.apply({"type": EtheraIds.CMD_INHABIT, "entity_id": EtheraIds.ENTITY_KHAR_MORR})
+	_eq("Khar-Morr can be inhabited again", sim.query_inhabited_id(), EtheraIds.ENTITY_KHAR_MORR)
 
 
 func _test_trakia_vorr_and_greeting() -> void:

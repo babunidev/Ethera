@@ -108,6 +108,10 @@ func apply(command: Dictionary) -> Array[Dictionary]:
 			events.append_array(_take_stored(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("item_id", ""))))
 		EtheraIds.CMD_DEPOSIT_EQUIPPED:
 			events.append_array(_deposit_equipped(str(command.get("actor_id", world.inhabited_entity_id)), str(command.get("slot_id", "")), str(command.get("target_id", EtheraIds.ENTITY_TOWN_HALL))))
+		EtheraIds.CMD_RELEASE_INHABITATION:
+			events.append_array(_release_inhabitation())
+		EtheraIds.CMD_INHABIT:
+			events.append_array(_inhabit(str(command.get("entity_id", ""))))
 		_:
 			events.append(_log_event("error", "Unknown command %s" % command_type, {"command": command_type}))
 	tasks.refresh(world.inhabited_entity_id)
@@ -124,6 +128,27 @@ func query_hover(actor_id: String, target_id: String) -> Dictionary:
 
 func query_inhabited_id() -> String:
 	return world.inhabited_entity_id
+
+
+func query_roster() -> Dictionary:
+	var everyone: Array[Dictionary] = []
+	var free: Array[Dictionary] = []
+	for entity_id in world.entities.keys():
+		var entity: Dictionary = world.get_entity(str(entity_id))
+		if str(entity.get("kind", "")) != "character" or not world.is_manifested(entity):
+			continue
+		var available: bool = bool(entity.get("inhabitable", false)) and str(entity_id) != world.inhabited_entity_id
+		var record := {
+			"id": str(entity_id),
+			"name": str(entity.get("name", entity_id)),
+			"free": available,
+		}
+		everyone.append(record)
+		if available:
+			free.append(record)
+	everyone.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return str(a.get("name", "")) < str(b.get("name", "")))
+	free.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return str(a.get("name", "")) < str(b.get("name", "")))
+	return {"characters": everyone, "free": free, "inhabited_entity_id": world.inhabited_entity_id}
 
 
 # What a character knows is authoritative state, not client data. Only the inhabited
@@ -293,6 +318,32 @@ func _set_walk_destination(command: Dictionary) -> Array[Dictionary]:
 	)
 	events.append(_event(EtheraIds.EVENT_ENTITY_TRANSFORM, {"entity_id": entity_id, "reason": "run_started" if gait == "run" else "walk_started"}))
 	return events
+
+
+func _release_inhabitation() -> Array[Dictionary]:
+	var entity_id: String = world.inhabited_entity_id
+	if entity_id == "":
+		return []
+	var events: Array[Dictionary] = _stop_walking(entity_id)
+	if not world.active_round.is_empty():
+		events.append_array(_cancel_round("released"))
+	var actor: Dictionary = world.get_entity(entity_id)
+	actor.erase("greeting_focus")
+	world.inhabited_entity_id = ""
+	world.bump(entity_id, EtheraIds.CHANGE_STATES)
+	events.append(_log_event("inhabitation", "Left %s" % actor.get("name", entity_id), {"entity_id": entity_id}))
+	return events
+
+
+func _inhabit(entity_id: String) -> Array[Dictionary]:
+	if world.inhabited_entity_id != "":
+		return [_log_event("blocked", "Leave the current life before inhabiting another", {"entity_id": entity_id})]
+	var entity: Dictionary = world.get_entity(entity_id)
+	if entity.is_empty() or str(entity.get("kind", "")) != "character" or not world.is_manifested(entity) or not bool(entity.get("inhabitable", false)):
+		return [_log_event("blocked", "That life cannot be inhabited", {"entity_id": entity_id})]
+	world.inhabited_entity_id = entity_id
+	world.bump(entity_id, EtheraIds.CHANGE_STATES)
+	return [_log_event("inhabitation", "Inhabited %s" % entity.get("name", entity_id), {"entity_id": entity_id})]
 
 
 func _stop_walking(entity_id: String) -> Array[Dictionary]:

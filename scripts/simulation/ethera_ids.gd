@@ -114,6 +114,8 @@ const CMD_SELECT_NEED := "select_need"
 const CMD_ACTIVATE_TASK := "activate_task"
 const CMD_TAKE_STORED := "take_stored"
 const CMD_DEPOSIT_EQUIPPED := "deposit_equipped"
+const CMD_RELEASE_INHABITATION := "release_inhabitation"
+const CMD_INHABIT := "inhabit"
 
 const COMMIT_PENDING := "pending"
 const COMMIT_VALIDATING := "validating"
