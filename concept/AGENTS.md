@@ -86,3 +86,7 @@ Do not perform unrelated large-scale refactors merely because an opportunity exi
 Do not turn brainstorming, comments, TODOs, speculative notes, or agent suggestions into established game design without Alex's approval.
 
 When uncertain whether something is established design or merely an idea, treat it as non-canonical.
+
+## Author identity
+
+The project's human author is **Babuni.dev**. Use that exact name for project authorship and creative direction; retain historical evidence and distinguish AI contributions.
