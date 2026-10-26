@@ -1,5 +1,7 @@
 # Ethera
 
+**Author:** Babuni.dev
+
 Ethera: The Stonewrought is the current Grimnir chapter set in the world of Morkahja.
 
 ```
