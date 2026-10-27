@@ -8,3 +8,11 @@
 - `concept/Morkahja-Live-RPG/` is the authoritative vision and design tree; `concept/History/` preserves previous states; `assets/` stores editable reference production material.
 
 The current README and source guide are not substitutes for actual runtime verification.
+
+## Source-versus-plan distinction — 2026-10-27
+
+The [game README](../game/README.md) describes the current local implementation: a Godot 4.7.2 desktop project, presentation-independent simulation, a **20 Hz** fixed authoritative step with quantized state, command/query separation, snapshot hashes, replay journal and headless tests. Placeholder 3D presentation remains. These are source-reported features, not newly verified execution.
+
+The [canonical decision register](../concept/Morkahja-Live-RPG/99_Development/Design_Decisions.md) specifies an eventual deterministic **Rust** authority crate alongside RealmNode; its validators should run game rules without Godot. Current GDScript simulation is a stand-in. Similarly, peer-coordinated world continuity, dormant regions and hidden-knowledge ownership are architectural requirements, not confirmed deployed networking. Keep implementation and intended production architecture distinct in all summaries.
+
+The [historical concept changelog](../concept/Morkahja-Live-RPG/99_Development/Changelog.md) records 392 passing simulation tests in a September 22 container/presentation integration, which does not prove the currently checked-out project passes or that Milestone 3 is complete. Fresh commands and evidence remain pending.
