@@ -104,3 +104,7 @@ When uncertain whether something is established design or merely an idea, treat 
 ## Author identity
 
 Credit **Babuni.dev** as the human project author in public-facing documentation and metadata. Do not use “creator” as Babuni.dev's title. Preserve separate credits for third-party work and for AI-assisted implementation.
+
+## Documentation audit and portfolio attribution — 2026-10-27
+
+The concise root documents are **navigational summaries**, never a new gameplay authority. Keep canonical decisions in `concept/Morkahja-Live-RPG/`; keep implemented-engine truth in `game/`, including its existing test and presentation records. When writing portfolio history, explicitly distinguish (a) Babuni.dev direction and approval, (b) AI alternatives and implementation, (c) superseded historical design, (d) source-implemented behavior, (e) historically reported test results, and (f) verification actually performed in the current change. Do not edit or overwrite original archives to make the story appear simpler.
