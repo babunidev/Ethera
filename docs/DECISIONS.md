@@ -7,3 +7,12 @@ The actual design decision register already lives at [concept/Morkahja-Live-RPG/
 Key repository boundary observed: `concept/` remains canonical for game rules; `game/` contains implementation; author direction is credited to Babuni.dev, with individual AI contributions documented separately.
 
 No new design choice was approved in the documentation audit.
+
+## Documentation audit #31 — traceable examples
+
+- **Continuing lives:** The [vision](../concept/Morkahja-Live-RPG/00_Core/Game_Vision_and_Principles.md) explicitly establishes that characters, not accounts, retain progress, objects, knowledge and unfinished work. This is canonical author-directed design, not an AI proposal invented by the audit.
+- **First proof of play:** The [first playable scope](../concept/Morkahja-Live-RPG/99_Development/First_Playable_Scope.md) focuses on Khar-Morr's club, equipment and Fountain Shards. The [game README](../game/README.md) reports locally implemented Milestone 1 simulation; finished assets and current runtime acceptance remain separate.
+- **Need/objective correction:** The [Milestone 3 rulings](../concept/Morkahja-Live-RPG/99_Development/Changelog.md) record Babuni.dev's September 23 corrections: automatically active sole task, existing free rock before replacement, node occupant replacement (not Fountain creation), and no injury priority switch in that milestone. These supersede earlier approaches; Milestone 3 remains a specification until independently shown implemented.
+- **Authority architecture:** The [technical decision register](../concept/Morkahja-Live-RPG/99_Development/Design_Decisions.md) settles Rust beside RealmNode as the intended authority. Existing GDScript remains provisional, so neither system should be mistaken for the other.
+
+This audit created no new game-design decision and did not alter the canonical register.
