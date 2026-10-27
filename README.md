@@ -38,3 +38,11 @@ powershell -File tools/run_simulation_tests.ps1
 - [AI collaborator rules](AGENTS.md)
 
 The journal distinguishes source-based reconstruction, author direction, AI assistance, and independently verified behavior.
+
+## Documentation audit #31 — 27 October 2026
+
+The [original concept tree](concept/Morkahja-Live-RPG/README.md) remains canonical. The website-oriented documentation here is an index, not a replacement for Babuni.dev's detailed game specifications, decisions or revision history. In particular, the authored future shared-world experience must not be confused with the locally implemented first-milestone simulation.
+
+**Evidence distinction:** `game/README.md` reports implemented Milestone 1 simulation and headless tests; `concept/Morkahja-Live-RPG/99_Development/Changelog.md` reports **392 passing simulation checks** during a September 22 presentation/container task. Those are **historical results**, not freshly executed tests or proof that all current content runs. Milestone 3's Need and Divine Orientation loop is specified in detail but is not independently verified as implemented.
+
+Additional documentation: [Design](docs/DESIGN.md) · [Content and provenance](docs/CONTENT.md) · [AI collaboration](docs/AI_COLLABORATION.md). Both `game/` implementation and `concept/` canonical specifications were left unchanged during this audit.
