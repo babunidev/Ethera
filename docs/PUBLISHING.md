@@ -8,7 +8,7 @@ Hold: confirm redistribution rights for animation/model/reference assets and ins
 
 Reviewed baseline: `a5c17025ffdb3a99204361f792514bbc557312c2`; 27 reachable commits. Gitleaks v8.30.1 scanned all fetched refs with fully redacted reporting; a separate pass inspected unique historical blobs for credential markers and sensitive filenames. The three Morkahja scanner alerts were catalogue identifiers, not credentials. No confirmed credential leak was found by these checks. Automated checks cannot establish asset ownership or prove the absence of every secret or personal detail in binary material.
 
-No repository visibility was changed. No live service, player account, database or deployment was accessed. Private review details remain outside the public portfolio repository. No application behavior was changed or runtime/build test claimed.
+The repository remains private, verified on 31 October 2026. No live service, player account, database or deployment was accessed. Private review details remain outside the public portfolio repository. No application behavior was changed or runtime/build test claimed.
 
 ## Remaining publication steps
 

@@ -21,3 +21,11 @@ The original September 22 historical changelog reported 392 simulation checks pa
 ## 2026-10-31 — Review before public visibility
 
 Babuni.dev requested review of the actual private repository and its documentation before publication. AI inspected fetched Git history, documentation coverage and publication boundaries. The publication record separates source visibility from deployment, licensing and media redistribution; detailed private findings remain outside the portfolio. No build, gameplay, live account or database test was performed.
+
+## 2026-10-31 — Publication direction and author clarification
+
+**Babuni.dev direction and decision:** Babuni.dev intends to develop the actual project openly, replacing the separate public documentation edition after publication review. GitHub visibility remains private as checked on 31 October 2026; this is an intended direction, not a completed public release.
+
+Babuni.dev clarified the experimental workflow: ChatGPT-generated 2D images were converted to 3D models and rigged with Tripo. The extensive concept is not a committed delivery roadmap. Babuni.dev has set the experiment aside to focus on finishing and improving Button Game, Rocket Game 42 and Morkahja. Existing Explosive/Mixamo references still require reconciliation; this account does not establish redistribution permission for every historical asset.
+
+**AI contribution:** Recorded the author’s decision and clarification, separately from observed GitHub visibility. Earlier documentation-only publication was considered and is superseded as the intended long-term source. No root license was selected by this update; public visibility, open-source reuse permissions, media rights and production readiness are separate matters. No runtime testing or behavior change is claimed.

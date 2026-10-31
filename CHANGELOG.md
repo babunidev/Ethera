@@ -18,3 +18,7 @@
 ## 2026-10-31 — Publication preparation
 
 Recorded Babuni.dev’s direction to publish the actual project after review and retire its separate documentation edition afterwards. Confirmed the existing standard document structure; added `docs/PUBLISHING.md`. No runtime or visibility changes.
+
+## 2026-10-31 — Changed: publication decision record
+
+- Recorded Babuni.dev’s open-development decision and verified current visibility in Decisions and Development journal; retained licensing, media-rights and deployment distinctions.
