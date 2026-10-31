@@ -14,3 +14,7 @@
 - Expanded eleven core root/docs records (including two newly created guides) to index canonical design, source implementation and historical verification separately.
 - Connected the first-playable Khar-Morr loop, Milestone 3 design, technical authority plan and recorded development history without changing their original specification.
 - Retained original `concept/`, `game/`, production assets, tests and historical archives. No game source or runtime behavior was changed; no new tests executed.
+
+## 2026-10-31 — Publication preparation
+
+Recorded Babuni.dev’s direction to publish the actual project after review and retire its separate documentation edition afterwards. Confirmed the existing standard document structure; added `docs/PUBLISHING.md`. No runtime or visibility changes.

@@ -46,3 +46,7 @@ The [original concept tree](concept/Morkahja-Live-RPG/README.md) remains canonic
 **Evidence distinction:** `game/README.md` reports implemented Milestone 1 simulation and headless tests; `concept/Morkahja-Live-RPG/99_Development/Changelog.md` reports **392 passing simulation checks** during a September 22 presentation/container task. Those are **historical results**, not freshly executed tests or proof that all current content runs. Milestone 3's Need and Divine Orientation loop is specified in detail but is not independently verified as implemented.
 
 Additional documentation: [Design](docs/DESIGN.md) · [Content and provenance](docs/CONTENT.md) · [AI collaboration](docs/AI_COLLABORATION.md). Both `game/` implementation and `concept/` canonical specifications were left unchanged during this audit.
+
+## Public repository preparation — 31 October 2026
+
+The standard documentation is maintained in this actual project repository. See [publication preparation](docs/PUBLISHING.md) for the current review, remaining permissions and migration order. Visibility has not changed.

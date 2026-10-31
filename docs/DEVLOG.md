@@ -17,3 +17,7 @@ The first playable intentionally narrows that world to Khar-Morr shaping a club,
 The original September 22 historical changelog reported 392 simulation checks passing during asset/container work and notes that V3 animation measurements must not be treated as current V4 results. This audit preserves those tests as *past evidence*, not fresh verification. It also preserves the intended Rust/RealmNode authority alongside the actual Godot/GDScript prototype.
 
 **User direction:** Continue the documentation series without changing game code. **AI contribution:** Read canonical vision, milestone and decision sources; add clear navigational summaries. **Iteration preserved:** conflicting earlier approaches and the author's explicit corrections remain in the original archive. **Implementation:** Documentation-only commits. **Verification:** Repository source review; no fresh Godot execution, network deployment or graphical test.
+
+## 2026-10-31 — Review before public visibility
+
+Babuni.dev requested review of the actual private repository and its documentation before publication. AI inspected fetched Git history, documentation coverage and publication boundaries. The publication record separates source visibility from deployment, licensing and media redistribution; detailed private findings remain outside the portfolio. No build, gameplay, live account or database test was performed.

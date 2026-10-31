@@ -16,3 +16,7 @@ No new design choice was approved in the documentation audit.
 - **Authority architecture:** The [technical decision register](../concept/Morkahja-Live-RPG/99_Development/Design_Decisions.md) settles Rust beside RealmNode as the intended authority. Existing GDScript remains provisional, so neither system should be mistaken for the other.
 
 This audit created no new game-design decision and did not alter the canonical register.
+
+## 2026-10-31 — Canonical repository publication direction
+
+Babuni.dev chose the actual project repository as the intended public source, replacing the earlier documentation-only edition once review and anonymous access succeed. Retain the current public edition during the transition. License and third-party redistribution decisions remain explicit author decisions.
