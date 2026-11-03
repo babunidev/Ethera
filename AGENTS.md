@@ -103,8 +103,12 @@ When uncertain whether something is established design or merely an idea, treat 
 
 ## Author identity
 
-Credit **Babuni.dev** as the human project author in public-facing documentation and metadata. Do not use “creator” as Babuni.dev's title. Preserve separate credits for third-party work and for AI-assisted implementation.
+Credit **Babuni** as the human creative in public-facing documentation and metadata. Do not use “creator” as Babuni's title. Preserve separate credits for third-party work and for AI-assisted implementation.
 
 ## Documentation audit and portfolio attribution — 2026-10-27
 
-The concise root documents are **navigational summaries**, never a new gameplay authority. Keep canonical decisions in `concept/Morkahja-Live-RPG/`; keep implemented-engine truth in `game/`, including its existing test and presentation records. When writing portfolio history, explicitly distinguish (a) Babuni.dev direction and approval, (b) AI alternatives and implementation, (c) superseded historical design, (d) source-implemented behavior, (e) historically reported test results, and (f) verification actually performed in the current change. Do not edit or overwrite original archives to make the story appear simpler.
+The concise root documents are **navigational summaries**, never a new gameplay authority. Keep canonical decisions in `concept/Morkahja-Live-RPG/`; keep implemented-engine truth in `game/`, including its existing test and presentation records. When writing portfolio history, explicitly distinguish (a) Babuni's direction and approval, (b) AI alternatives and implementation, (c) superseded historical design, (d) source-implemented behavior, (e) historically reported test results, and (f) verification actually performed in the current change. Do not edit or overwrite original archives to make the story appear simpler.
+
+## Repository-local documentation standard
+
+Before writing or changing project documentation, read [docs/DOCUMENTATION.md](docs/DOCUMENTATION.md). These rules travel with this repository and do not depend on the babuni.dev ChatGPT Project. Preserve all project-specific technical, creative, canon, safety, licensing, and historical rules in this file; follow the linked standard for public first-person narrative, human–AI attribution, concise development journals, decision records, and evidence-based verification. **Babuni** is the human creative; **babuni.dev** is the website/portfolio, not the person. Preserve third-party credits and historical legal notices. References above to a dated “documentation-only audit” describe that past task, not a permanent ban on later authorized implementation.
