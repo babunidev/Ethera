@@ -1,6 +1,6 @@
 # Ethera — development journal index
 
-**Author:** Babuni.dev
+**Creative:** Babuni
 
 ## Retrospective documentation review — 2026-10-26
 
