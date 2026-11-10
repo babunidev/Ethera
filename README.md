@@ -1,6 +1,6 @@
 # Ethera
 
-**Author:** Babuni.dev
+**Creative:** Babuni
 
 Ethera: The Stonewrought is the current Grimnir chapter set in the world of Morkahja.
 
@@ -39,7 +39,7 @@ powershell -File tools/run_simulation_tests.ps1
 
 The journal distinguishes source-based reconstruction, author direction, AI assistance, and independently verified behavior.
 
-## Documentation audit #31 — 27 October 2026
+## Documentation review — 27 October 2026
 
 The [original concept tree](concept/Morkahja-Live-RPG/README.md) remains canonical. The website-oriented documentation here is an index, not a replacement for Babuni.dev's detailed game specifications, decisions or revision history. In particular, the authored future shared-world experience must not be confused with the locally implemented first-milestone simulation.
 
