@@ -1,6 +1,6 @@
 # Ethera — Content Structure and Provenance
 
-**Author:** Babuni.dev  
+**Creative:** Babuni
 **Purpose:** Connect the game's canonical creative material and the implementation without flattening either into a generic portfolio summary.
 
 ## Source hierarchy
@@ -9,6 +9,17 @@
 2. **Decision and change history:** `concept/Morkahja-Live-RPG/99_Development/Design_Decisions.md`, `Changelog.md`, `Ideas_and_Superseded_Proposals.md`, and `concept/History/`. Earlier proposals remain visible but must not override current rulings.
 3. **Game implementation:** `game/project.godot`, scenes, `game/data/` authored definitions, `game/scripts/simulation/`, presentation scripts and tests.
 4. **Art sources:** `assets/art/` stores editable sources (including Blender). Game-ready exports belong in `game/assets/` and other Godot-importable locations.
+
+## Where content lives
+
+| Material | Location |
+| --- | --- |
+| Character and item definitions, Traits, and skill phases | [Gameplay data](../game/data/) |
+| Starting settlement, local entities, and scatter | [Starting world](../game/data/milestone1/) |
+| Hex library and placement | [World layout](../game/data/world/) · [Terrain guide](../game/docs/WORLD_TERRAIN.md) |
+| Runtime model bindings | [Presentation data](../game/data/presentation/) · [Asset contract](../game/docs/PRESENTATION_AND_ASSETS.md) |
+| Grimnir and pantheon source excerpts used during design | [September 14 lore reference](../concept/Reference_Material/Grimnir_Lore_2026-09-14/README.md) |
+| Wider setting and later civilizations | [MorkahjaWorld lore index](https://github.com/babunidev/MorkahjaWorld/blob/main/Lore_Index.md) |
 
 ## First portfolio chapters
 

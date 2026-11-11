@@ -28,3 +28,7 @@ Babuni.dev chose the actual project repository as the intended public source, re
 Babuni.dev clarified the experimental workflow: ChatGPT-generated 2D images were converted to 3D models and rigged with Tripo. The extensive concept is not a committed delivery roadmap. Babuni.dev has set the experiment aside to focus on finishing and improving Button Game, Rocket Game 42 and Morkahja. Existing Explosive/Mixamo references still require reconciliation; this account does not establish redistribution permission for every historical asset.
 
 **AI contribution:** Recorded the author’s decision and clarification, separately from observed GitHub visibility. Earlier documentation-only publication was considered and is superseded as the intended long-term source. No root license was selected by this update; public visibility, open-source reuse permissions, media rights and production readiness are separate matters. No runtime testing or behavior change is claimed.
+
+## 2026-11-11 — Design questions raised by the source review
+
+The [prototype status](PROTOTYPE_STATUS.md#behavior-that-needs-a-design-decision) records differences in when the Stone Weapon Need starts, how many Shards Echo Imprint shares, and whether Echo Attunement retrieves knowledge or grants village work. The specifications and current behavior remain available as evidence for Babuni’s decision.

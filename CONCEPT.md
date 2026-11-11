@@ -1,15 +1,17 @@
-# Ethera: The Stonewrought — concept and orientation
+# Ethera: The Stonewrought — game concept
 
-**Author:** Babuni.dev
+**Creative:** Babuni
 
-Ethera is the current Grimnir chapter of the Morkahja world: a persistent fantasy society where characters have needs, relationships, knowledge and tasks; their actions leave enduring traces in the world. The first playable character is Khar-Morr. This is a navigation summary, not a replacement for canonical design specifications.
+A person in Ethera already has a place in the village before you inhabit them. They know certain things, carry tools, and may be in the middle of a task. You can follow that thread or do something else the world makes possible. A short visit might bring home an herb or a useful discovery. A longer visit might advance that person’s Destiny.
 
-**Canonical sources:** [concept index](concept/Morkahja-Live-RPG/README.md), [vision](concept/Morkahja-Live-RPG/00_Core/Game_Vision_and_Principles.md), [first playable scope](concept/Morkahja-Live-RPG/99_Development/First_Playable_Scope.md), and [Milestone 3](concept/Morkahja-Live-RPG/99_Development/Milestone_3_Need_and_Divine_Orientation.md). The concept repository preserves prior discussion maps, revised ideas and superseded proposals; those histories remain authoritative.
+## Lives continue in the world
 
-## Creative contract and implementation boundary — audit #31
+The shared-world design keeps progress with the character and community. While the simulation runs, AI carries on ordinary life between player sessions. Another player can later take up the same life. Gestures, cooperation, and cultural actions carry communication. [Vision and principles](concept/Morkahja-Live-RPG/00_Core/Game_Vision_and_Principles.md) · [Sessions](concept/Morkahja-Live-RPG/00_Core/Game_Loop_and_Sessions.md)
 
-The [vision and principles](concept/Morkahja-Live-RPG/00_Core/Game_Vision_and_Principles.md) establish inhabitation of continuing lives: characters and communities own the consequences of their actions, not player accounts. The experience privileges voluntary sessions, physical continuity, discoverable knowledge, cooperation and quiet exploration. The current Stonewrought chapter narrows this broader world to Khar-Morr's early Grimnir experience.
+## Objects and memories have histories
 
-The [first playable](concept/Morkahja-Live-RPG/99_Development/First_Playable_Scope.md) specifies shaping a stone club, handling equipment and transferring a genuine knowledge Shard to the Memory Fountain. The next explicit Need milestone uses a dynamic, knowledge-limited checklist and guidance toward an actual world object, not a newly fabricated quest item. The authoritative story of refinements and rejected approaches is in the original [decision register](concept/Morkahja-Live-RPG/99_Development/Design_Decisions.md), not this overview.
+A task follows a real objective. If someone carries away an item you need, its new holder can become part of your route. Characters have capabilities called **Traits** and perform actions through player-skill phases. Successful actions and discoveries can leave **Shards**, factual records that others can learn. The Grimnir share what they learn at the Memory Fountain. [Needs and tasks](concept/Morkahja-Live-RPG/06_Gameplay/Needs_Tasks_and_Solution_Lifecycle.md) · [Shards and memory](concept/Morkahja-Live-RPG/05_Knowledge/Shards_Memory_and_Cultural_Hubs.md)
 
-**Status:** Established *design* and source-reported first-milestone implementation have different evidence levels. No new gameplay rule or canon is approved by this audit.
+## A village before the Skylands
+
+The Stonewrought takes place in ancient Morkahja, when the four peoples still live apart. The Grimnir of this chapter are building a surface community. Their later Skylands belong to another age. The local prototype begins with Khar-Morr’s club, a small village, and the Fountain. The wider design includes coming of age, personal Destiny Quests, and lasting additions to the map as new Destinies begin. [Ancient World and Magic](concept/Morkahja-Live-RPG/01_World/Ancient_World_and_Magic.md) · [Destiny](concept/Morkahja-Live-RPG/06_Gameplay/Destiny_Quests_and_Progression.md) · [Prototype status](docs/PROTOTYPE_STATUS.md)

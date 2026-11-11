@@ -13,3 +13,7 @@ Preserve original user-defined worldbuilding, systems, constraints and approvals
 **Creative iteration:** The Need/objective chapter preserves Babuni.dev's corrections around automatic task activation, reservation of existing rocks, placement through world nodes rather than the Memory Fountain and deferred injury priority switching. The recorded Rust/RealmNode target is kept distinct from temporary GDScript simulation.
 
 **Implementation:** Changes restricted to Markdown overview and navigation documents. **Verification:** Existing code and reports reviewed; current Godot tests, playable visuals and production architecture not independently validated. Source-reported September 22 passing tests remain historical.
+
+## 2026-11-11 — Prototype documentation audit
+
+Babuni directed a review of the repository documentation and its gaps. AI inspected the checked-in Godot source, documented the current local prototype and its relationship to the milestone plan, and surfaced design differences for Babuni’s decision. The review checked Markdown links and the documentation diff. It did not run Godot.

@@ -2,7 +2,11 @@
 
 Babuni.dev has requested that the actual project repository eventually replace its separate public documentation edition. The standard ten-document structure already exists here; canonical design, original journals, contributor credits and history remain authoritative within their documented scopes.
 
-## Review status
+## Public source status — 11 November 2026
+
+The [Ethera repository](https://github.com/babunidev/Ethera) is public and its current source was cloned anonymously for the documentation review. The October review below records the earlier private state. A root project license was absent at the reviewed revision. Current asset permissions and any portfolio source switch were outside the November review.
+
+## Review status on 31 October 2026
 
 Hold: confirm redistribution rights for animation/model/reference assets and inspect historical binary archives before changing visibility. The bundled Quaternius nature pack declares CC0; that does not license unrelated assets. Current engine documentation also identifies Explosive animation clips, Mixamo rigs and a Tripo mesh. Their source redistribution permissions have not been established by this review.
 
@@ -10,7 +14,7 @@ Reviewed baseline: `a5c17025ffdb3a99204361f792514bbc557312c2`; 27 reachable comm
 
 The repository remains private, verified on 31 October 2026. No live service, player account, database or deployment was accessed. Private review details remain outside the public portfolio repository. No application behavior was changed or runtime/build test claimed.
 
-## Remaining publication steps
+## Publication plan recorded on 31 October 2026
 
 1. Resolve any repository-specific hold above and review the exact final commit before publishing.
 2. Babuni.dev chooses a license for original code/documentation and confirms separate permissions for contributed or third-party media. No root project license was found in this baseline. Public visibility and open-source licensing are separate decisions; do not apply a blanket license to third-party assets.
