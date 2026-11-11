@@ -1,52 +1,23 @@
-# Ethera
+# Ethera: The Stonewrought
 
-**Author:** Babuni.dev
+**Creative:** Babuni
 
-Ethera: The Stonewrought is the current Grimnir chapter set in the world of Morkahja.
+In an ancient age of Morkahja, the Grimnir are learning to make a life together. Ethera is a fantasy RPG about inhabiting someone who already belongs to that world. Their possessions, memories, relationships, and unfinished work stay with them when you leave.
 
-```
-Ethera/
-├── game/       Godot implementation
-├── concept/    canonical design and specifications
-└── assets/     source and reference production assets
-```
+**The Stonewrought** is the Grimnir chapter. The local Godot prototype starts in a small surface village with Khar-Morr and Trakia-Vorr. Shape a stone club, discover an ancient stone circle, share memories at the Fountain, or bring supplies to the town hall. The [prototype status](docs/PROTOTYPE_STATUS.md) links these features to source and tracks the distance to the planned shared world.
 
-`game/` is the Godot project. Its `res://` root is `game/`, so scenes, scripts, authored data, and exported models the game loads stay there.
+## Open the prototype
 
-`concept/` is the canonical design. The numbered specifications live in `concept/Morkahja-Live-RPG/`. History snapshots and reference material stay beside that tree.
+Open [game/project.godot](game/project.godot) in the standard Godot 4.7.2 editor specified by the project. Let the editor import the assets, then press **F5**. The [prototype guide](game/README.md) covers controls, a short walkthrough, and headless simulation tests.
 
-`assets/` holds editable sources that Godot does not import, including Blender files in `assets/art/`. Exported game-ready files stay in `game/assets/` and the other imported folders inside `game/`.
+## Explore the project
 
-## Open the game
+| If you want to understand… | Start here |
+| --- | --- |
+| The game’s premise, village life, and Destiny | [Game concept](CONCEPT.md) · [Canonical design index](concept/Morkahja-Live-RPG/README.md) |
+| The ancient setting and the later Grimnir Skylands | [Ancient World and Magic](concept/Morkahja-Live-RPG/01_World/Ancient_World_and_Magic.md) · [Morkahja lore archive](https://github.com/babunidev/MorkahjaWorld) |
+| The local prototype and the planned network | [Roadmap](ROADMAP.md) · [Technical architecture](docs/ARCHITECTURE.md) |
+| The art, authored data, and source assets | [Visual and interaction design](docs/DESIGN.md) · [Content and provenance](docs/CONTENT.md) |
+| How the project changed | [Development journal](docs/DEVLOG.md) · [Decisions](docs/DECISIONS.md) · [Changelog](CHANGELOG.md) |
 
-Open `game/project.godot` in Godot 4.7.2 standard. Press F6 to run the open scene or F5 to run the project. The main scene is `game/scenes/main.tscn`.
-
-Read `AGENTS.md` before changing the game. Implementation follows the design in `concept/`.
-
-## Tests
-
-From `game/`:
-
-```
-powershell -File tools/run_simulation_tests.ps1
-```
-
-## Development documentation
-
-- [Concept](CONCEPT.md) · [Roadmap](ROADMAP.md) · [Changelog](CHANGELOG.md)
-- [Architecture](docs/ARCHITECTURE.md) · [Design evidence](docs/DECISIONS.md) · [Development journal](docs/DEVLOG.md)
-- [AI collaborator rules](AGENTS.md)
-
-The journal distinguishes source-based reconstruction, author direction, AI assistance, and independently verified behavior.
-
-## Documentation audit #31 — 27 October 2026
-
-The [original concept tree](concept/Morkahja-Live-RPG/README.md) remains canonical. The website-oriented documentation here is an index, not a replacement for Babuni.dev's detailed game specifications, decisions or revision history. In particular, the authored future shared-world experience must not be confused with the locally implemented first-milestone simulation.
-
-**Evidence distinction:** `game/README.md` reports implemented Milestone 1 simulation and headless tests; `concept/Morkahja-Live-RPG/99_Development/Changelog.md` reports **392 passing simulation checks** during a September 22 presentation/container task. Those are **historical results**, not freshly executed tests or proof that all current content runs. Milestone 3's Need and Divine Orientation loop is specified in detail but is not independently verified as implemented.
-
-Additional documentation: [Design](docs/DESIGN.md) · [Content and provenance](docs/CONTENT.md) · [AI collaboration](docs/AI_COLLABORATION.md). Both `game/` implementation and `concept/` canonical specifications were left unchanged during this audit.
-
-## Public repository preparation — 31 October 2026
-
-The standard documentation is maintained in this actual project repository. See [publication preparation](docs/PUBLISHING.md) for the current review, remaining permissions and migration order. Visibility has not changed.
+Read [AGENTS.md](AGENTS.md) before contributing. Gameplay specifications live in `concept/`, Godot source and imported assets in `game/`, and editable production assets in `assets/`.

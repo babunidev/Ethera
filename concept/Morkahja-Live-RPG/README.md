@@ -1,12 +1,14 @@
 # Ethera: The Stonewrought
 
-Before implementation, read the [agent instructions](../AGENTS.md).
+Before implementation, read the [agent instructions](../../AGENTS.md).
 
 A shared world of continuing lives, discovery and community. Players inhabit its people, contribute to their stories and leave knowledge, relationships and work behind. The first community is Grimnir.
 
 **Ethera: The Stonewrought** is the title of the current chapter, focused on Grimnir life. **Ethera** names the game; **Morkahja** remains the world in which every chapter takes place.
 
 Start with [Game Vision and Principles](00_Core/Game_Vision_and_Principles.md), then [Game Loop and Sessions](00_Core/Game_Loop_and_Sessions.md).
+
+For the current local implementation and differences from the specifications, see [prototype status](../../docs/PROTOTYPE_STATUS.md).
 
 ## Read the concept
 

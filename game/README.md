@@ -1,72 +1,44 @@
-# Ethera: The Stonewrought
+# Ethera Godot prototype
 
-Godot project for the first Grimnir chapter, set in Morkahja.
+Open [project.godot](project.godot) in Godot **4.7.2 standard**, allow assets to import, then press **F5** to run [the main scene](scenes/main.tscn). The documented setup is desktop with mouse and keyboard. The project uses Forward+.
 
-## Open and run
+## Explore the village
 
-Use Godot **4.7.2 standard**, import `project.godot`, and press **F6** to run the open scene or **F5** to run the project. The main scene is `scenes/main.tscn`.
+1. In **Spectate**, select Khar-Morr or Trakia-Vorr and choose **Play**.
+2. With Khar-Morr, hold left-click on a shapeable rock and release over **Shape Weapon**. Follow the Shape Trace checkpoints and confirm to shape and equip the club.
+3. Return to the Memory Fountain and try **Echo Imprint** to contribute known Shards. The current prototype offers village deliveries through **Echo Attunement**. Follow the ground glint or wind-wave to the supplies, then bring them to the town hall.
+4. Visit the Ancient Stone Circle. Approach and hover its center to discover it. You can also greet the other Grimnir or return to Spectate to switch lives.
 
-Milestone 1 simulation data and rules are implemented locally. The 3D view still uses placeholder primitives. Blender models and finished presentation belong in the next pass.
+| Input | Action |
+| --- | --- |
+| Right-click / right double-click | Walk / run |
+| Left-click on a loose item or container | Approach, then take or open |
+| Hold left-click on an interaction target | Open the radial, aim at an action, then release |
+| Drag from the character / scroll | Orbit / zoom the camera |
+| **C** / **J** | Character panel / Destiny |
+| **Esc** while inhabiting | Open the menu and return to Spectate |
 
-## Design authority
+[Detailed controls and presentation](docs/PRESENTATION_AND_ASSETS.md) · [Prototype status and known design differences](../docs/PROTOTYPE_STATUS.md)
 
-Read `../AGENTS.md` before implementation. The canonical concept is at:
+## Run the simulation suite
 
-`../concept/Morkahja-Live-RPG/README.md`
+From the repository root, use the documented Godot version. Replace `godot` with the executable path if needed. Import first so Godot builds its asset and script class caches.
 
-Start with these documents under that concept folder:
-
-- `99_Development/Implementation_Handoff.md`
-- `99_Development/Milestone_1_Khar_Morr.md`
-- `08_Presentation/Milestone_1_Environment.md`
-- `99_Development/Prototype_Readiness_Review.md`
-- `09_Technical/RealmNode_Game-Native_Concept.md` and `99_Development/RealmNode_and_Technical_Foundation.md` — required before changing authoritative simulation structure
-
-Canonical design and reference images live in `../concept/`. They are not duplicated into the Godot project.
-
-## What is established
-
-- Authored Milestone 1 content in `data/` (traits, interactions with results, skill phases, starting world)
-- A presentation-independent simulation: entities, matching, walking, pickup/swap, Shape Weapon, Echo Imprint, Shards, character panel data, development log
-- A closed command/query boundary: nothing in `scripts/presentation/` reads runtime state directly
-- A fixed 20 Hz authoritative clock with quantized authoritative values, so world time and outcomes do not depend on frame rate or platform floating point
-- Snapshots, state hashes, a command journal and timestamped skill samples, so a round can be restored or replayed
-- Headless tests for the Milestone 1 loop, determinism, authored results, snapshots and the knowledge boundary
-- Placeholder scene bindings and asset-name contracts in `docs/`
-
-Read `docs/ARCHITECTURE.md` and `docs/PRESENTATION_AND_ASSETS.md` before replacing placeholders. Engine and presentation work is recorded in `docs/ENGINE_CHANGELOG.md` (Cursor agent). Concept changelog stays in the concept repository.
-
-## Structure
-
-- `scenes/`: Godot presentation and world scenes.
-- `scripts/simulation/`: world state and interaction rules.
-- `scripts/presentation/`: Godot input, camera, HUD, asset loading, temporary meshes.
-- `scripts/tests/`: headless simulation checks.
-- `data/`: authored entity and interaction definitions.
-- `assets/models/`: exported GLB models for Godot.
-- `assets/audio/`: sound assets.
-- `assets/ui/`: interface assets.
-- `../assets/art/`: editable Blender sources, excluded from Godot importing via `.gdignore` but retained in Git.
-- `docs/`: implementation notes.
-
-## Technical starting choices
-
-Godot 4.7.2, GDScript, Windows desktop, mouse and keyboard. The project uses the Forward+ renderer so large hex terrain, cascaded directional shadows, and projected decals work. No external packages or services are required.
-
-The local authoritative simulation owns characters, objects, Traits, equipment, knowledge and conditions. UI and scene nodes display that state. Interaction results pass through `EtheraSimulation.apply`. Networking, save/load and RealmNode remain later work.
-
-**The authoritative runtime will be Rust**, in its own crate beside RealmNode, so a validator can run game rules without launching Godot. The GDScript under `scripts/simulation/` is a temporary stand-in for it. New game rules belong in authored data or behind the command/query boundary, not entangled with Godot. See `docs/ARCHITECTURE.md`.
-
-Keep `.blend` sources in `../assets/art/` and export `.glb` assets into `assets/models/`. Git tracks source files; `.godot/` and `builds/` are excluded.
-
-## Tests
-
-```
-powershell -File tools/run_simulation_tests.ps1
+```sh
+godot --headless --path game --import
+godot --headless --path game --script res://scripts/tests/run_simulation_tests.gd
 ```
 
-## Next presentation work
+The checked-in [PowerShell wrapper](tools/run_simulation_tests.ps1) uses a specific Windows installation path. The commands above expose the same import and test entry points. See the [test source](scripts/tests/ethera_simulation_tests.gd) for coverage and the [verification record](../docs/PROTOTYPE_STATUS.md#verification) for the evidence available.
 
-Replace placeholders with the village center, separate Fountain, Khar-Morr, rock and clubs. Keep the existing commands, ids and panel/log queries.
+## Find your way around
 
-`docs/OPEN_IMPLEMENTATION_GAPS.md` separates settled rules from what is still deliberately undecided. Do not promote anything from the undecided list without Alex.
+| Path | Purpose |
+| --- | --- |
+| [data/](data/) | Authored entities, traits, interactions, skill phases, tasks, and world layouts |
+| [scripts/simulation/](scripts/simulation/) | Local authoritative state, rules, and command/query interface |
+| [scripts/presentation/](scripts/presentation/) and [scenes/](scenes/) | Input, camera, UI, visuals, and world assembly |
+| [assets/models/](assets/models/) and [../assets/art/](../assets/art/) | Imported GLBs and editable production sources |
+| [docs/](docs/) | Engine architecture, terrain, art contracts, and implementation history |
+
+Read [AGENTS.md](../AGENTS.md) and the [canonical design](../concept/Morkahja-Live-RPG/README.md) before changing gameplay. The [engine architecture](docs/ARCHITECTURE.md) explains how the current GDScript runtime keeps presentation separate from rules.

@@ -1,30 +1,21 @@
-# Ethera — evidence-based roadmap
+# Ethera — development roadmap
 
-**Author:** Babuni.dev
+The [first-playable scope](concept/Morkahja-Live-RPG/99_Development/First_Playable_Scope.md) records the working milestone sequence. The [prototype status](docs/PROTOTYPE_STATUS.md) maps it to checked-in code and records where the two diverge.
 
-## Established in repository
+| Milestone | State after the 11 November 2026 source review |
+| --- | --- |
+| 1 · Khar-Morr | Shaping, equipment, and Fountain memory sharing are in source. Current desktop acceptance remains open. |
+| 2 · Discovery | Place discovery and discovery Shards are in source. |
+| 3 · Needs and guidance | Common Tasks, Divine Orientation, and deliveries are in source. The original starting Need scenario differs from the prototype. |
+| 4 · Social play | A second Grimnir and greeting are in source. Echo Attunement grants work in the prototype, while its design specifies knowledge retrieval. |
+| 5 · Inhabitation | Local Spectate and life switching are in source. AI continuation and remote handoff remain open. |
+| 6 · Persistence | Snapshot and replay primitives exist. Player-facing save/load remains open. |
 
-- Milestone 1 is described as locally implemented in [game/README.md](game/README.md), with a simulation layer, scripted authored data, command/query boundary, 20 Hz authoritative step, state hashes and headless tests.
-- Milestone 3 is specified in [Need and Divine Orientation](concept/Morkahja-Live-RPG/99_Development/Milestone_3_Need_and_Divine_Orientation.md): Need → Task → Objective → guidance → world-condition completion.
+## Open engineering and verification
 
-## Not verified by this session
+- Run the [simulation suite](game/README.md#run-the-simulation-suite) and record the engine, platform, commit, and result.
+- Verify the village loop in the desktop build, including guidance, character switching, and the current character and terrain presentation. Keep historical V3 animation measurements separate from current V4 evidence.
+- The production architecture specifies a separate Rust game runtime beside RealmNode. Remote transfer validation, fixed-point representation, peer admission, and recovery still need engineering. [Technical foundation](concept/Morkahja-Live-RPG/99_Development/RealmNode_and_Technical_Foundation.md) · [Implementation gaps](game/docs/OPEN_IMPLEMENTATION_GAPS.md)
+- Portfolio publication tracks rights and provenance separately from source availability. [Publication notes](docs/PUBLISHING.md)
 
-The Godot project and tests were not launched. Do not treat detailed concept documents as proof of completed runtime features. The precise implementation state of Milestone 3 remains unverified here.
-
-## Source of future milestones
-
-Use existing milestone and open-question files under `concept/Morkahja-Live-RPG/99_Development/`, not a new speculative schedule.
-
-## Evidence and acceptance ledger — audit #31 (2026-10-27)
-
-- [x] Preserve the detailed `concept/` specifications and historical archives as design authority.
-- [x] Create portfolio-oriented `docs/DESIGN.md` and `docs/CONTENT.md` indices.
-- [x] Document the distinction between locally implemented Milestone 1 simulation, historically reported tests and specified Milestone 3 work.
-- [ ] Run the current Godot simulation test script and record version, command, passing/failing results and commit.
-- [ ] Verify Khar-Morr's club shaping, equipment swapping, Fountain Shard sharing and UI behavior in a fresh desktop runtime session.
-- [ ] Inspect Milestone 2 and 3 source status against their canonical acceptance requirements before marking any tasks complete.
-- [ ] Verify current models, imported assets, playable presentation and performance; distinguish V3 historical animation measurements from current V4.
-- [ ] Review technical handoff for proposed Rust authoritative runtime/RealmNode versus the current temporary GDScript implementation.
-- [ ] Prepare rights-reviewed, author-approved game imagery and a documented canonical/superseded design timeline for babuni.dev.
-
-No tests or game build were run in this documentation audit.
+The [October 31 decision](docs/DECISIONS.md#2026-10-31--author-decision--open-project-development) records that Babuni set the experiment aside while focusing on other games. The sequence describes scope and has no delivery dates.
