@@ -50,3 +50,7 @@ Additional documentation: [Design](docs/DESIGN.md) · [Content and provenance](d
 ## Public repository preparation — 31 October 2026
 
 The standard documentation is maintained in this actual project repository. See [publication preparation](docs/PUBLISHING.md) for the current review, remaining permissions and migration order. Visibility has not changed.
+
+## License
+
+Original software uses [MIT](LICENSE). Original authored creative text and artwork are offered under [CC BY 4.0](CONTENT_LICENSE.md), subject to asset provenance and third-party restrictions.
