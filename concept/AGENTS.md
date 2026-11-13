@@ -1,5 +1,7 @@
 # AGENTS.md
 
+Follow [the documentation standard](../docs/DOCUMENTATION.md) for first-person author voice throughout project documentation, factual changelogs, and naming the AI tool and verified model for each contribution.
+
 ## Project
 
 This repository contains the game project currently titled **Ethera: The Stonewrought**, set in the world of **Morkahja**. **Ethera** names the game; **The Stonewrought** describes the current Grimnir chapter within that same world.
