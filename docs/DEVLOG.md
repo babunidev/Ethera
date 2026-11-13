@@ -29,3 +29,7 @@ Babuni.dev requested review of the actual private repository and its documentati
 Babuni.dev clarified the experimental workflow: ChatGPT-generated 2D images were converted to 3D models and rigged with Tripo. The extensive concept is not a committed delivery roadmap. Babuni.dev has set the experiment aside to focus on finishing and improving Button Game, Rocket Game 42 and Morkahja. Existing Explosive/Mixamo references still require reconciliation; this account does not establish redistribution permission for every historical asset.
 
 **AI contribution:** Recorded the author’s decision and clarification, separately from observed GitHub visibility. Earlier documentation-only publication was considered and is superseded as the intended long-term source. No root license was selected by this update; public visibility, open-source reuse permissions, media rights and production readiness are separate matters. No runtime testing or behavior change is claimed.
+
+## 2026-11-13 — Giving the repository clear permissions
+
+Public source alone did not explain what others could reuse, so I approved MIT for original code and CC BY 4.0 for eligible original creative work, without relicensing external models. AI assistance added the license and brought the project notes into agreement, without changing how the application runs. Other people's content retains its own terms.
