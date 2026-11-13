@@ -20,3 +20,7 @@ The repository remains private, verified on 31 October 2026. No live service, pl
 ## Direction and alternatives
 
 **Human direction:** Babuni.dev requests publication of actual projects and retirement of separate documentation editions after review. **AI assistance:** repository/history inspection and this preparation record. Keeping implementation private with curated public summaries was the earlier approach; it is superseded as the intended destination, but remains the working bridge until publication checks pass. No creative design, license or asset-rights decision was invented by this review.
+
+## 13 November 2026 — Licensing update
+
+Babuni selected MIT for original game software and CC BY 4.0 for eligible original creative material. The new [LICENSE](../LICENSE) and [CONTENT_LICENSE.md](../CONTENT_LICENSE.md) explain this scope. The prior publishing review above remains a dated snapshot. External 3D meshes, rigs and animation assets still require provenance and service-terms checks before they can be represented as part of the open creative-content grant. No asset-by-asset clearance is claimed.
