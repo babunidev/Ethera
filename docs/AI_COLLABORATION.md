@@ -1,21 +1,29 @@
-# Ethera — human and AI contribution record
+# Human–AI collaboration
 
-Follow [the documentation standard](DOCUMENTATION.md) for first-person author voice throughout project documentation, factual changelogs, and naming the AI tool and verified model for each contribution.
+## How I work with AI
 
-## The world and its rules
+Every project here begins with something I want to see in a game, on a screen or in a story. The ideas, the direction and the decisions are mine, and so are the playtests and the checks on my own devices. AI helps me get there. In my early projects that meant asking ChatGPT for Lua in a conversation, copying the changes into local files and trying them in the game. Today coding agents work directly in the repositories: they research, write code and documentation and run tests, while I decide what to build, try it out and say what works and what doesn't.
 
-The worldbuilding, systems and design decisions are mine. The early concept archives I kept and later corrections provide the basis for the history here.
+Two rules hold this record together. Work is credited to whoever did it: the story is told in my voice, but when AI wrote code or a document, the record says so and names the tool and, where it is known, the model. And a plan is not a result: proposed, accepted, built, tested and published stay separate, and an automated test by an AI is not the same as my own check in the game or on my phone.
 
-## 2026-10-27 — Audit #31 and source hierarchy
+## Who did what
 
-**My direction:** Continue the numbered project documentation audit for Ethera. The artistic vision and its explicit design rulings are my work; existing archived deliberations must remain available.
+| Who | Role | Model as recorded |
+| --- | --- | --- |
+| **Babuni** | Creative: ideas, direction, decisions, corrections, playtesting and device checks | — |
+| **ChatGPT** | Chat assistant: ideas, research, code and text drafts in conversation | Not recorded |
+| **Codex** | Coding agent in the repository: research, code, documentation and tests | GPT-6 |
+| **Claude Code** | Coding agent in the repository: research, code, documentation and tests | Claude Opus 5.5 |
+| **Cursor** | Coding agent in the repository: research, code, documentation and tests | Not recorded |
+| **Earlier AI help** | Work that older entries describe only as “AI” | Tool and model not recorded |
 
-**AI contribution:** Read the canonical first-playable, vision, September decision register, Milestone 3 specification and Godot README; create short guides for public portfolio interpretation without claiming the original design was authored by the assistant.
+The journal and the changelog name the tool for each piece of AI work. A model that was not recorded stays unrecorded rather than guessed.
 
-**Creative iteration:** The Need/objective chapter preserves my corrections around automatic task activation, reservation of existing rocks, placement through world nodes rather than the Memory Fountain and deferred injury priority switching. The recorded Rust/RealmNode target is kept distinct from temporary GDScript simulation.
+## Where the details are
 
-**Implementation:** Changes restricted to Markdown overview and navigation documents. **Verification:** Existing code and reports reviewed; current Godot tests, playable visuals and production architecture not independently validated. Source-reported September 22 passing tests remain historical.
+- [Development journal](DEVLOG.md): the story of the project in my voice, including what I asked for and what AI did.
+- [Decision record](DECISIONS.md): what was decided, by whom and why.
+- [Changelog](../CHANGELOG.md): what changed and how it was checked.
+- [Documentation standard](DOCUMENTATION.md) and [AGENTS.md](../AGENTS.md): the writing and working rules for everyone who contributes, human or AI.
 
-## 18 November 2026 — Collaboration record review
-
-At my request, Codex (GPT-6) revised this record for first-person voice and checked the attribution against the available repository documentation. Where an earlier AI tool or model is missing from the record, its identity remains unconfirmed.
+The earlier, longer version of this record, as it stood on 18 November 2026, is kept in the [Git history](https://github.com/babunidev/Ethera/blob/3e86c46cb75f863d1fd684243c3b07f4231b2381/docs/AI_COLLABORATION.md).
