@@ -4,8 +4,8 @@
 
 ## Established in repository
 
-- Milestone 1 is described as locally implemented in [game/README.md](game/README.md), with a simulation layer, scripted authored data, command/query boundary, 20 Hz authoritative step, state hashes and headless tests.
-- Milestone 3 is specified in [Need and Divine Orientation](concept/Morkahja-Live-RPG/99_Development/Milestone_3_Need_and_Divine_Orientation.md): Need → Task → Objective → guidance → world-condition completion.
+- Milestone 1 is described as locally implemented in [game/README.md](../game/README.md), with a simulation layer, scripted authored data, command/query boundary, 20 Hz authoritative step, state hashes and headless tests.
+- Milestone 3 is specified in [Need and Divine Orientation](../concept/Morkahja-Live-RPG/99_Development/Milestone_3_Need_and_Divine_Orientation.md): Need → Task → Objective → guidance → world-condition completion.
 
 ## Not verified by this session
 
